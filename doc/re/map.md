@@ -166,18 +166,22 @@ So the enemies for the first load slot must all be killed before the next slot i
                 dc.b entityId               ; Entity logic id
                 dc.w entityY                ; Entity y in map coordinate system
                 dc.w entityX                ; Entity x in VDP sprite coordinate system (this means to get the position in the map coordinate system, horizontal scroll(=MapEntityLoadTrigger.hScrollTrigger) must be added and 128 must be subtracted).
-                dc.w unknown1
-                dc.w unknown2
+                dc.w spriteBasePatternNumber
+                dc.w unknown
 ```
 
-Graphics are loaded for the complete group based on `.mapEntityGroupGraphicsOffset` which is an offset in table `MapEntityGroupGraphicsTable` which points to a `MapEntityGroupGraphics` struct.
+When an `MapEntityLoadSlots` slot is loaded by routine `InstantiateMapEntities` the following happens.
+
+Graphics are loaded for the complete group based on `.mapEntityGroupGraphicsOffset` which is an offset into table `MapEntityGroupGraphicsTable` which points to a `MapEntityGroupGraphics` struct.
 
 ```
     ; Struct MapEntityGroupGraphics
         dc.b palette1Index
         dc.b palette2Index
-        dc.w vramAddress
-        dc.w nemesisEntityTileDataOffset
+        ; Repeat until vramAddress = 0
+        ; Struct NemesisLoad
+            dc.w vramAddress
+            dc.w nemesisEntityTileDataOffset
 ```
 
 Any non zero `.palette*Index` is an index into `MapEntityGroupPaletteTable` which contains pointers to `PartialPalette` structs which are loaded into the base and dynamic palette.
@@ -189,21 +193,28 @@ Palette allocation is as follows in general:
 
 Tile data is decompressed to `.vramAddress` which is an actual address (not a VDP address set command).
 The address of the Nemesis compressed graphics is loaded from `MapEntityGroupTileAddressTable` offset by `.nemesisEntityTileDataOffset`.
-Then the tiles are decompressed to VRAM.
+Then the tiles are decompressed to VRAM. This is repeated until a `.vramAddress` of 0 is found.
+There is basically one entry per entity type in general.
 
-Next the entities are instanced. There are 8 `MapEntityInstance` data slots at `MapEntityInstanceSlots` which are loaded from the `MapEntityInstanceData` structures as follows:
-- `MapEntityInstance` = `MapEntityInstanceSlots[entityId * 128]` 
-  - `MapEntityInstance.entityId` = `mapEntityInstanceData.entityId`
-  - `MapEntityInstance.baseY` = `mapEntityInstanceData.entityY`
-    - Only the integer part is loaded
-  - `MapEntityInstance.entityX` = `mapEntityInstanceData.entityX`
-    - Only the integer part is loaded
-  - `MapEntityInstance.unknown1` = `mapEntityInstanceData.unknown2`
-  - `MapEntityInstance.unknown2` = `mapEntityInstanceData.unknown1`
-  - Additional values set:
-    - `MapEntityInstance.height`: height map sample at `(MapEntityInstance.baseY, MapEntityInstance.baseX)`
-    - `MapEntityInstance.entityY`: derived from `MapEntityInstance.baseY`
-    - If `.entityX` > half screen width (160) then bit flag #0 in byte at offset $44
+Next the entities are instanced. There are 8 `EntityInstance` data slots at `MapEntityInstanceSlots` which are loaded from the `MapEntityInstanceData` structures as follows:
+
+```
+    mapEntityInstance = MapEntityInstanceSlots[mapEntityInstanceData.entityId];
+
+    mapEntityInstance.entityId = mapEntityInstanceData.entityId;
+    mapEntityInstance.baseY = mapEntityInstanceData.entityY;        // Only the integer part is loaded
+    mapEntityInstance.entityX = mapEntityInstanceData.entityX;      // Only the integer part is loaded
+    mapEntityInstance.unknown = mapEntityInstanceData.unknown;
+    mapEntityInstance.spriteBasePatternNumber = mapEntityInstanceData.spriteBasePatternNumber
+
+    mapEntityInstance.height = SampleHeightMap(EntityInstance.baseY, EntityInstance.baseX);
+    mapEntityInstance.entityY = calculateEntityY();                 // Sprite location with height incorporated. See entity.md
+
+    if (.entityX > 288) // 288 = Half screen width (160 + VDPSpriteVisibleArea.TOP (=128))
+    {
+        mapEntityInstance.byte[0x44] |= 1;
+    }
+```
 
 See [entity.md](./entity.md) for details on runtime entity handling.
 
@@ -235,13 +246,18 @@ See [entity.md](./entity.md) for details on runtime entity handling.
   - Pointer to the next `MapEntityLoadTrigger`
 
 ### Player entity initialisation
-Player follows the same runtime structure as `MapEntityInstance`. Members `.entityY` and `.entityX` are loaded from the map.
-The `.height` value of the player is always assumed to be `baseHeight` (=$8000) at the instantiation position.
-The remaining position related values are derived from these values. See [entity.md](entity.md) for more details on the runtime the structure.
+Player follows the same runtime structure as `EntityInstance`. Members `.entityY` and `.entityX` are loaded from the map.
+
+The height of `.entityY` is `baseHeight` (=$8000) at this point.
+Then the height is sampled from the height map at that point and `.entityY` and `.baseY` are recalculated with the sampled height and the sampled height is stored in the player entity.
+
+See [entity.md](entity.md) for more details on the runtime the structure.
 
 #### Code/data pointers
 - `Player1Entity`: **$FFD000**
 - `Player2Entity`: **$FFD080**
+- `InitPlayers` routine: **$13FE**
+- `RecalculateVerticalPosition` routine: **$86FE**
 
 ### Music id
 Contains the song id for the map. Start playing immediately after loading the map.
