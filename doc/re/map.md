@@ -166,7 +166,7 @@ So the enemies for the first load slot must all be killed before the next slot i
                 dc.b entityId               ; Entity logic id
                 dc.w entityY                ; Entity y in map coordinate system
                 dc.w entityX                ; Entity x in VDP sprite coordinate system (this means to get the position in the map coordinate system, horizontal scroll(=MapEntityLoadTrigger.hScrollTrigger) must be added and 128 must be subtracted).
-                dc.w spriteBasePatternNumber
+                dc.w spriteBaseTileId
                 dc.w unknown
 ```
 
@@ -194,25 +194,27 @@ Palette allocation is as follows in general:
 Tile data is decompressed to `.vramAddress` which is an actual address (not a VDP address set command).
 The address of the Nemesis compressed graphics is loaded from `MapEntityGroupTileAddressTable` offset by `.nemesisEntityTileDataOffset`.
 Then the tiles are decompressed to VRAM. This is repeated until a `.vramAddress` of 0 is found.
-There is basically one entry per entity type in general.
+
+The graphics data loaded here is typically a full pre load of all animation frames (i.e. for non DMA animated entities)
 
 Next the entities are instanced. There are 8 `EntityInstance` data slots at `MapEntityInstanceSlots` which are loaded from the `MapEntityInstanceData` structures as follows:
 
 ```
+    // NB: Entity types that use DMA for their animation system must be allocated to slots 0-3
     mapEntityInstance = MapEntityInstanceSlots[mapEntityInstanceData.entityId];
 
     mapEntityInstance.entityId = mapEntityInstanceData.entityId;
     mapEntityInstance.baseY = mapEntityInstanceData.entityY;        // Only the integer part is loaded
     mapEntityInstance.entityX = mapEntityInstanceData.entityX;      // Only the integer part is loaded
     mapEntityInstance.unknown = mapEntityInstanceData.unknown;
-    mapEntityInstance.spriteBasePatternNumber = mapEntityInstanceData.spriteBasePatternNumber
+    mapEntityInstance.spriteBaseTileId = mapEntityInstanceData.spriteBaseTileId
 
     mapEntityInstance.height = SampleHeightMap(EntityInstance.baseY, EntityInstance.baseX);
     mapEntityInstance.entityY = calculateEntityY();                 // Sprite location with height incorporated. See entity.md
 
-    if (.entityX > 288) // 288 = Half screen width (160 + VDPSpriteVisibleArea.TOP (=128))
+    if (.entityX >= 288) // 288 = Half screen width (160 + VDPSpriteVisibleArea.TOP (=128))
     {
-        mapEntityInstance.byte[0x44] |= 1;
+        mapEntityInstance.flags2 |= O //=1
     }
 ```
 

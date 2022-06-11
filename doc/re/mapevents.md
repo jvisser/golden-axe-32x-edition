@@ -161,7 +161,7 @@ Spawns water entity ($2a) that handles the moving water in turtle village (level
 - `WaterEntityLogic`: **$B140**
 
 #### $28: Start spawning feathers
-Spawns one feather entity ($29) each 8 frames. These are the feathers that move across the screen in the fiend's path (Level 4).
+Spawns one feather entity ($29) every 8 frames. These are the feathers that move across the screen in the fiend's path (Level 4).
 This event does not end (except by finishing the level).
 
 ##### Code/data pointers

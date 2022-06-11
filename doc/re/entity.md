@@ -7,41 +7,39 @@ Runtime entity data structure.
     ; Struct EntityInstance  ; Total 128 bytes
         ; offset, size, name
         $00: dc.b entityId
+        $02: dc.b flags1
+        $04: dc.b hurtBoundsIndex
+        $05: dc.b damageBoundsIndex
         $06: dc.w unknown                       ; ? Loaded from map
         $08: dc.w spriteBaseTileId              ; Base tile id of the entity tile data in VRAM
-        $0a: dc.l metaSpriteAddress             ; Meta sprite for the current animation frame. See rendering.md.
-        $0e: dc.l metaSpriteTableAddress        ; Meta sprite table
-        $17: dc.b attributeFlags                ; Basically high byte of VDPSprite.attr. priority, h/v flip, palette id.
+        $0a: dc.l metaSpriteAddress             ; Meta sprite for the current animation frame
+        $0e: dc.l animationTableAddress         ; Contains pointers to meta sprite animation sequences
+        $14: dc.b currentAnimationFrameIndex
+        $15: dc.b currentAnimationFrameTime
+        $16: dc.b currentAnimationFrameTimeLeft
+        $17: dc.b attributeFlags                ; Basically high byte of VDPSprite.attr. Only used/usable for palette id.
         $18: dc.l entityY                       ; As 16:16 fixed point.
         $1c: dc.l entityX                       ; As 16:16 fixed point.
         $20: dc.l baseY                         ; As 16:16 fixed point.
         $24: dc.l height                        ; As 16:16 fixed point.
         $34: dc.l heightAcceleration            ; As 16:16 fixed point.
+        $38: dc.l collidingEntityAddress
+        $44: dc.b flags2
+        $6c: dc.l boundsTableAddress            ; Contains bounds for entity collision detection
+        $70: dc.w currentDMAIndex
+        $72: dc.w lastDMAIndex
+        $74: dc.w dmaSourceBaseAddress
+        $78: dc.w dmaFrameTableAddress
+        $7c: dc.w mirrorAnimationTableOffset
 ```
 
-### Sprite
-Because the sprites used in the game are larger than the hardware supports they are composed of multiple hardware sprites.
-This composition is stored in a `MetaSprite` structure.
-
-The meta sprite structure used is as follows:
-```
-    ; Struct MetaSprite
-      dc.b    spriteCount             ; spriteCount - 1 as this is stored dbf/dbra adjusted
-      dc.b    unknown1
-      dc.b    unknown2
-        ; Repeat spriteCount + 1 times
-        ; Struct Sprite
-          dc.b    yOffset             ; Relative to EntityInstance.entityY
-          dc.b    size                ; VDPSprite.size format
-          dc.w    relativePatternId   ; Pattern id relative to EntityInstance.spriteBaseTileId
-          dc.b    xOffset             ; Relative to EntityInstance.entityX
-```
-
-The sprite patternId `MetaSprite` stored in `.relativePatternId` is relative to `EntityInstance.spriteBaseTileId`. I.e. add them to get the absolute tile address.
-`EntityInstance.spriteBaseTileId` itself is a tile in the tile data loaded for the entity through `MapEntityLoadGroupDescriptor` see [map.md](./map.md) for details on this.
-
-The current meta sprite address is loaded from `EntityInstance.metaSpriteAddress`.
-This is loaded by the entity logic from `EntityInstance.metaSpriteTableAddress` which is assigned by entity initialisation logic.
+### Flags
+- `.flags1`: [???? ??A?]
+  - A: Animation marker frame hit?
+- `.flags2`: [???? ???O]
+  - O: Orientation:
+    - 0 right facing
+    - 1 left facing
 
 ### Position
 - `.entityY`: The y position in the VDP sprite coordinate system. This position is `.height` adjusted. Bottom position.
@@ -60,8 +58,14 @@ In short `.entityY` and `.entityX` contain the screen coordinates. And `.baseY` 
 
 For more details on height calculations see [mapcollision.md](./mapcollision.md).
 
+### Animation
+See [entityanimation.md](entityanimation.md)
+
+### Collision
+See [entitycollision.md](./entitycollision.md)
+
 ### Palette
-Palette is hardcoded by entity logic.
+Palette is hardcoded by entity logic. By updating `EntityInstance.attributeFlags`.
 
 ## Entity allocation area
 The `EntityBase` is an array of 64 slots allocated as follows:
@@ -79,8 +83,7 @@ The map instanced entities can then spawn up to 54 additional entities such as f
 ## Entity logic
 All entities are updated through routine `UpdateActiveEntities`.
 
-For non plae
-In entity logic handlers bit 7 of entity id is used to check if initialisation is needed (needed if 0).
+For non player entity logic handlers bit 7 of the entity id is used to check if initialisation is needed (needed if 0).
 So the single logic handler does both initialisation and normal logic.
 
 Entities call `RemoveEntity` to de-spawn themselves.
