@@ -194,6 +194,9 @@ The entity selects it's VRAM target address at initialization time by calling `S
   - `.dmaFrameTableAddress`: **$6D5E0**
 - Amazon: (Init address **$11040**)
   - `.dmaSourceBaseAddress`: **$FF8000**
+    - Amazon graphics data is Nemesis compressed and is always decompressed to this address when starting a level.
+    - Probably to be able squeeze everthing in the 512KB ROM space.
+      - See all usages of `DecompressTileDataToRAM`. All except the one for the sega logo...
   - `.dmaFrameTableAddress`: **$7A08E**
 - Skeleton: (Init address **$D608**)
   - `.dmaSourceBaseAddress`: **$59BEC**
