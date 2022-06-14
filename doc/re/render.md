@@ -1,5 +1,18 @@
 # Rendering 
 
+## Table of contents
+1. [General](#general)
+   1. [Gameplay VRAM allocation](#gameplay-vram-allocation)
+2. [Map rendering](#map-rendering)
+   1. [Map data](#map-data)
+   2. [VDP data/updates](#vdp-dataupdates)
+3. [Sprite rendering](#sprite-rendering)
+   1. [Sorting](#sorting)
+   2. [Rendering](#rendering-1)
+   3. [Updating sprite tiles](#updating-sprite-tiles)
+      1. [Entity DMA addresses](#entity-dma-addresses)
+4. [Palette](#palette)
+
 ## General
 
 ### Gameplay VRAM allocation
