@@ -122,7 +122,7 @@ Is created for each `Sprite` in the `MetaSprite` as follows:
   VDPSprite.y = entity.entityY + Sprite.yOffset
   VDPSprite.size = Sprite.size
   VDPSprite.link = d7
-  VDPSprite.attr = (entity.spriteBaseTileId + Sprite.relativePatternId) | entity.attributeFlags
+  VDPSprite.attr = (entity.spriteBaseTileId + Sprite.relativePatternId) | (entity.attributeFlags << 8)
   VDPSprite.x = entity.entityX + Sprite.xOffset
 ```
 
@@ -165,7 +165,7 @@ void DoEntityDMA(Entity* entity, u8* targetVRAMAddress)
 
       targetVRAMAddress += dmaLength * 2;
 
-      *dmaTransfer++;
+      dmaTransfer++;
     }
   }
 }

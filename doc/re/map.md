@@ -224,7 +224,7 @@ Next the entities are instanced. There are 8 `EntityInstance` data slots at `Map
 
     if (.entityX >= 288) // 288 = Half screen width (160 + VDPSpriteVisibleArea.TOP (=128))
     {
-        mapEntityInstance.flags2 |= O //=1
+        mapEntityInstance.flags2 |= L //=1 Left facing
     }
 ```
 
