@@ -167,7 +167,7 @@ So the enemies for the first load slot must all be killed before the next slot i
                 dc.w entityY                ; Entity y in map coordinate system
                 dc.w entityX                ; Entity x in VDP sprite coordinate system (this means to get the position in the map coordinate system, horizontal scroll(=MapEntityLoadTrigger.hScrollTrigger) must be added and 128 must be subtracted).
                 dc.w spriteBaseTileId
-                dc.w unknown
+                dc.w initValue
 ```
 
 When an `MapEntityLoadSlots` slot is loaded by routine `InstantiateMapEntities` the following happens.
@@ -206,7 +206,7 @@ Next the entities are instanced. There are 8 `EntityInstance` data slots at `Map
     mapEntityInstance.entityId = mapEntityInstanceData.entityId;
     mapEntityInstance.baseY = mapEntityInstanceData.entityY;        // Only the integer part is loaded
     mapEntityInstance.entityX = mapEntityInstanceData.entityX;      // Only the integer part is loaded
-    mapEntityInstance.unknown = mapEntityInstanceData.unknown;
+    mapEntityInstance.initValue = mapEntityInstanceData.initValue;
     mapEntityInstance.spriteBaseTileId = mapEntityInstanceData.spriteBaseTileId
 
     mapEntityInstance.height = SampleHeightMap(EntityInstance.baseY, EntityInstance.baseX);
@@ -219,6 +219,12 @@ Next the entities are instanced. There are 8 `EntityInstance` data slots at `Map
 ```
 
 See [entity.md](./entity.md) for details on runtime entity handling.
+
+#### Init values
+`MapEntityInstanceData.initValue` contains an entity specific init value that is copied into the entity instances `EntityInstance.initValue` field.
+
+Known uses:
+- **Thief**: Contains the number of items dropped.
 
 #### Special cases
 - In beginner mode the level 3 trigger list is overridden with a custom version `Level3BeginnerModeEntityList` in routine `StartGameplay` at **$12FC**.
