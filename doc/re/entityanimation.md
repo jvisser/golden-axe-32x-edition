@@ -1,6 +1,16 @@
 # Entity animation
 See [entity.md](./entity.md) for details on the `EntityInstance` structure.
 
+## Table of contents
+1. [Sprites](#sprites)
+2. [Animations](#animations)
+   1. [Animation table offset](#animation-table-offset)
+   2. [Initializing an animation sequence](#initializing-an-animation-sequence)
+   3. [Updating an animation sequence](#updating-an-animation-sequence)
+   4. [Signals and limits](#signals-and-limits)
+   5. [Enabling DMA support](#enabling-dma-support)
+3. [Entity animation table addresses by type](#entity-animation-table-addresses-by-type)
+
 ## Sprites
 Because the sprites used in the game are larger than the hardware supports they are composed of multiple hardware sprites.
 This composition is stored in a `MetaSprite` structure.

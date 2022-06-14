@@ -1,5 +1,19 @@
 # Entity runtime
 
+## Table of contents
+1. [Structure](#structure)
+   1. [Flags](#flags)
+   2. [Position](#position)
+   3. [Animation](#animation)
+   4. [Collision](#collision)
+   5. [Palette](#palette)
+2. [Entity allocation area](#entity-allocation-area)
+3. [Entity logic](#entity-logic)
+4. [Player entities](#player-entities)
+5. [Map instanced entities](#map-instanced-entities)
+6. [Secondary instanced entities](#secondary-instanced-entities)
+7. [Entity id's](#entity-ids)
+
 ## Structure
 Runtime entity data structure.
 

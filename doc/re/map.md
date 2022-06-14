@@ -51,6 +51,16 @@ This struct contains all data to load a level.
         dc.w musicId
 ```
 
+Details
+1. [Palette data](#palette-data)
+2. [Compressed tile data](#compressed-tile-data)
+3. [Graphics map data](#graphics-map-data)
+4. [Map events](#map-events)
+5. [Height map data](#height-map-data)
+6. [Entity load data](#entity-load-data)
+7. [Player entity initialisation](#player-entity-initialisation)
+8. [Music](#music)
+
 ### Code/data pointers
 - `MapDescriptorAddressTable`: **$15AC**
     - Contains entries for the following maps using long pointers pointing to `MapDescriptor`'s:
@@ -96,17 +106,6 @@ The tilemap is decompressed into a fixed 128x32 byte buffer `TileMap` in RAM.
 - `TileMap`: **$FF4000**
   - Decompressed background tilemap
 
-### Height map data
-Height data is stored like the graphics map with a compressed tilemap in the same format and of the same size but pointing to height blocks instead of graphics blocks.
-
-Height blocks consist of 4 words where each word is a height value (8x8 pixel resolution). The `baseHeight` value is $8000.
-Lower values are up, higher values down.
-
-For more details see [mapcollision.md](./mapcollision.md).
-
-#### Code/data pointers
-- `HeightTileMap`: **$FF5000**
-
 ### Map events
 Each map can have triggers for things like palette transitions. These are stored in the following format:
 
@@ -121,13 +120,24 @@ Each map can have triggers for things like palette transitions. These are stored
 ```
 
 When the map is scrolling the current horizontal scroll value is compared to `NextMapEventTrigger->hScrollTrigger` to determine if the event is to be activated.
-See [mapevents.md](./mapevents.md) for more details on map events. 
+See [mapevents.md](./mapevents.md) for more details on map events.
 
 #### Code/data pointers
 - `CheckMapEventTrigger` routine: **$1CD2**
     - Checks if the scroll value matches the trigger position if so activates the event by adding it to a free slot in `MapEventQueue`.
 - `NextMapEventTrigger`: **$FFC22A**
-  - Pointer to next `MapEventTrigger`
+    - Pointer to next `MapEventTrigger`
+
+### Height map data
+Height data is stored like the graphics map with a compressed tilemap in the same format and of the same size but pointing to height blocks instead of graphics blocks.
+
+Height blocks consist of 4 words where each word is a height value (8x8 pixel resolution). The `baseHeight` value is $8000.
+Lower values are up, higher values down.
+
+For more details see [mapcollision.md](./mapcollision.md).
+
+#### Code/data pointers
+- `HeightTileMap`: **$FF5000**
 
 ### Entity load data
 Entity spawn points are stored in the following format 
@@ -267,7 +277,7 @@ See [entity.md](entity.md) for more details on the runtime the structure.
 - `InitPlayers` routine: **$13FE**
 - `RecalculateVerticalPosition` routine: **$86FE**
 
-### Music id
+### Music
 Contains the song id for the map. Start playing immediately after loading the map.
 
 #### Code/data pointers
