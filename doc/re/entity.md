@@ -10,7 +10,7 @@ Runtime entity data structure.
         $02: dc.b flags1
         $04: dc.b hurtBoundsIndex
         $05: dc.b damageBoundsIndex
-        $06: dc.w unknown                       ; ? Loaded from map
+        $06: dc.w initValue                     ; Loaded from map
         $08: dc.w spriteBaseTileId              ; Base tile id of the entity tile data in VRAM
         $0a: dc.l metaSpriteAddress             ; Meta sprite for the current animation frame
         $0e: dc.l animationTableAddress         ; Contains pointers to meta sprite animation sequences
