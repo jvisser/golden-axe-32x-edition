@@ -33,13 +33,46 @@ All entity<->player collision checks are performed in screen space and initiated
 
 The player screenspace bounds are precalculated once per frame in `WritePlayerBounds` by adding the `EntityBounds` to player's screen base position of `(EntityInstance.entityX, EntityInstance.entityY)`.
 The bounds are written to:
-- **$CE80**: Player 1 hurt bounds
-- **$CE88**: Player 1 damage bounds
-- **$CF00**: Player 2 hurt bounds
-- **$CF08**: Player 2 damage bounds
+- **$FFCE80**: Player 1 hurt bounds
+- **$FFCE88**: Player 1 damage bounds
+- **$FFCF00**: Player 2 hurt bounds
+- **$FFCF08**: Player 2 damage bounds
 
 All entity<->player collision checks use these precalculated bounds values.
 Entities call one of the `Check*Collision` routines to do the collision checks against the players.
+
+The algorithm looks something like this:
+```
+int playerCollisionCheck(Entity *player, Entity *entity, int closeness)
+{
+  if (abs(player->baseY - entity->baseY) < closeness)
+  {
+    EntityBounds entityHurtBounds = entity->boundsTableAddress[entity->hurtBoundsIndex];
+
+    Rectangle entityHurtScreenRect = Rectangle(
+      xLeft: entity->entityX + entityHurtBounds->xOffset,
+      yTop: entity->entityY + entityHurtBounds->yOffset
+      xRight: .xLeft + entityHurtBounds->width
+      yBottom: .yTop + entityHurtBounds->height);
+
+    // Check if player damages entity
+    if (PrecalculatedPlayerDamageScreenRect.intersects(entityHurtScreenRect))
+    {
+      entity->interactingEntityAddress = player;
+      player->interactingEntityAddress = entity;
+
+      // Set some flags on both sides
+      // ...
+
+      return ...;
+    }
+
+    // Check if entity damages player
+
+    // ... same but with opposite bounds on both sides
+  }
+}
+```
 
 ### Code/data pointers
 - `WritePlayerBounds`: **$C184**
