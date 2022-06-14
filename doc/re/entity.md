@@ -28,6 +28,7 @@ Runtime entity data structure.
         $08: dc.w spriteBaseTileId              ; Base tile id of the entity tile data in VRAM
         $0a: dc.l metaSpriteAddress             ; Meta sprite for the current animation frame
         $0e: dc.l animationTableAddress         ; Contains pointers to meta sprite animation sequences
+        $12: dc.w currentAnimationOffset
         $14: dc.b currentAnimationFrameIndex
         $15: dc.b currentAnimationFrameTime
         $16: dc.b currentAnimationFrameTimeLeft
@@ -37,7 +38,7 @@ Runtime entity data structure.
         $20: dc.l baseY                         ; As 16:16 fixed point.
         $24: dc.l height                        ; As 16:16 fixed point.
         $34: dc.l heightAcceleration            ; As 16:16 fixed point.
-        $38: dc.l collidingEntityAddress
+        $38: dc.l interactingEntityAddress      ; Set by collision detection code and riding things etc
         $44: dc.b flags2
         $6c: dc.l boundsTableAddress            ; Contains bounds for entity collision detection
         $70: dc.w currentDMAIndex
@@ -50,10 +51,9 @@ Runtime entity data structure.
 ### Flags
 - `.flags1`: [???? ??A?]
   - A: Animation marker frame hit?
-- `.flags2`: [???? ???O]
-  - O: Orientation:
-    - 0 right facing
-    - 1 left facing
+- `.flags2`: [???? ??UL]
+  - L: Moving left
+  - U: Moving up
 
 ### Position
 - `.entityY`: The y position in the VDP sprite coordinate system. This position is `.height` adjusted. Bottom position.

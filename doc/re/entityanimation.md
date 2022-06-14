@@ -30,12 +30,16 @@ The meta sprite structure used is as follows:
 ```
 
 The sprite patternId stored in `.relativePatternId` is relative to `EntityInstance.spriteBaseTileId`. I.e. add them to get the absolute tile address.
-`EntityInstance.spriteBaseTileId` itself is a tile in the tile data loaded for the entity through `MapEntityLoadGroupDescriptor` see [map.md](./map.md) for details on this.
-
 `.relativePatternId` also contains the horizontal flip bit if applicable.
 
-The current meta sprite address is stored in `EntityInstance.metaSpriteAddress`.
-This is loaded by the entity logic from `EntityInstance.animationTableAddress` which is assigned by entity initialisation logic.
+`EntityInstance.spriteBaseTileId` is based on one of the following:
+- A tile id in the tile data pre-loaded for the entity through `MapEntityLoadGroupDescriptor`.
+  - See [map.md](./map.md) for details on this
+- Or, the tile id for one of fixed entity DMA VRAM addresses for DMA enabled entities.
+  - See [render.md](./render.md) for the VRAM memory map
+  - See [Animations->Enabling DMA support](#enabling-dma-support)
+
+The current meta sprite address is stored in `EntityInstance.metaSpriteAddress` and set by the animation system (generally).
 
 ## Animations
 
@@ -69,9 +73,15 @@ Both tables contain exactly the same animations except the `MetaSprite`'s are mi
 The right facing table at the base of `EntityInstance.animationTableAddress` is horizontally flipped.
 
 The offset into the second table is indicated by `EntityInstance.mirrorAnimationTableOffset`. The value is set by entity logic.
-This offset is added to the base animation offset if the orientation flag `O` (#0) is set in `EntityInstance.flags2`.
+This offset is added to the base animation offset if the `L` flag (#0, Left facing) is set in `EntityInstance.flags2`.
 
 See routine `GetAnimation`.
+
+Base animation offsets are either:
+- Passed directly through register d0
+- Or, retreived from `EntityInstance.currentAnimationOffset`
+
+Depending on which animation routines the entity logic uses.
 
 ### Initializing an animation sequence
 Animations are loaded from `EntityInstance.animationTableAddress` as follows:
@@ -89,7 +99,7 @@ entity.damageBoundsIndex = animationFrame->damageBoundsIndex        // Seems to 
 ```
 
 ### Updating an animation sequence
-Animation id's are hardcoded and passed through register d0. The animation update logic looks something like this:
+The animation update logic looks something like this:
 ```
 animation = GetAnimation(entity, animationOffset)
 
@@ -109,8 +119,8 @@ if (entity.currentAnimationFrameIndex >= animation.frameCount)
 animationFrame = animation.animationFrameAddress[entity.currentAnimationFrameIndex]
 
 entity.metaSpriteAddress = &animationFrame.metaSprite
-entity.currentDMAIndex = animationFrame->dmaIndex
-entity.damageBoundsIndex = animationFrame->damageBoundsIndex    // Seems to be mostly set during initialization only, depending on the routine used
+entity.currentDMAIndex = animationFrame.dmaIndex
+entity.damageBoundsIndex = animationFrame.damageBoundsIndex     // Seems to be mostly set during initialization only, depending on the routine used
 ```
 
 ### Signals and limits
