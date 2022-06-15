@@ -3,6 +3,8 @@ See [entity.md](./entity.md) for details on the `EntityInstance` structure.
 
 See [entityanimation.md](./entityanimation.md) for details on the `MetaSprite` structure.
 
+## Bounds
+
 Entity collision bounds are stored in a separate table referenced by `EntityInstance.boundsTableAddress` where each entry has the following format:
 ```
     ; Struct EntityBounds
@@ -15,6 +17,7 @@ Entity collision bounds are stored in a separate table referenced by `EntityInst
 
 To get the bounds address do `EntityInstance.boundsTableAddress + boundsIndex * SizeOf(EntityBounds) (=8)`
 
+### Bounds types
 Each entity has both damage bounds `.damageBoundsIndex` (used to deal damage) and hurt bounds `.hurtBoundsIndex` (used to receive damage) indices into `EntityInstance.boundsTableAddress`.
 They are sourced from:
 - `MetaSprite`: for both types.

@@ -32,14 +32,19 @@ The meta sprite structure used is as follows:
 The sprite patternId stored in `.relativePatternId` is relative to `EntityInstance.spriteBaseTileId`. I.e. add them to get the absolute tile address.
 `.relativePatternId` also contains the horizontal flip bit if applicable.
 
-`EntityInstance.spriteBaseTileId` is based on one of the following:
-- A tile id in the tile data pre-loaded for the entity through `MapEntityLoadGroupDescriptor`.
+`EntityInstance.spriteBaseTileId` is set as follows:
+- By the map entity load system.
+  - To a tile id in the tile data pre-loaded for the entity through `MapEntityLoadGroupDescriptor`.
   - See [map.md](./map.md) for details on this
-- Or, the tile id for one of fixed entity DMA VRAM addresses for DMA enabled entities.
-  - See [render.md](./render.md) for the VRAM memory map
-  - See [Animations->Enabling DMA support](#enabling-dma-support)
+- By entity logic.
+  - For DMA based animations. To the tile id for one of fixed entity DMA VRAM addresses for DMA enabled entities.
+    - See [render.md](./render.md) for the VRAM memory map
+    - See [Animations->Enabling DMA support](#enabling-dma-support)
+  - Or manually set
 
-The current meta sprite address is stored in `EntityInstance.metaSpriteAddress` and set by the animation system (generally).
+The current meta sprite address is stored in `EntityInstance.metaSpriteAddress` and is either:
+- Set automatically by the animation system (generally).
+- Or manually set
 
 ## Animations
 
