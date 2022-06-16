@@ -168,7 +168,8 @@ So the enemies for the first load slot must all be killed before the next slot i
 
 ```
     ; Struct MapEntityLoadGroupDescriptor
-        dc.w mapEntityGroupGraphicsOffset
+        dc.b padding
+        dc.b mapEntityGroupGraphicsOffset
         dc.w numEntities                    ; numEntities - 1 as this is stored dbf/dbra adjusted
             ; Repeat numEntities + 1 times
             ; Struct MapEntityInstanceData
@@ -182,7 +183,7 @@ So the enemies for the first load slot must all be killed before the next slot i
 
 When an `MapEntityLoadSlots` slot is loaded by routine `InstantiateMapEntities` the following happens.
 
-Graphics are loaded for the complete group based on `.mapEntityGroupGraphicsOffset` which is an offset into table `MapEntityGroupGraphicsTable` which points to a `MapEntityGroupGraphics` struct.
+Graphics are loaded for the complete group based on `.mapEntityGroupGraphicsOffset` (must be >0) which is an offset into table `MapEntityGroupGraphicsTable` (Max 64 entries, 0 is unused) which contains (long) pointers to `MapEntityGroupGraphics` structs.
 
 ```
     ; Struct MapEntityGroupGraphics
@@ -205,7 +206,8 @@ Tile data is decompressed to `.vramAddress` which is an actual address (not a VD
 The address of the Nemesis compressed graphics is loaded from `MapEntityGroupTileAddressTable` offset by `.nemesisEntityTileDataOffset`.
 Then the tiles are decompressed to VRAM. This is repeated until a `.vramAddress` of 0 is found.
 
-The graphics data loaded here is typically a full pre load of all animation frames (i.e. for non DMA animated entities)
+The tile data loaded here is typically a full pre load of all animation frames (i.e. for non DMA animated entities).
+One `NemesisLoad` entry per entity type.
 
 Next the entities are instanced. There are 8 `EntityInstance` data slots at `MapEntityInstanceSlots` which are loaded from the `MapEntityInstanceData` structures as follows:
 
