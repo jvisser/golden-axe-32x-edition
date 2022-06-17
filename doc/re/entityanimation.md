@@ -5,10 +5,12 @@ See [entity.md](./entity.md) for details on the `EntityInstance` structure.
 1. [Sprites](#sprites)
 2. [Animations](#animations)
    1. [Animation table offset](#animation-table-offset)
-   2. [Initializing an animation sequence](#initializing-an-animation-sequence)
-   3. [Updating an animation sequence](#updating-an-animation-sequence)
-   4. [Signals and limits](#signals-and-limits)
-   5. [Enabling DMA support](#enabling-dma-support)
+   2. [DMA based animations](#dma-based-animations)
+      1. [Initializing an animation sequence](#initializing-an-animation-sequence)
+      2. [Updating an animation sequence](#updating-an-animation-sequence)
+      3. [Signals and limits](#signals-and-limits)
+      4. [Enabling DMA support](#enabling-dma-support)
+   3. [Pre loaded animations](#pre-loaded-animations)
 3. [Entity animation table addresses by type](#entity-animation-table-addresses-by-type)
 
 ## Sprites
@@ -50,9 +52,15 @@ The current meta sprite address is stored in `EntityInstance.metaSpriteAddress` 
 
 Animation addresses are stored in a table pointed to by `EntityInstance.animationTableAddress`. This table address is initialized by the specific entity logic.
 
-The animation information is stored in the following format.
+There are two types of animations.
+- **Pre loaded**: All the tile data for the animation is pre loaded in VRAM by the map loading system
+- **DMA based**: Individual animation frames are transfered to VRAM via DMA
+
+Each type of animation had its own representation:
+
+For DMA based animation the structure is as follows:
 ```
-    ; Struct Animation
+    ; Struct DMAAnimation
       dc.b maxFrameIndex
       dc.b markerFrameIndex
       dc.b frameCount
@@ -62,12 +70,24 @@ The animation information is stored in the following format.
 ```
 
 ```
-    ; Struct AnimationFrame
+    ; Struct DMAAnimationFrame
       dc.b  damageBoundsIndex
       dc.b  dmaIndex
       ; Struct MetaSprite           ; Meta sprite follows directly after
         ; ...
 ```
+
+For pre-loaded animations the Structure is as follows:
+```
+    ; Struct PreLoadedAnimation
+      dc.b frameCount
+      dc.b frameTime
+        ; Repeat frameCount times
+        dc.l  metaSpriteAddress
+
+```
+
+Which type of animation is used is entity specific. Generally bigger enemies such as bosses and rideable entities are preloaded. 
 
 ### Animation table offset
 The animation table specified in `EntityInstance.animationTableAddress` actually contains 2 tables.
@@ -88,7 +108,8 @@ Base animation offsets are either:
 
 Depending on which animation routines the entity logic uses.
 
-### Initializing an animation sequence
+### DMA based animations
+#### Initializing an animation sequence
 Animations are loaded from `EntityInstance.animationTableAddress` as follows:
 ```
 animation = GetAnimation(entity, animationOffset)
@@ -103,7 +124,7 @@ entity.currentDMAIndex = animationFrame->dmaIndex
 entity.damageBoundsIndex = animationFrame->damageBoundsIndex        // Seems to be mostly set during initialization, only depending on the routine used
 ```
 
-### Updating an animation sequence
+#### Updating an animation sequence
 The animation update logic looks something like this:
 ```
 animation = GetAnimation(entity, animationOffset)
@@ -128,18 +149,19 @@ entity.currentDMAIndex = animationFrame.dmaIndex
 entity.damageBoundsIndex = animationFrame.damageBoundsIndex     // Seems to be mostly set during initialization only, depending on the routine used
 ```
 
-### Signals and limits
+#### Signals and limits
 Animation properties
 - `.maxFrameIndex`: Indicates the frame index to stop updating the animation.
 - `.markerFrameIndex`: When this frame index is reached animation marker bit A (#1) is set in `entity.flags1`. Cleared otherwise.
 
 These properties are only used in special cases through routine `UpdateAnimationBounded`. These values are checked before updating/advancing the animation.
 
-### Enabling DMA support
+#### Enabling DMA support
 Entity animations can be fully preloaded. Or transfer their individual frames via DMA.
 But only `MapEntityInstanceSlots` 0-3 and the player entity slots have DMA support.
 
 To enable DMA an entity must set:
+- Be assigned a DMA enabled entity slot
 - Set `EntityInstance.dmaSourceBaseAddress` member to a valid base address containing the graphics data blob for all animation frames of the entity
 - Set `EntityInstance.dmaFrameTableAddress` member to a valid table
 - Call `SetEntitySpriteBaseDMATileId` when initializing the entity to set the target address.
@@ -148,6 +170,23 @@ To enable DMA an entity must set:
 Then the `AnimationFrame.dmaIndex` member of the animation used must have indices that correctly map to the specified DMA frame table.
 
 For details on how the DMA is performed see [render.md](./render.md)
+
+### Pre loaded animations
+Pre loaded animations are simpeler. All the graphics data is pre loaded into VRAM by the map entity load system or completely pre-loaded at the start of the level.
+
+The timing code is basically the same as described in the DMA section.
+The animations are stored as a list of `MetaSprite`'s that are directly assigned to `EntityInstance.metaSpriteAddress`.
+
+Initialization looks something like this:
+```
+animation = GetAnimation(entity, animationOffset)
+
+entity.currentAnimationFrameIndex = 0
+entity.currentAnimationFrameTime = animation.frameTime              // Set depending on which animation routine is used
+entity.currentAnimationFrameTimeLeft = animation.frameTime
+
+entity.metaSpriteAddress = animation.metaSpriteAddress[entity.currentAnimationFrameIndex]
+```
 
 ### Code/data pointers
 - `GetAnimation`: **$887E**
@@ -199,3 +238,4 @@ For details on how the DMA is performed see [render.md](./render.md)
 - Longmoan: **$71F72**
 - Amazon: **$790D2**
 - Skeleton: **$3ED06**
+- ...

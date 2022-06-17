@@ -4,8 +4,8 @@
 
 ```
     ; Struct PartialPalette
-        dc.w colorOffset
-        dc.w colorCount                 ; Color count - 1 as this is stored dbf/dbra adjusted 
+        dc.b colorOffset
+        dc.b colorCount                 ; Color count - 1 as this is stored dbf/dbra adjusted
           ; Repeat colorCount + 1 times 
             dc.w color 
 ```

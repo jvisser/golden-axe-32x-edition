@@ -170,8 +170,8 @@ So the enemies for the first load slot must all be killed before the next slot i
     ; Struct MapEntityLoadGroupDescriptor
         dc.b padding
         dc.b mapEntityGroupGraphicsOffset
-        dc.w numEntities                    ; numEntities - 1 as this is stored dbf/dbra adjusted
-            ; Repeat numEntities + 1 times
+        dc.w numEntities
+            ; Repeat numEntities
             ; Struct MapEntityInstanceData
                 dc.b entityInstanceSlot     ; MapEntityInstanceSlots index
                 dc.b entityId               ; Entity logic id
@@ -236,7 +236,7 @@ See [entity.md](./entity.md) for details on runtime entity handling.
 `MapEntityInstanceData.initValue` contains an entity specific init value that is copied into the entity instances `EntityInstance.initValue` field.
 
 Known uses:
-- **Thief**: Contains the number of items dropped.
+- **Thief**: Contains the number of items dropped. Bit 7 indicates green thief.
 
 #### Special cases
 - In beginner mode the level 3 trigger list is overridden with a custom version `Level3BeginnerModeEntityList` in routine `StartGameplay` at **$12FC**.
