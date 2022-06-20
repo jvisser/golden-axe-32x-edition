@@ -1,6 +1,6 @@
 meta:
   id: rom
-  title: Golden Axe data points collection
+  title: Golden Axe data points collection for use in Kaitai struct web IDE.
   endian: be
   imports:
     - map
@@ -137,8 +137,10 @@ types:
           The tile data is loaded from 2 separate sources. One for the projectile and one for the explosion:
           - Projectile: 0x5FC2A
           - Explosion: 0x32C8E (Shared with ax magic attack level 3)
+          For Death bringer the explosion tile area is used by his sitting animation.
+          The explosion tile data will be manually loaded by the death adder/bringer logic. See address 0x1201C.
           Uses palette 2
-          Init code at: 0x131CC (Conjuring/projectile), 0x13770 (explosion)
+          Init code at: 0x131CC (Conjuring/projectile), 0x13770 (explosion), 0x1201C (explosion death bringer).
       chicken_leg:
         type: pre_load_animation_instance(0x14, 0x40262, 0x40E8A)
         pos: 0x4086A
@@ -152,6 +154,18 @@ types:
           Blue dragon: Uses palette 2 (Includes fire breath/ball colors)
           Red dragon: Uses palette 1
           Init code at: 0x1267C (Blue), 0x126B2 (Red)
+      blue_dragon_flame:
+        type: pre_load_animation_instance(0x04, 0x40262, 0x420FE)
+        pos: 0x41B3E
+        doc: |
+          Nemesis data is contained in the dragon tile data.
+          Init code at: 0x12F74
+      red_dragon_fire_ball:
+        type: pre_load_animation_instance(0x08, 0x40262, 0x420FE)
+        pos: 0x41B46
+        doc: |
+          Nemesis data is contained in the dragon tile data.
+          Init code at: 0x13096
       thief:
         type: pre_load_animation_instance(0x10, 0x3A192, 0x733EA)
         pos: 0x731F2
@@ -301,5 +315,30 @@ types:
       blue_dragon_chicken:
         type: palette
         pos: 0x38ACC
+      dragon_fire:
+        type: palette
+        pos: 0x43632
         doc: |
-          Also contains the fireball palette
+          Actually contains 3 palettes directly following each other. Each containing 5 colors.
+          These are cycled when on fire breath.
+      magic_tyris_3:
+        type: palette
+        pos: 0x3597A
+        doc: |
+          Actually contains 3 palettes directly following each other. Each containing 5 colors.
+          NB: At least used in 2 cases updates the same color range as dragon_fire.
+      magic_tyris_5:
+        type: palette
+        pos: 0x387D8
+        doc: |
+          Actually contains 6 palettes directly following each other. Each containing 31 colors. replacing both palettes 1 (excluding the first color) and 2
+          These are cycled on tyris level 5 magic.
+          See code at 0x95B0
+      fire_magic:
+        type: palette
+        pos: 0x38958
+        doc: |
+          Actually contains 3 palettes directly following each other. Each containing 23 colors. replacing palettes 1 (excluding the first color) and the first 8 of palette 2 (including the first color).
+          These are cycled by the general full screen fire routine.
+          The top 8 colors of palette 2 seem reserved for the specific magic effect going on at the time.
+          See code at 0x8F7A

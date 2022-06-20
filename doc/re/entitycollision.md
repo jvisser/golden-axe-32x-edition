@@ -81,20 +81,31 @@ int playerCollisionCheck(Entity *player, Entity *entity, int closeness)
 - `WritePlayerBounds`: **$C184**
   - Parameters:
     - a0: The player entity
-- `CheckPlayerCollision`: **$BF62**
+- `CheckPlayerVsEntityDamage`: **$BF62**
   - Tests (in that order):
     1. If the player damages entity: If the entity's hurt box intersects with the player's damage box.
     2. If the entity damages the player: If the entity's damage box intersects with the player's hurt box.
+  - Also turns the damaged entity towards the damaging entity.
   - Parameters:
     - a0: The entity
     - a3: The player entity
     - d2: Required closeness in y (depth) direction in pixels at sea level (using `EntityInstance.baseY`)
       - Fat enemies use bigger value.
-- `CheckTwoPlayerCollision`: **$BF4A**
+- `CheckTwoPlayerVsEntityDamage`: **$BF4A**
   - Checks collision against both players. Player one has priority.
   - Parameters:
     - a0: The entity
     - d2: Required closeness in y (depth) direction in pixels at sea level (using `EntityInstance.baseY`)
       - Fat enemies use bigger value.
-- `CheckTwoPlayerCollisionDefaultCloseness`
+- `CheckTwoPlayerVsEntityDamageDefaultCloseness`: **$BF48**
   - Calls `CheckTwoPlayerCollision` with closeness value of 8px.
+- `CheckHitBoundsAgainstEntityHitBounds`: **$C246**
+  - Parameters:
+    - a0: this entity
+    - a3: other entity
+- `CheckHitBoundsAgainstManyOtherEntity`: **$C256**
+  - Call `CheckHitBoundsAgainstEntity` over a range of entities
+  - Parameters:
+    - a0: this entity
+    - a3: First entity to check
+    - d7: Number of entities to check in total

@@ -22,6 +22,7 @@ Runtime entity data structure.
         ; offset, size, name
         $00: dc.b entityId
         $02: dc.b flags1
+        $03: dc.b flags3
         $04: dc.b hurtBoundsIndex
         $05: dc.b damageBoundsIndex
         $06: dc.w initValue                     ; Loaded from map
@@ -54,6 +55,9 @@ Runtime entity data structure.
 - `.flags2`: [???? ??UL]
   - L: Moving left
   - U: Moving up
+- `.flags3`: [HD?? ????]
+  - H: Damage dealt to interacting entity
+  - D: Damage received from interacting entity
 
 ### Position
 - `.entityY`: The y position in the VDP sprite coordinate system. This position is `.height` adjusted. Bottom position.
