@@ -121,8 +121,24 @@ types:
         type: pre_load_animation_instance(0x30, 0x40262, 0x77D6E)
         pos: 0x74192
         doc: |
+          Death Adder is special case. He is composed of both the Bad brother tile set and an additional tile set for his custom animation frames.
+          So both sets of nemesis data must be loaded (on top of each other in VRAM).
+          The nemesis source specified here is only for the Death Adder part.
           Uses palette 1
           Init code at: 0x119F8
+      death_adder_specials:
+        type: pre_load_animation_instance(0x0C, 0x40262, 0x5FC2A)
+        pos: 0x5FB2C
+        doc: |
+          Animations:
+          - 0: Conjuring
+          - 1: Moving projectile
+          - 2: Explosion
+          The tile data is loaded from 2 separate sources. One for the projectile and one for the explosion:
+          - Projectile: 0x5FC2A
+          - Explosion: 0x32C8E (Shared with ax magic attack level 3)
+          Uses palette 2
+          Init code at: 0x131CC (Conjuring/projectile), 0x13770 (explosion)
       chicken_leg:
         type: pre_load_animation_instance(0x14, 0x40262, 0x40E8A)
         pos: 0x4086A
@@ -143,6 +159,16 @@ types:
           Blue: Uses palette 0
           Green: Used palette 1
           Init code at: 0xA9F8
+      villager:
+        type: pre_load_animation_instance(0x4, 0x40262, 0x60096)
+        pos: 0x5FFD0
+        doc: |
+          Bounds data is not used and there is no mirror animation table.
+          We just set the offset to 4 here so we can see both animations...
+          Uses palette 0
+          Villager 1 uses animation 0
+          Villager 2 uses animation 1
+          Init code at: 0x138A4
   map_collection:
     instances:
       level_1:

@@ -4,6 +4,7 @@ meta:
   endian: be
   imports:
     - palette_ptr
+    - nemesis_symbol
 seq:
   - id: padding
     type: u1
@@ -91,17 +92,29 @@ types:
   map_entity_group_graphics_nemesis_data_ptr:
     seq:
       - id: address
-        type: u4
+        type: nemesis_symbol
   map_entity_group_graphics_nemesis_data_offset:
     seq:
       - id: offset
         type: u2
+        enum: entity_tile_data
+    enums:
+      entity_tile_data:
+        0x00: nemesis_thief
+        0x04: nemesis_bad_brother
+        0x08: nemesis_death_adder
+        0x0C: nemesis_bitter
+        0x10: nemesis_chicken_leg
+        0x14: nemesis_dragon
+        0x18: nemesis_villagers
+        0x1c: nemesis_king_and_queen
+        0x20: nemesis_death_adder_special_attack
     instances:
       address:
         type: map_entity_group_graphics_nemesis_data_ptr
         io: _root._io
         # MapEntityGroupTileAddressTable = 0x13A74 = 80500
-        pos: 80500 + offset
+        pos: 80500 + offset.to_i
   map_entity_group_graphics_nemesis_data:
     seq:
       - id: vram_address

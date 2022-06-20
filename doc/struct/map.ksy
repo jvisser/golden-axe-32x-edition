@@ -5,6 +5,7 @@ meta:
   imports:
     - palette_ptr
     - map_entity_load_trigger_list
+    - nemesis_symbol
 seq:
   - id: palettes
     type: palette_ptr
@@ -92,7 +93,7 @@ types:
         doc: |
           VDP write address set command for the tile data address
       - id: nemesis_data_address
-        type: u4
+        type: nemesis_symbol
         if: vram_address_set_command != 0
         doc: |
           Address of the nemesis compressed tile data
