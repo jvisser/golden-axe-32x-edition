@@ -55,9 +55,3 @@ types:
       - id: load_index
         type: map_entity_load_slot_descriptor_index
         if: h_scroll_trigger != 0xffff
-  map_entity_load_trigger_list:
-    seq:
-      - id: trigger_list
-        type: map_entity_load_trigger
-        repeat: until
-        repeat-until: _.h_scroll_trigger == 0xffff
