@@ -68,7 +68,7 @@ types:
           Uses palette 0
           Init code at: 0x86B6
       tyris:
-        type: dma_animation_instance(0x7c, 0x399AA, 0x3D41A, 0x607A6)
+        type: dma_animation_instance(0x7c, 0x399AA, 0x60570, 0x607A6)
         pos: 0x3D41A
         doc: |
           Uses palette 0
