@@ -58,7 +58,7 @@ seq:
       Uncompressed.
   - id: entity_load_data
     type: map_entity_load_trigger_list_ptr
-  - id: player_1_entity_y
+  - id: player_1_base_y_offset
     type: u2
     doc: |
       In VDP sprite coordinates (screenspace)
@@ -66,7 +66,7 @@ seq:
     type: u2
     doc: |
       In VDP sprite coordinates (screenspace)
-  - id: player_2_entity_y
+  - id: player_2_base_y_offset
     type: u2
     doc: |
       In VDP sprite coordinates (screenspace)
@@ -76,6 +76,9 @@ seq:
       In VDP sprite coordinates (screenspace)
   - id: music_id
     type: u2
+params:
+  - id: base_y_table_address
+    type: u4
 instances:
   calculated_initial_vertical_scroll_pixels:
     value: initial_vertical_scroll_blocks * 16
@@ -85,6 +88,11 @@ instances:
     value: height_blocks * 16
   calculated_width_pixels:
     value: width_blocks * 16
+  external_base_y_position_table:
+    type: map_base_y_position_table
+    io: _root._io
+    pos: base_y_table_address
+    if: base_y_table_address != 0
 types:
   nemesis_data:
     seq:
@@ -144,3 +152,19 @@ types:
         type: map_entity_load_trigger_list
         io: _root._io
         pos: address
+  map_base_y_position_start:
+    seq:
+      - id: map_x_end
+        type: u2
+        doc: |
+          End x position for which base_y is valid
+      - id: base_y
+        type: u2
+  map_base_y_position_table:
+    seq:
+      - id: number_position_changes
+        type: u2
+      - id: base_y_position_array
+        type: map_base_y_position_start
+        repeat: expr
+        repeat-expr: number_position_changes + 1
