@@ -6,8 +6,10 @@ meta:
     - palette_ptr
     - nemesis_symbol
 seq:
-  - id: padding
+  - id: can_load_with_active_enemies
     type: u1
+    doc: |
+      Any non zero value indicates true
   - id: group_graphics_offset
     type: map_entity_group_graphics_offset
   - id: num_entities

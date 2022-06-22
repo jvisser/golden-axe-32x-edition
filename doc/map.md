@@ -42,9 +42,9 @@ This struct contains all data to load a level.
         dc.l entityLoadData
         
         ; Player entity initialisation
-        dc.w player1.entityY
+        dc.w player1.baseYOffset
         dc.w player1.entityX
-        dc.w player2.entityY
+        dc.w player2.baseYOffset
         dc.w player2.entityX
         
         ; Music
@@ -163,12 +163,9 @@ This is checked in routine `CheckMapEntityLoadTrigger`. When the trigger activat
 The `MapEntityLoadGroupDescriptor` addresses are then loaded into `MapEntityLoadSlots` in RAM. 
 From which the actual instantiation of entities is done in routine `InstantiateMapEntities`.
 
-The `MapEntityLoadGroupDescriptor`'s in the load slots are instantiated sequentially.
-So the enemies for the first load slot must all be killed before the next slot is loaded.
-
 ```
     ; Struct MapEntityLoadGroupDescriptor
-        dc.b padding
+        dc.b canLoadWithActiveEnemies
         dc.b mapEntityGroupGraphicsOffset
         dc.w numEntities
             ; Repeat numEntities
@@ -182,6 +179,9 @@ So the enemies for the first load slot must all be killed before the next slot i
 ```
 
 When an `MapEntityLoadSlots` slot is loaded by routine `InstantiateMapEntities` the following happens.
+
+If `.canLoadWithActiveEnemies` is false (zero). A check for any active enemies is made. If any are active enemies the slot is skipped (made pending).
+In any other case the load slot is processed and enemies are instantiated.
 
 Graphics are loaded for the complete group based on `.mapEntityGroupGraphicsOffset` (must be >0) which is an offset into table `MapEntityGroupGraphicsTable` (Max 64 entries, 0 is unused) which contains (long) pointers to `MapEntityGroupGraphics` structs.
 
@@ -266,18 +266,75 @@ Known uses:
   - Pointer to the next `MapEntityLoadTrigger`
 
 ### Player entity initialisation
-Player follows the same runtime structure as `EntityInstance`. Members `.entityY` and `.entityX` are loaded from the map.
+Player follows the same runtime structure as `EntityInstance`.
+- `.entityX` is loaded as is from the map.
+- `.entityY` is calculated from `.entityX` as specified below.
 
-The height of `.entityY` is `baseHeight` (=$8000) at this point.
-Then the height is sampled from the height map at that point and `.entityY` and `.baseY` are recalculated with the sampled height and the sampled height is stored in the player entity.
+For each `Map` there is a sorted list with the `.baseY` per horizontal map area.
+```
+    ; Struct MapBaseYPositionTable
+        dc.w numberOfPositionChanges
+        ; Repeat numberOfPositionChanges + 1
+        ; Struct BaseYPositionWindow
+            dc.w mapXEnd                ; End position of window
+            dc.w baseY
+```
+There is a table with pointers to `MapBaseYPositionTable` structs at `MapBaseYPositionTableDirectory`.
+There is one entry for each map indexed by the current play level.
+
+Routine `SetEntityX` is used to recalculate all positions based on a new `.entityX` value. It looks something like this:
+```
+    void SetEntityX(EntityInstance *entity, u16 entityX, u16 baseYDisplacement, u16 maxEntityY)
+    {
+        entity->entityX = entityX;
+     
+        u16 *posTable = MapBaseYPositionTableDirectory[currentLevel]
+        for(;;)
+        {
+            u16 mapX = Math.max(0, entity.entityX - 128) + hscroll
+            
+            // The last entry contains the default value
+            BaseYPositionWindow *pos = posTable->baseYPositionWindowArray;
+            for (int i = 0; i <= posTable->numberOfPositionChanges && pos->mapXEnd < mapX;  i++, pos++);
+            entity->baseY = pos->baseY + baseYDisplacement;
+        
+            u16 height = sampleHeight(entity->baseY, mapX);
+            
+            if (isUnreachableHeight(height)) // 0x8200 or 0x7e00
+            {
+                entity->entityX -= 16;  // Search one block back
+                continue;
+            }
+            
+            entity->height = height;
+            entity->entityY = entity.baseY + height - 0x8000 + 128 - vscroll;            
+            
+            if (entity.entityY > maxEntityY)
+            {
+                entity->entityX -= 16;// Search one block back
+                continue;
+            }
+            
+            break;
+        }
+    }
+```
+
+The final players' positions are then calculated as:
+```
+    SetEntityX(player1, map.player1.EntityX, map.player1.baseYOffset, 360);
+    SetEntityX(player2, map.player2.EntityX, map.player1.baseYOffset, 360);
+```
+NB: During map loading the player's `.entityY` member is temporarily repurposed/loaded with `Map.player*.baseYOffset`.
 
 See [entity.md](entity.md) for more details on the runtime the structure.
 
 #### Code/data pointers
+- `MapBaseYPositionTableDirectory`: **$877E**
 - `Player1Entity`: **$FFD000**
 - `Player2Entity`: **$FFD080**
 - `InitPlayers` routine: **$13FE**
-- `RecalculateVerticalPosition` routine: **$86FE**
+- `SetEntityX` routine: **$86FE**
 
 ### Music
 Contains the song id for the map. Start playing immediately after loading the map.

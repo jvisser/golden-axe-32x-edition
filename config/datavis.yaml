@@ -1,0 +1,41 @@
+animations:
+maps:
+  wilderness:
+    address: 0x15D8
+    base-y-table-address: 0x879E
+  turtle-village:
+    address: 0x161A
+    base-y-table-address: 0x87A4
+  main-land-coast:
+    address: 0x1664
+    base-y-table-address: 0x87C2
+    custom-entity-trigger-lists:
+      - name: beginner-mode
+        address: 0x37ACC
+  fiends-path:
+    address: 0x16A6
+    base-y-table-address: 0x87CC
+  eagles-head:
+    address: 0x16F0
+    base-y-table-address: 0x87D2
+  death-adders-castle:
+    address: 0x1732
+    base-y-table-address: 0x87DC
+  dungeons:
+    address: 0x1784
+    base-y-table-address: 0x87E6
+  death-bringers-lair:
+    address: 0x17C6
+    base-y-table-address: 0x8804
+    custom-entity-load-groups:
+      - 0x38308
+      - 0x38316
+  duel:
+    address: 0x182C
+    base-y-table-address: 0
+  ending:
+    address: 0x1876
+    base-y-table-address: 0
+  demo1:
+    address: 0x18C0
+    base-y-table-address: 0x879E

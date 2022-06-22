@@ -8,7 +8,7 @@ Tile data is compressed using [Nemesis](https://segaretro.org/Nemesis_compressio
 - `NemesisDecompressToRAM` routine: **$2FDA**
 
 ## Tile maps
-Tile maps use a custom compression algorithm. This is used for both the graphics map and collision map.
+Tile maps use a custom compression algorithm. This is used for both the graphics map and height map.
 
 This algorithm seems to be specifically designed for the game's in memory map data format. Map's are decompressed/stored in an 128x32 byte buffer in memory. 
 This allows for maps of a maximum size of 2048x512 pixels. The decompression routine can decompress an arbitrary sized map into such a buffer. 
@@ -33,7 +33,7 @@ The data is stored linearly in rows starting at the top left growing down.
 
 ### Format 
 It consists of a token byte stream where each token can be one of the following:
-- `00000001`: Terminator token
+- `00000000`: Terminator token
 - `0RRRRRRR`: Fill token
 - `10RRRRRR`: Repeat token
 - `110RRRRR`: Uncompressed data token

@@ -23,7 +23,7 @@ types:
     seq:
       - id: num_load_slots
         type: u2
-      - id: load_group
+      - id: load_groups
         type: map_entity_load_group_ptr
         repeat: expr
         repeat-expr: num_load_slots + 1

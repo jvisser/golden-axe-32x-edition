@@ -186,57 +186,57 @@ types:
   map_collection:
     instances:
       level_1:
-        type: map
+        type: map(0x879E)
         pos: 0x15D8
         doc: |
           Level 1: Wilderness
       level_2:
-        type: map
+        type: map(0x87A4)
         pos: 0x161A
         doc: |
           Level 2: Turtle village
       level_3:
-        type: map
+        type: map(0x87C2)
         pos: 0x1664
         doc: |
           Level 3: Mainland coast
       level_4:
-        type: map
+        type: map(0x87CC)
         pos: 0x16A6
         doc: |
           Level 4: Fiend's Path
       level_5:
-        type: map
+        type: map(0x87D2)
         pos: 0x16F0
         doc: |
           Level 5: Eagle's Head
       level_6:
-        type: map
+        type: map(0x87DC)
         pos: 0x1732
         doc: |
           Level 6: Death Adder's Castle
       level_7:
-        type: map
+        type: map(0x87E6)
         pos: 0x1784
         doc: |
           Level 7: Dungeons
       level_8:
-        type: map
+        type: map(0x8804)
         pos: 0x17C6
         doc: |
           Level 8: Death Bringer's Lair
       duel:
-        type: map
+        type: map(0)
         pos: 0x182C
         doc: |
           Duel map
       ending:
-        type: map
+        type: map(0)
         pos: 0x1876
         doc: |
           Ending map (after death bringer)
       demo1:
-        type: map
+        type: map(0x879E)
         pos: 0x18C0
         doc: |
           Just level 1 map with event/entity trigger list addresses adjusted for h scroll.
