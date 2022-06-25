@@ -13,6 +13,9 @@ seq:
     type: meta_sprite_ptr
     repeat: expr
     repeat-expr: frame_count
+params:
+  - id: param_bounds_table_address
+    type: u4
 types:
   meta_sprite_ptr:
     seq:
@@ -20,6 +23,6 @@ types:
         type: u4
     instances:
       de_reference:
-        type: meta_sprite
+        type: meta_sprite(_parent.param_bounds_table_address)
         io: _root._io
         pos: address

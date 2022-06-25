@@ -49,9 +49,15 @@ types:
         0x0b: h3_v4
         0x0f: h4_v4
     instances:
+      calculated_width:
+        value: ((vdp_sprite_attr_size.to_i >> 2) & 0x03) + 1
+      calculated_height:
+        value: (vdp_sprite_attr_size.to_i & 0x03) + 1
       calculated_relative_tile_id:
         value: relative_pattern_id & 0x7ff
       calculated_relative_vram_address:
         value: calculated_relative_tile_id * 0x20
       calculated_hflip:
         value: (relative_pattern_id & 0x800) != 0
+      calculated_vflip:
+        value: (relative_pattern_id & 0x1000) != 0

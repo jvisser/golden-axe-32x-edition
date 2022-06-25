@@ -1,4 +1,45 @@
 animations:
+  ax-battler:
+    type: DMA
+    animation-table-address: 0x3A350
+    animation-index: 0
+    animation-count: 31
+    dma-frame-table-address: 0x4492E
+    tile-data-addresses:
+      - 0x44B98
+    bounds-table-address: 0x399AA
+    palette-address: 0x38492
+  tyris-flare:
+    type: DMA
+    animation-table-address: 0x3D41A
+    animation-index: 0
+    animation-count: 31
+    dma-frame-table-address: 0x60570
+    tile-data-addresses:
+      - 0x607A6
+    bounds-table-address: 0x399AA
+    palette-address: 0x38492
+  gilius-thunderhead:
+    type: DMA
+    animation-table-address: 0x3BCB0
+    animation-index: 0
+    animation-count: 31
+    dma-frame-table-address: 0x4FB58
+    tile-data-addresses:
+      - 0x4FDA2
+    bounds-table-address: 0x399AA
+    palette-address: 0x38492
+  amazon:
+    type: DMA
+    animation-table-address: 0x790D2
+    animation-index: 0
+    animation-count: 28
+    dma-frame-table-address: 0x7A08E
+    tile-data-addresses:
+      - 0x7A25A
+    tile-data-compressed: true
+    bounds-table-address: 0x40262
+    palette-address: 0x38B10
 maps:
   wilderness:
     address: 0x15D8
@@ -27,7 +68,7 @@ maps:
   death-bringers-lair:
     address: 0x17C6
     base-y-table-address: 0x8804
-    custom-entity-load-groups:
+    custom-entity-load-group-addresses:
       - 0x38308
       - 0x38316
   duel:

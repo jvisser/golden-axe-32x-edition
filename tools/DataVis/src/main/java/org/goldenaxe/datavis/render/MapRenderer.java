@@ -28,6 +28,8 @@ import org.goldenaxe.datavis.parser.Palette;
 import org.goldenaxe.datavis.util.KaitaiInputStream;
 
 import static java.lang.String.format;
+import static org.goldenaxe.datavis.render.GraphicsUtil.createTransparent;
+import static org.goldenaxe.datavis.render.GraphicsUtil.transparent;
 import static org.goldenaxe.datavis.util.StreamUtil.withCounter;
 
 
@@ -449,19 +451,6 @@ public class MapRenderer
         return new ArrayList<>(Arrays.asList(cellValues));
     }
 
-    private BufferedImage createImage()
-    {
-        BufferedImage image =
-                new BufferedImage(mapFile.calculatedWidthPixels(), mapFile.calculatedHeightPixels(),
-                                  BufferedImage.TYPE_INT_ARGB);
-        Graphics graphics = image.getGraphics();
-        graphics.setColor(new Color(0, true));
-        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
-        graphics.dispose();
-
-        return image;
-    }
-
     private void drawLabelBox(Graphics2D graphics, int x, int y, String label, Color fontColor)
     {
         FontMetrics fontMetrics = graphics.getFontMetrics();
@@ -487,8 +476,8 @@ public class MapRenderer
         graphics.setColor(color);
     }
 
-    Color transparent(Color color)
+    private BufferedImage createImage()
     {
-        return new Color((color.getRGB() & 0xffffff) | 0x80000000, true);
+        return createTransparent(mapFile.calculatedWidthPixels(), mapFile.calculatedHeightPixels());
     }
 }

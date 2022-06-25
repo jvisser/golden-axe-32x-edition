@@ -6,6 +6,7 @@ import io.kaitai.struct.RandomAccessFileKaitaiStream;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -13,6 +14,8 @@ import java.util.concurrent.Callable;
 import javax.imageio.ImageIO;
 import org.goldenaxe.datavis.render.MapRenderer;
 import picocli.CommandLine;
+
+import static org.goldenaxe.datavis.util.StreamUtil.withCounter;
 
 
 public class DataVis implements Callable<Integer>
@@ -26,6 +29,11 @@ public class DataVis implements Callable<Integer>
             "-o", "--output-directory"
     }, required = true, paramLabel = "OUTPUT", description = "The output directory")
     File outputDirectory;
+
+    @CommandLine.Option (names = {
+            "-s", "--sprite-margin"
+    }, required = true, description = "Border area size around sprites", defaultValue = "10")
+    int spriteMargin;
 
     @CommandLine.Parameters (index = "0", paramLabel = "INPUT", description = "The input ROM file")
     File inputFile;
@@ -43,8 +51,25 @@ public class DataVis implements Callable<Integer>
         RandomAccessFileKaitaiStream kaitaiStream = new RandomAccessFileKaitaiStream(inputFile.getAbsolutePath());
 
         dumpMaps(config.maps(), kaitaiStream);
+        dumpAnimations(config.animations(), kaitaiStream);
 
         return 0;
+    }
+
+    private void dumpAnimations(LinkedHashMap<String, DataVisConfiguration.Animation> animationsByName,
+                                RandomAccessFileKaitaiStream kaitaiStream)
+    {
+        Optional.ofNullable(animationsByName)
+                .ifPresent(animationsConfig -> animationsConfig
+                        .forEach((name, animationConfig) ->
+                                 {
+                                     String dir = "animations" + File.separator + name;
+
+                                     animationConfig.type().createRenderer(kaitaiStream, animationConfig,spriteMargin)
+                                             .renderAnimations()
+                                             .forEach(withCounter((c, a) -> writeImages(
+                                                     new File(outputDirectory, dir + File.separator + c), a)));
+                                 }));
     }
 
     private void dumpMaps(Map<String, DataVisConfiguration.MapFile> mapsByName, KaitaiStream kaitaiStream)

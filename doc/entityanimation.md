@@ -27,12 +27,12 @@ The meta sprite structure used is as follows:
         ; Struct Sprite
           dc.b    yOffset             ; Relative to EntityInstance.entityY
           dc.b    size                ; VDPSprite.size format
-          dc.w    relativePatternId   ; Pattern id relative to EntityInstance.spriteBaseTileId (also contains H flip)
+          dc.w    relativePatternId   ; Pattern id relative to EntityInstance.spriteBaseTileId (also contains H/V flip)
           dc.b    xOffset             ; Relative to EntityInstance.entityX
 ```
 
 The sprite patternId stored in `.relativePatternId` is relative to `EntityInstance.spriteBaseTileId`. I.e. add them to get the absolute tile address.
-`.relativePatternId` also contains the horizontal flip bit if applicable.
+`.relativePatternId` also contains the flip bits if applicable.
 
 `EntityInstance.spriteBaseTileId` is set as follows:
 - By the map entity load system.
@@ -152,9 +152,12 @@ entity.damageBoundsIndex = animationFrame.damageBoundsIndex     // Seems to be m
 #### Signals and limits
 Animation properties
 - `.maxFrameIndex`: Indicates the frame index to stop updating the animation.
+    - The animation frame is not updated to this frame
 - `.markerFrameIndex`: When this frame index is reached animation marker bit A (#1) is set in `entity.flags1`. Cleared otherwise.
 
 These properties are only used in special cases through routine `UpdateAnimationBounded`. These values are checked before updating/advancing the animation.
+
+When not applicable they equal to the frame count (ie out of bounds).
 
 #### Enabling DMA support
 Entity animations can be fully preloaded. Or transfer their individual frames via DMA.
