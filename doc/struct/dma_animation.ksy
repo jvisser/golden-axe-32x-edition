@@ -44,7 +44,7 @@ types:
       - id: address
         type: u4
     instances:
-      dma_frame:
+      de_reference:
         type: dma_frame
         io: _root._io
         pos: address
@@ -53,7 +53,7 @@ types:
       - id: index
         type: u1
     instances:
-      dma_frame:
+      dma_frame_ptr:
         type: dma_frame_ptr
         io: _root._io
         pos: _parent._parent._parent.param_dma_frame_table_address + (index * 4)
