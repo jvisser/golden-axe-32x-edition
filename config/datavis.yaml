@@ -29,6 +29,26 @@ animations:
       - 0x4FDA2
     bounds-table-address: 0x399AA
     palette-address: 0x38492
+  heninger:
+    type: DMA
+    animation-table-address: 0x43656
+    animation-index: 0
+    animation-count: 28
+    dma-frame-table-address: 0x69166
+    tile-data-addresses:
+      - 0x69340
+    bounds-table-address: 0x40262
+    palette-address: 0x38B54
+  longmoan:
+    type: DMA
+    animation-table-address: 0x71F72
+    animation-index: 0
+    animation-count: 28
+    dma-frame-table-address: 0x6D5E0
+    tile-data-addresses:
+      - 0x6D772
+    bounds-table-address: 0x40262
+    palette-address: 0x38B54
   amazon:
     type: DMA
     animation-table-address: 0x790D2
@@ -40,6 +60,16 @@ animations:
     tile-data-compressed: true
     bounds-table-address: 0x40262
     palette-address: 0x38B10
+  skeleton:
+    type: DMA
+    animation-table-address: 0x3ED06
+    animation-index: 0
+    animation-count: 21
+    dma-frame-table-address: 0x59A42
+    tile-data-addresses:
+      - 0x59BEC
+    bounds-table-address: 0x40262
+    palette-address: 0x38492
   bad-brother:
     type: PRE_LOADED
     animation-table-address: 0x737AE
@@ -68,6 +98,78 @@ animations:
       - 0x74B76
     bounds-table-address: 0x40262
     palette-address: 0x38C20
+  death_adder_specials:
+    type: PRE_LOADED
+    animation-table-address: 0x5FB2C
+    animation-index: 0
+    animation-count: 3
+    tile-data-addresses:
+      - 0x5FC2A
+    bounds-table-address: 0x40262
+    palette-address: 0x5FC08
+  lt_bitter:
+    type: PRE_LOADED
+    animation-table-address: 0x7C718
+    animation-index: 0
+    animation-count: 10
+    tile-data-addresses:
+      - 0x7D088
+    bounds-table-address: 0x40262
+    palette-address: 0x38B54
+  chicken_leg:
+    type: PRE_LOADED
+    animation-table-address: 0x4086A
+    animation-index: 0
+    animation-count: 5
+    tile-data-addresses:
+      - 0x40E8A
+    bounds-table-address: 0x40262
+    palette-address: 0x38ACC
+  dragon:
+    type: PRE_LOADED
+    animation-table-address: 0x41B16
+    animation-index: 0
+    animation-count: 5
+    tile-data-addresses:
+      - 0x420FE
+    bounds-table-address: 0x40262
+    palette-address: 0x38ACC
+  blue_dragon_flame:
+    type: PRE_LOADED
+    animation-table-address: 0x41B3E
+    animation-index: 0
+    animation-count: 1
+    tile-data-addresses:
+      - 0x420FE
+    bounds-table-address: 0x40262
+    palette-address: 0x38ACC
+  red_dragon_fire_ball:
+    type: PRE_LOADED
+    animation-table-address: 0x41B46
+    animation-index: 0
+    animation-count: 2
+    tile-data-addresses:
+      - 0x420FE
+    bounds-table-address: 0x40262
+    palette-address: 0x38ACC
+  villager:
+    type: PRE_LOADED
+    animation-table-address: 0x5FFD0
+    animation-index: 0
+    animation-count: 2
+    tile-data-addresses:
+      - 0x60096
+    bounds-table-address: 0x40262
+    palette-address: 0x38492
+  thief:
+    type: PRE_LOADED
+    animation-table-address: 0x731F2
+    animation-index: 0
+    animation-count: 4
+    tile-data-addresses:
+      - 0x733EA
+    bounds-table-address: 0x3A192
+    palette-address: 0x38492
 maps:
   wilderness:
     address: 0x15D8
