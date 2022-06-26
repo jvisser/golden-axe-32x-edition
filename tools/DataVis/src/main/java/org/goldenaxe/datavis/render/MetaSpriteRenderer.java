@@ -1,12 +1,12 @@
 package org.goldenaxe.datavis.render;
 
+import com.google.common.collect.Lists;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import org.goldenaxe.datavis.parser.BoundsIndex;
 import org.goldenaxe.datavis.parser.MetaSprite;
 
-import static org.goldenaxe.datavis.render.GraphicsUtil.createTransparent;
 import static org.goldenaxe.datavis.render.GraphicsUtil.transparent;
 
 
@@ -19,41 +19,48 @@ class MetaSpriteRenderer
     private final BufferedImage graphicsImage;
     private final BufferedImage hitBoxImage;
     private final BufferedImage spriteBoxImage;
+    private final SpriteCanvasFactory canvasFactory;
 
-    public MetaSpriteRenderer(TileRenderer tileRenderer, int width, int height)
+    public MetaSpriteRenderer(TileRenderer tileRenderer, SpriteCanvasFactory canvasFactory)
     {
         this.tileRenderer = tileRenderer;
-        graphicsImage = createTransparent(width, height);
-        hitBoxImage = createTransparent(width, height);
-        spriteBoxImage = createTransparent(width, height);
+        this.canvasFactory = canvasFactory;
+        this.graphicsImage = canvasFactory.createImage();
+        this.hitBoxImage = canvasFactory.createImage();
+        this.spriteBoxImage = canvasFactory.createImage();
     }
 
-    public void render(int x, int y, MetaSprite metaSprite)
+    public void render(MetaSprite metaSprite)
     {
-        renderBounds(transparent(Color.red), x, y, metaSprite.damageBoundsIndex().bounds());
-        renderBounds(transparent(Color.green), x, y, metaSprite.hurtBoundsIndex().bounds());
+        renderBounds(transparent(Color.red), metaSprite.damageBoundsIndex().bounds());
+        renderBounds(transparent(Color.green), metaSprite.hurtBoundsIndex().bounds());
 
-        metaSprite.sprites()
-                .forEach(sprite ->
-                         {
-                             int sx = x + sprite.xOffset();
-                             int sy = y + sprite.yOffset();
+        // Render in VDP sprite link order
+        Lists.reverse(metaSprite.sprites()).forEach(sprite ->
+                                                    {
+                                                        int sx = canvasFactory.x() + sprite.xOffset();
+                                                        int sy = canvasFactory.y() + sprite.yOffset();
 
-                             renderSpriteBox(sprite, sx, sy);
+                                                        renderSpriteBox(sprite, sx, sy);
 
-                             int tileId = 0;
-                             for (int c = 0; c < sprite.calculatedWidth(); c++)
-                             {
-                                 int col = sprite.calculatedHflip() ? sprite.calculatedWidth() - 1 - c : c;
-                                 for (int r = 0; r < sprite.calculatedHeight(); r++)
-                                 {
-                                     int row =  sprite.calculatedVflip() ? sprite.calculatedHeight() - 1 - r : r;
+                                                        int tileId = 0;
+                                                        for (int c = 0; c < sprite.calculatedWidth(); c++)
+                                                        {
+                                                            int col = sprite.calculatedHflip() ?
+                                                                      sprite.calculatedWidth() - 1 - c : c;
+                                                            for (int r = 0; r < sprite.calculatedHeight(); r++)
+                                                            {
+                                                                int row = sprite.calculatedVflip() ?
+                                                                          sprite.calculatedHeight() - 1 - r : r;
 
-                                     tileRenderer.renderTile(graphicsImage, sprite.relativePatternId() + tileId, sx + col * 8, sy + row * 8);
-                                     tileId++;
-                                 }
-                             }
-                         });
+                                                                tileRenderer.renderTile(graphicsImage,
+                                                                                        sprite.relativePatternId() +
+                                                                                        tileId,
+                                                                                        sx + col * 8, sy + row * 8);
+                                                                tileId++;
+                                                            }
+                                                        }
+                                                    });
     }
 
     private void renderSpriteBox(MetaSprite.Sprite sprite, int sx, int sy)
@@ -69,11 +76,12 @@ class MetaSpriteRenderer
         spriteBoxGraphics.dispose();
     }
 
-    private void renderBounds(Color color, int x, int y, BoundsIndex.Bounds bounds)
+    private void renderBounds(Color color, BoundsIndex.Bounds bounds)
     {
         Graphics2D graphics = hitBoxImage.createGraphics();
         graphics.setColor(color);
-        graphics.fillRect(x + bounds.xOffset(), y + bounds.yOffset(), bounds.width(), bounds.height());
+        graphics.fillRect(canvasFactory.x() + bounds.xOffset(), canvasFactory.y() + bounds.yOffset(),
+                          bounds.width(), bounds.height());
         graphics.dispose();
     }
 

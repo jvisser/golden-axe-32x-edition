@@ -43,7 +43,10 @@ class TileRenderer
 
                     int colorIndex = (pixel1 >>> ((i ^ 1) << 2)) & 0x0f;
 
-                    image.setRGB(x + px, y + py, palette.getRGB(colorIndex));
+                    if (colorIndex != 0 || !palette.isZeroTransparent())
+                    {
+                        image.setRGB(x + px, y + py, palette.getRGB(colorIndex));
+                    }
                 }
             }
         }
