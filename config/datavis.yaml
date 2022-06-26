@@ -40,6 +40,34 @@ animations:
     tile-data-compressed: true
     bounds-table-address: 0x40262
     palette-address: 0x38B10
+  bad-brother:
+    type: PRE_LOADED
+    animation-table-address: 0x737AE
+    animation-index: 0
+    animation-count: 13
+    tile-data-addresses:
+      - 0x7532A
+    bounds-table-address: 0x40262
+    palette-address: 0x38A88
+  death-adder:
+    type: PRE_LOADED
+    animation-table-address: 0x74192
+    animation-index: 0
+    animation-count: 11 # Actually 12 animations but the last one is Death Bringer sitting which had custom tile loading
+    tile-data-addresses:
+      - 0x7532A
+      - 0x77D6E
+    bounds-table-address: 0x40262
+    palette-address: 0x38BDC
+  death-bringer-sitting:
+    type: PRE_LOADED
+    animation-table-address: 0x74192
+    animation-index: 11
+    animation-count: 1
+    tile-data-addresses:
+      - 0x74B76
+    bounds-table-address: 0x40262
+    palette-address: 0x38C20
 maps:
   wilderness:
     address: 0x15D8

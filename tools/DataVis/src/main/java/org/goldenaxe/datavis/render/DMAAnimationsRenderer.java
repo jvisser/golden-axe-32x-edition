@@ -12,10 +12,8 @@ import org.goldenaxe.datavis.compression.NemesisCompression;
 import org.goldenaxe.datavis.parser.DmaAnimation;
 import org.goldenaxe.datavis.parser.Palette;
 import org.goldenaxe.datavis.util.KaitaiInputStream;
-import org.goldenaxe.datavis.util.Limits;
 
 import static java.lang.String.format;
-import static org.goldenaxe.datavis.render.GraphicsUtil.createTransparent;
 import static org.goldenaxe.datavis.util.StreamUtil.withCounter;
 
 
@@ -24,13 +22,8 @@ public class DMAAnimationsRenderer implements AnimationsRenderer
     KaitaiStream source;
     private final DataVisConfiguration.Animation animationConfiguration;
     private final int spriteMargin;
-
     private final PaletteRGB24 palette;
     private DmaAnimation animation;
-    private int width;
-    private int height;
-    private int x;
-    private int y;
 
     public DMAAnimationsRenderer(KaitaiStream source, DataVisConfiguration.Animation animationConfiguration,
                                  int spriteMargin)
@@ -58,8 +51,6 @@ public class DMAAnimationsRenderer implements AnimationsRenderer
             animation = new DmaAnimation(source,
                                          animationConfiguration.boundsTableAddress(),
                                          animationConfiguration.dmaFrameTableAddress());
-            calculateImageBoundsAndOrigin();
-
             result.add(renderSpriteData());
         }
 
@@ -69,6 +60,9 @@ public class DMAAnimationsRenderer implements AnimationsRenderer
     private ArrayListMultimap<String, BufferedImage> renderSpriteData()
     {
         ArrayListMultimap<String, BufferedImage> result = ArrayListMultimap.create();
+
+        SpriteCanvasFactory canvasFactory = SpriteCanvasFactory.forSprites(animation.animationFrames().stream().map(
+                animationFramePtr -> animationFramePtr.deReference().metaSprite()), spriteMargin);
 
         long tileSourceAddress = animationConfiguration.tileDataAddresses().get(0);
         final byte[] sourceTileData;
@@ -87,58 +81,63 @@ public class DMAAnimationsRenderer implements AnimationsRenderer
                                      {
                                          DmaAnimation.AnimationFrame animationFrame = ap.deReference();
 
-                                         int dmaTarget = 0;
-                                         byte[] tileData = new byte[0x600]; // Player dma buffer = 0x600 enemies = 0x400
-                                         for (DmaAnimation.DmaTransfer dmaTransfer : animationFrame.dmaIndex()
-                                                 .dmaFramePtr()
-                                                 .deReference().dmaTransferList())
-                                         {
-                                             if (dmaTransfer.dmaLength() == -1)
-                                             {
-                                                 break;
-                                             }
-
-                                             if (animationConfiguration.tileDataCompressed())
-                                             {
-                                                 int dmaSource = dmaTransfer.sourceOffset();
-                                                 for (int i = 0; i < dmaTransfer.dmaLength(); i++)
-                                                 {
-                                                     tileData[dmaTarget++] = sourceTileData[dmaSource++];
-                                                     tileData[dmaTarget++] = sourceTileData[dmaSource++];
-                                                 }
-                                             }
-                                             else
-                                             {
-                                                 long dmaSource = tileSourceAddress + dmaTransfer.sourceOffset();
-                                                 source.seek(dmaSource);
-                                                 for (int i = 0; i < dmaTransfer.dmaLength(); i++)
-                                                 {
-                                                     tileData[dmaTarget++] = source.readS1();
-                                                     tileData[dmaTarget++] = source.readS1();
-                                                 }
-                                             }
-                                         }
+                                         byte[] tileData = getTileData(tileSourceAddress, sourceTileData, animationFrame);
 
                                          MetaSpriteRenderer spriteRenderer =
-                                                 new MetaSpriteRenderer(new TileRenderer(tileData, palette), width,
-                                                                        height);
-                                         spriteRenderer.render(x, y, ap.deReference().metaSprite());
+                                                 new MetaSpriteRenderer(new TileRenderer(tileData, palette), canvasFactory);
+                                         spriteRenderer.render(ap.deReference().metaSprite());
 
                                          result.put(format("graphics_ft%d_", animation.frameTime()),
                                                     spriteRenderer.getGraphicsImage());
                                          result.put("sprite_box", spriteRenderer.getSpriteBoxImage());
                                          result.put("hit_box", spriteRenderer.getHitBoxImage());
                                          result.put(
-                                                 format("overlay_x%d_y%d_s%d_m%d_", x, y, animation.markerFrameIndex(),
-                                                        animation.maxFrameIndex()), renderOverlay(frameIndex));
+                                                 format("overlay_x%d_y%d_s%d_m%d_", canvasFactory.x(), canvasFactory.y(), animation.markerFrameIndex(),
+                                                        animation.maxFrameIndex()), renderOverlay(canvasFactory, frameIndex));
                                      }));
 
         return result;
     }
 
-    private BufferedImage renderOverlay(int frameIndex)
+    private byte[] getTileData(long tileSourceAddress, byte[] sourceTileData, DmaAnimation.AnimationFrame animationFrame)
     {
-        BufferedImage image = createTransparent(width, height);
+        int dmaTarget = 0;
+        byte[] tileData = new byte[0x600]; // Player dma buffer = 0x600 enemies = 0x400
+        for (DmaAnimation.DmaTransfer dmaTransfer : animationFrame.dmaIndex()
+                .dmaFramePtr()
+                .deReference().dmaTransferList())
+        {
+            if (dmaTransfer.dmaLength() == -1)
+            {
+                break;
+            }
+
+            if (animationConfiguration.tileDataCompressed())
+            {
+                int dmaSource = dmaTransfer.sourceOffset();
+                for (int i = 0; i < dmaTransfer.dmaLength(); i++)
+                {
+                    tileData[dmaTarget++] = sourceTileData[dmaSource++];
+                    tileData[dmaTarget++] = sourceTileData[dmaSource++];
+                }
+            }
+            else
+            {
+                long dmaSource = tileSourceAddress + dmaTransfer.sourceOffset();
+                source.seek(dmaSource);
+                for (int i = 0; i < dmaTransfer.dmaLength(); i++)
+                {
+                    tileData[dmaTarget++] = source.readS1();
+                    tileData[dmaTarget++] = source.readS1();
+                }
+            }
+        }
+        return tileData;
+    }
+
+    private BufferedImage renderOverlay(SpriteCanvasFactory canvasFactory, int frameIndex)
+    {
+        BufferedImage image = canvasFactory.createImage();
         Graphics2D graphics = image.createGraphics();
 
         if (frameIndex == animation.markerFrameIndex())
@@ -152,38 +151,7 @@ public class DMAAnimationsRenderer implements AnimationsRenderer
             graphics.setColor(Color.red);
             graphics.fillRect(15, 5, 5, 5);
         }
-
-        if (spriteMargin > 0)
-        {
-            graphics.setColor(Color.lightGray);
-            graphics.drawRect(spriteMargin, spriteMargin, width - spriteMargin * 2, height - spriteMargin * 2);
-        }
-        graphics.setColor(Color.black);
-        graphics.fillRect(x, 0, 1, height);
-        graphics.fillRect(0, y, width, 1);
-        graphics.dispose();
-
+        canvasFactory.renderBoundsAndOrigin(image);
         return image;
-    }
-
-    private void calculateImageBoundsAndOrigin()
-    {
-        Limits limits = animation.animationFrames().stream()
-                .map(DmaAnimation.AnimationFramePtr::deReference)
-                .flatMap(a -> a.metaSprite().sprites().stream())
-                .map(sprite ->
-                     {
-                         int spriteWidth = sprite.calculatedWidth() * 8;
-                         int spriteHeight = sprite.calculatedHeight() * 8;
-
-                         return new Limits(sprite.xOffset(), sprite.xOffset() + spriteWidth,
-                                           sprite.yOffset(), sprite.yOffset() + spriteHeight);
-                     })
-                .reduce(new Limits(), Limits::combine);
-
-        x = Math.abs(limits.minX()) + spriteMargin;
-        y = Math.abs(limits.minY()) + spriteMargin;
-        width = limits.width() + spriteMargin * 2;
-        height = limits.height() + spriteMargin * 2;
     }
 }

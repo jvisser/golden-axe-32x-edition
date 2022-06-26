@@ -18,6 +18,7 @@ class PaletteRGB24
                    7, 255));
 
     private final Integer[] colors;
+    private final boolean zeroTransparent;
 
     public PaletteRGB24(Palette palette)
     {
@@ -32,6 +33,7 @@ class PaletteRGB24
                                 componentColorRamp.get((bgr3bit >> 5) & 0x07) << 8 |
                                 componentColorRamp.get((bgr3bit >> 1) & 0x07) << 16)
                 .toArray(Integer[]::new);
+        this.zeroTransparent = zeroTransparent;
         if (zeroTransparent)
         {
             colors[0] = 0;
@@ -41,5 +43,10 @@ class PaletteRGB24
     public int getRGB(int index)
     {
         return colors[index];
+    }
+
+    public boolean isZeroTransparent()
+    {
+        return zeroTransparent;
     }
 }
