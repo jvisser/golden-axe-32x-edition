@@ -98,7 +98,7 @@ animations:
       - 0x74B76
     bounds-table-address: 0x40262
     palette-address: 0x38C20
-  death_adder_specials:
+  death-adder-specials:
     type: PRE_LOADED
     animation-table-address: 0x5FB2C
     animation-index: 0
@@ -107,7 +107,7 @@ animations:
       - 0x5FC2A
     bounds-table-address: 0x40262
     palette-address: 0x5FC08
-  lt_bitter:
+  lt-bitter:
     type: PRE_LOADED
     animation-table-address: 0x7C718
     animation-index: 0
@@ -116,7 +116,7 @@ animations:
       - 0x7D088
     bounds-table-address: 0x40262
     palette-address: 0x38B54
-  chicken_leg:
+  chicken-leg:
     type: PRE_LOADED
     animation-table-address: 0x4086A
     animation-index: 0
@@ -134,7 +134,7 @@ animations:
       - 0x420FE
     bounds-table-address: 0x40262
     palette-address: 0x38ACC
-  blue_dragon_flame:
+  blue-dragon-flame:
     type: PRE_LOADED
     animation-table-address: 0x41B3E
     animation-index: 0
@@ -143,7 +143,7 @@ animations:
       - 0x420FE
     bounds-table-address: 0x40262
     palette-address: 0x38ACC
-  red_dragon_fire_ball:
+  red-dragon-fire-ball:
     type: PRE_LOADED
     animation-table-address: 0x41B46
     animation-index: 0
