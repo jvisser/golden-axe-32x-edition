@@ -1,0 +1,21 @@
+#!/bin/bash
+
+rm -f $3
+
+$1 -A $2 | grep -i ^patch_0x | cut -d' ' -f1 | while read section
+do
+    address=$(echo "$section" | cut -d'_' -f2)
+
+    cat <<EOF >> $3
+        _patch_${address}_offset = offset;
+        $section $address : AT(offset)
+        {
+            _patch_${address} = .;
+            KEEP(*($section))
+        } > ROM
+        _patch_${address}_size = SIZEOF($section);
+        offset += _patch_${address}_size;
+
+EOF
+
+done
