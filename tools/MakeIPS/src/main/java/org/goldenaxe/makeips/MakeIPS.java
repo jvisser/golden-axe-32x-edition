@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 import picocli.CommandLine;
 
 
@@ -78,23 +79,26 @@ public class MakeIPS implements Callable<Integer>
     {
         return ipsRecords.stream()
                 .sorted()
-                .reduce(new ArrayList<>(), (objects, ipsRecord) ->
+                .reduce(new ArrayList<IPSRecord>(), (records, ipsRecord) ->
                 {
-                    if (objects.isEmpty())
+                    if (records.isEmpty())
                     {
-                        objects.add(ipsRecord);
+                        records.add(ipsRecord);
                     }
                     else
                     {
-                        IPSRecord lastRecord = objects.get(objects.size() - 1);
+                        IPSRecord lastRecord = records.get(records.size() - 1);
                         if (!lastRecord.merge(ipsRecord))
                         {
-                            objects.add(ipsRecord);
+                            records.add(ipsRecord);
                         }
                     }
 
-                    return objects;
-                }, (objects, objects2) -> objects);
+                    return records;
+                }, (r1, r2) -> r1)
+                .stream()
+                .flatMap((IPSRecord ipsRecord) -> ipsRecord.split().stream())
+                .collect(Collectors.toList());
     }
 
     private List<IPSRecord> readPatchRecords() throws IOException

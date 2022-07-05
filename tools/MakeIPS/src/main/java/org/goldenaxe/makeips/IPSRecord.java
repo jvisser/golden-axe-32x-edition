@@ -1,10 +1,14 @@
 package org.goldenaxe.makeips;
 
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
 class IPSRecord implements Comparable<IPSRecord>
 {
+    public static final int MAX_SIZE = 0xffff;
     private static final int EOF = 0x454f46;
 
     private final int offset;
@@ -60,6 +64,30 @@ class IPSRecord implements Comparable<IPSRecord>
             return true;
         }
         return false;
+    }
+
+    public List<IPSRecord> split()
+    {
+        if (getSize() > MAX_SIZE)
+        {
+            List<IPSRecord> splitList = new ArrayList<>();
+            int currentOffset = offset;
+
+            ByteBuffer buffer = ByteBuffer.wrap(data);
+            while (buffer.hasRemaining())
+            {
+                byte[] splitBytes = new byte[Math.min(MAX_SIZE, buffer.remaining())];
+                buffer.get(splitBytes);
+
+                splitList.add(new IPSRecord(currentOffset, splitBytes));
+                currentOffset += splitBytes.length;
+            }
+
+            return splitList;
+        }
+
+
+        return List.of(this);
     }
 
     public int getOffset()
