@@ -1,5 +1,5 @@
 |--------------------------------------------------------------------
-| The amazon entity uses a compressed tileset of about 16k uncompressed which is uncompressed to 0xff8000
+| The amazon entity uses a compressed tileset of about 16k uncompressed which is decompressed to 0xff8000
 | We modify the amazon entity to use uncompressed data directly from ROM so we can claim the freed up RAM
 |--------------------------------------------------------------------
 

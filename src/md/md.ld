@@ -58,9 +58,9 @@ SECTIONS
         *(.rodata .rodata.*)
 
         . = ALIGN(4);
-
         _sh2 = .;
         *(sh2 sh2.*)
+        . = ALIGN(4);
         _sh2_size = ABSOLUTE(. - _sh2);
 
     } > ROM_EXT

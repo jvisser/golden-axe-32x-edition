@@ -1,37 +1,50 @@
 !--------------------------------------------------------------------
-! 32X Startup code and exception vectors
+! 32X startup code and interrupt vectors
+!
+! Addresses that need to be known on the MD side (See 32X Header in MD boot.s):
+! - 0x06000000: Master entry point
+! - 0x06000004: Slave entry point
+! - 0x05fffefc: Master VBR          (_master_int_vectors - irl_6_vector_offset)
+! - 0x05ffff0c: Slave VBR           (_slave_int_vectors - irl_6_vector_offset)
 !--------------------------------------------------------------------
+
+    .section boot
+
 
     !-------------------------------------------------------------------
     ! Entry points
-    bra     _master_start
-    bra     _slave_start
+    !-------------------------------------------------------------------
+    bra     __master
+    nop
+    bra     __slave
+    nop
 
 
     !-------------------------------------------------------------------
-    ! Master vector table
-    .dc.l   _master_start
-    .dc.l   0x0603ff00
-    .dc.l   _master_start
-    .dc.l   0x0603ff00
-    .rept   60
-    .dc.l   _unhandled_exception
-    .endr
+    ! Master interrupt vector table.
+    ! We only map the (usefull) interrupt vectors to preserve RAM
+    !-------------------------------------------------------------------
+    _master_int_vectors:
+        .dc.l   _unhandled_exception    ! PWM           (IRL6)
+        .dc.l   _unhandled_exception    ! Command       (IRL8)
+        .dc.l   _unhandled_exception    ! H interrupt   (IRL10)
+        .dc.l   _unhandled_exception    ! V interrupt   (IRL12)
 
 
     !-------------------------------------------------------------------
-    ! Slave vector table
-    .dc.l   _slave_start
-    .dc.l   0x06040000
-    .dc.l   _slave_start
-    .dc.l   0x06040000
-    .rept   60
-    .dc.l   _unhandled_exception
-    .endr
+    ! Slave interrupt vector table.
+    ! We only map the (usefull) interrupt vectors to preserve RAM
+    !-------------------------------------------------------------------
+    _slave_int_vectors:
+        .dc.l   _unhandled_exception    ! PWM           (IRL6)
+        .dc.l   _unhandled_exception    ! Command       (IRL8)
+        .dc.l   _unhandled_exception    ! H interrupt   (IRL10)
+        .dc.l   _unhandled_exception    ! V interrupt   (IRL12)
 
 
     !-------------------------------------------------------------------
-    ! Unhandled exception
+    ! Unhandled exception handler
+    !-------------------------------------------------------------------
     _unhandled_exception:
         rte
         nop
@@ -39,13 +52,29 @@
 
     !-------------------------------------------------------------------
     ! Master startup code
-    _master_start:
-        bra     master
-        nop
+    !-------------------------------------------------------------------
+    __master:
+        mov.l   _master_main, r0
+        jmp     @r0                     ! Start master program
+        mov.l   _master_stack, sp
+
+        .balign 4
+        _master_stack:
+            .dc.l   __mstack
+        _master_main:
+            .dc.l   _master
 
 
     !-------------------------------------------------------------------
     ! Slave startup code
-    _slave_start:
-        bra     slave
-        nop
+    !-------------------------------------------------------------------
+    __slave:
+        mov.l   _slave_main, r0
+        jmp     @r0                     ! Start slave program
+        mov.l   _slave_stack, sp
+
+        .balign 4
+        _slave_stack:
+            .dc.l   __sstack
+        _slave_main:
+            .dc.l   _slave

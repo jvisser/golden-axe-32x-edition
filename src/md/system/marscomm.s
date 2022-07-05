@@ -2,19 +2,26 @@
 | 32X sub program communication
 |--------------------------------------------------------------------
 
+    .include "mars.i"
+
+
+    .global mars_comm_init
     .global mars_comm
 
 
     |-------------------------------------------------------------------
-    | SH2 sub programs loaded by the 32X boot ROM. See 32X header in boot.s.
+    | Sub program initial handshake
     |-------------------------------------------------------------------
-    .section sh2
+    mars_comm_init:
+        lea     (MARS_REG_BASE), %a6
 
-        | Placeholder until we have a program (or else the SH2 will loop for 4 billion iterations)
-        .dc.w 0xaffe    | bra .
-        .dc.w 0x0009    | nop
-        .dc.w 0xaffe    | bra .
-        .dc.w 0x0009    | nop
+        | Set HW access to the 32X side
+        bset    #7, MARS_ADP_CTL(%a6)       | VDP
+
+        | Start handshake
+        | TODO...
+
+        rts
 
 
     .data       | Use the .data section to store this routine in RAM allowing RV switching
@@ -27,4 +34,4 @@
     | - d0.w: command (high bit indicated blocking call)
     |-------------------------------------------------------------------
     mars_comm:
-            rts
+        rts

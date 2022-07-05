@@ -1,4 +1,4 @@
 void master(void)
 {
-    while (true);
+    while (1);
 }
