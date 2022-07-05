@@ -8,6 +8,15 @@
 
 
     |-------------------------------------------------------------------
+    | SH2 sub program(s) loaded by the 32X boot ROM. See 32X Header.
+    |-------------------------------------------------------------------
+    .section sh2
+        .incbin "mars.bin"
+
+    .text
+
+
+    |-------------------------------------------------------------------
     | 68k cold reset vector
     |-------------------------------------------------------------------
     patch_start 0x000000
@@ -35,15 +44,17 @@
         .dc.l   _sh2_size                       | Size
         .dc.l   0x06000000                      | Master SH2 initial address
         .dc.l   0x06000004                      | Slave SH2 initial address
-        .dc.l   0x06000008                      | Master SH2 VBR
-        .dc.l   0x06000128                      | Slave SH2 VBR
+        .dc.l   0x05fffefc                      | Master SH2 VBR
+        .dc.l   0x05ffff0c                      | Slave SH2 VBR
     patch_end
 
 
     |-------------------------------------------------------------------
     | Initial program by Sega
-    | For the source code see the 32X Hardware Manual page 95: Initial program.
-    | The 32X boot ROM uses this as a signature and will fail to boot if not present
+    |
+    | See the 32X Hardware Manual:
+    | - Page 83: Security
+    | - Page 95: For the source code of the initial program.
     |-------------------------------------------------------------------
     patch_start 0x0003f0
         .incbin "ip.bin"
@@ -69,14 +80,14 @@
     |-------------------------------------------------------------------
     patch_start 0x000800
         user_entry_point:
-            | Carry set means an error occured
+            | Carry set means an error occured in the initial program
             bcc     mars_ok
             bra     .
 
         mars_ok:
             lea     (MARS_REG_BASE), %a6
 
-            bsr     sh2_rdy_wait
+            bsr     mars_ready_wait
 
             | Copy bootstrap program to RAM and run
             lea     (MARS_ROM_BANK0 + init_boot_strap_end), %a0
@@ -87,13 +98,17 @@
 
 
         |-------------------------------------------------------------------
-        | Wait for SH2 sub program startup
+        | Wait for the 32X self test to complete without errors
+        |
+        | See the 32X Hardware Manual:
+        | - page 69: Communication Port.
+        | - page 80: Boot ROM
+        | - page 89: Master boot ROM source code
         |-------------------------------------------------------------------
-        sh2_rdy_wait:
-            | See the 32X Hardware Manual page 69: Communication Port.
-        1:  cmp.l   #M_OK, MARS_COMM0(%a6)      | Wait for Master SH2 ready signal from master boot ROM initialization
+        mars_ready_wait:
+        1:  cmp.l   #M_OK, MARS_COMM0(%a6)      | Wait for Master SH2 ready signal from master boot ROM
             bne     1b
-        1:  cmp.l   #S_OK, MARS_COMM2(%a6)      | Wait for Master SH2 ready signal from slave boot ROM initialization
+        1:  cmp.l   #S_OK, MARS_COMM2(%a6)      | Wait for Slave SH2 ready signal from slave boot ROM
             bne     1b
             rts
 
@@ -107,18 +122,18 @@
             | As such the program can not depend on any interrupts or exceptions.
             bset    #0, MARS_DMAC + 1(%a6)
 
-            | Set VDP access to the 32X side
-            bset    #7, MARS_ADP_CTL(%a6)
-
             | Jump to init code in ROM
             jmp     (init).w
         init_boot_strap_end:
 
 
         |-------------------------------------------------------------------
-        | Initialize RAM and start game code
+        | Program specific initialization code
         |-------------------------------------------------------------------
         init:
+            | 32X sub program handshake
+            jsr     mars_comm_init
+
             | Clear RAM
             lea     (RAM_START), %a0
             move.w  #(RAM_SIZE / 4) - 1, %d0

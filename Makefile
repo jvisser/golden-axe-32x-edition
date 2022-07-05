@@ -5,14 +5,21 @@ MARSDEV    ?= ${HOME}/mars
 TOOLSBIN    = $(MARSDEV)/bin
 MDBIN       = $(MARSDEV)/m68k-elf/bin
 SHBIN       = $(MARSDEV)/sh-elf/bin
+
+# Project paths
 MDSRC       = src/md
-BUILD       = out
+SHSRC       = src/mars
 INCLUDE     = src/include
-MDINCLUDE   = $(INCLUDE)/md
+BUILD       = out
 MDBUILD     = $(BUILD)/md
 MDASSETS    = $(MDBUILD)/assets
+SHBUILD     = $(BUILD)/mars
 ROM         = rom/rom.bin
 JAVATOOLS   = tools
+
+# Includes paths
+MDINCLUDE   = -I $(INCLUDE)/md -I $(MDSRC) -I $(MDASSETS) -I $(SHBUILD)
+SHINCLUDE   = -I $(INCLUDE)/mars
 
 # m68k GCC and Binutils
 MDCC        = $(MDBIN)/m68k-elf-gcc
@@ -21,8 +28,9 @@ MDAS        = $(MDBIN)/m68k-elf-as
 MDLD        = $(MDBIN)/m68k-elf-ld
 MDNM        = $(MDBIN)/m68k-elf-nm
 MDOBJC      = $(MDBIN)/m68k-elf-objcopy
+MDSIZE      = $(MDBIN)/m68k-elf-size
 
-# sh2 GCC and Binutils
+# SH2 GCC and Binutils
 SHCC        = $(SHBIN)/sh-elf-gcc
 SHCXX       = $(SHBIN)/sh-elf-g++
 SHAS        = $(SHBIN)/sh-elf-as
@@ -35,30 +43,35 @@ MDCC_VER    := $(shell $(MDCC) -dumpversion)
 SHCC_VER    := $(shell $(SHCC) -dumpversion)
 
 # Assembler flags
-MDASFLAGS   = -m68000 -I $(MDSRC) -I $(MDINCLUDE) -I $(MDASSETS)
-SHASFLAGS   = --small
+MDASFLAGS   = -m68000 $(MDINCLUDE)
+SHASFLAGS   = --small $(SHINCLUDE)
 
 # Linker flags
 MDLDFLAGS   = -L $(MDBUILD) -T $(MDSRC)/md.ld -nostdlib -N -x
-SHLDFLAGS   = -T $(MARSDEV)/ldscripts/mars.ld -nostdlib
+SHLDFLAGS   = -T $(SHSRC)/mars.ld -nostdlib
 
-# Generate MD object target list
-MDSS        := $(wildcard $(MDSRC)/*.s $(MDSRC)/*/*.s)
-MDOBJS      := $(patsubst $(MDSRC)/%.s, $(MDBUILD)/obj/%.o, $(MDSS))
+# C compiler flags
+SHCCFLAGS  = -m2 -mb -Wall -Wextra -std=c99 -ffreestanding -fshort-enums -O3 -fomit-frame-pointer -flto -fuse-linker-plugin
 
-.PHONY: pre-build make-assets extract-amazon-tile-data build-tools dump-gfx clean rebuild
+# Generate MD m68k object target list
+MDSS        = $(wildcard $(MDSRC)/*.s $(MDSRC)/*/*.s)
+MDOBJS      = $(patsubst $(MDSRC)/%.s, $(MDBUILD)/obj/%.o, $(MDSS))
+
+# Generate 32X SH2 object target list
+SHSS        = $(wildcard $(SHSRC)/*.s $(SHSRC)/*/*.s)
+SHCS       += $(wildcard $(SHSRC)/*.c $(SHSRC)/*/*.c)
+SHSOBJS     = $(patsubst $(SHSRC)/%.s, $(SHBUILD)/obj/%.o, $(SHSS))
+SHCOBJS    += $(patsubst $(SHSRC)/%.c, $(SHBUILD)/obj/%.o, $(SHCS))
+SHOBJS      = $(SHSOBJS) $(SHCOBJS)
+
+.PHONY: pre-build build-assets build-tools dump-gfx clean rebuild
 
 rebuild: clean release
 
-release: pre-build make-assets $(BUILD)/patch.ips
-
-make-assets: extract-amazon-tile-data
+release: pre-build build-assets $(SHBUILD)/mars.bin $(BUILD)/patch.ips
 
 clean:
 	@rm -f -r $(BUILD)
-
-pre-build:
-	@mkdir -p $(MDASSETS)
 
 # Build java tools
 build-tools:
@@ -68,12 +81,37 @@ build-tools:
 dump-gfx:
 	java -jar $(JAVATOOLS)/DataVis/target/DataVis.jar -c config/datavis.yaml -o dump $(ROM)
 
+pre-build:
+	@mkdir -p $(MDASSETS)
+	@mkdir -p $(SHBUILD)
+
+build-assets: $(MDASSETS)/amazon.nem
+
+# Assemble 32X SH2 assembly modules
+$(SHSOBJS): $(SHBUILD)/obj/%.o : $(SHSRC)/%.s
+	@echo "SHAS $<"
+	@mkdir -p $(dir $@)
+	@$(SHAS) $(SHASFLAGS) $(SHINCLUDE) $< -o $@
+
+# Assemble 32X SH2 c modules
+$(SHCOBJS): $(SHBUILD)/obj/%.o : $(SHSRC)/%.c
+	@echo "SHCC $<"
+	@mkdir -p $(dir $@)
+	@$(SHCC) $(SHCCFLAGS) $(SHINCLUDE) -c $< -o $@
+
+# Link 32X sub program
+$(SHBUILD)/mars.elf: $(SHOBJS)
+	@$(SHCC) $(SHLDFLAGS) $(SHOBJS) -o $@ $(SHLIBS)
+
+# Create 32X sub program binary
+$(SHBUILD)/mars.bin: $(SHBUILD)/mars.elf
+	$(SHOBJC) -O binary $< $@
+
 # Extract amazon tile data
-extract-amazon-tile-data: $(MDASSETS)/amazon.nem
 $(MDASSETS)/amazon.nem: $(ROM)
 	$(TOOLSBIN)/nemcmp -x0x7A25A $< $@
 
-# Assemble MD modules
+# Assemble MD m68k modules
 $(MDOBJS): $(MDBUILD)/obj/%.o : $(MDSRC)/%.s
 	@echo "MDAS $<"
 	@mkdir -p $(dir $@)
@@ -81,11 +119,11 @@ $(MDOBJS): $(MDBUILD)/obj/%.o : $(MDSRC)/%.s
 
 # Generate intermediate MD object file used to generate the linker script include file for the patches
 $(MDBUILD)/patch.o: $(MDOBJS)
-	$(MDLD) -relocatable $(MDOBJS) -o $@
+	@$(MDLD) -relocatable $(MDOBJS) -o $@
 
 # Generate linked output
 $(MDBUILD)/patch.elf: $(MDBUILD)/patch.o
-	@scripts/make_patch_ld $(MDBIN)/m68k-elf-size $< $(MDBUILD)/patch.ld.generated
+	@scripts/make_patch_ld $(MDSIZE) $< $(MDBUILD)/patch.ld.generated
 	$(MDLD) $(MDLDFLAGS) $< -o $@
 
 # Generate .ips file

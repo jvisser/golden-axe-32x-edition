@@ -1,4 +1,4 @@
 void slave(void)
 {
-    while (true);
+    while (1);
 }
