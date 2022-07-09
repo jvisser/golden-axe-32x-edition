@@ -176,7 +176,7 @@
         mov.l   __mars_reg_base, r1
         mov.w   r0, @(r0, r1)
 
-    1:  mov.l   @sp+, r1    ! Need at least 2 cycles/ops after int clear before RTE
+    1:  mov.l   @sp+, r1            ! Need at least 2 cycles/ops after int clear before RTE
         mov.l   @sp+, r0
         rte
         nop
@@ -184,9 +184,10 @@
     __vres:
         mov     #0, r0
 
-        ! Disable interrupts and give VDP access to the MD
         mov.l   __mars_reg_base, r1
-        mov.w   r0, @r1
+        ldc     r1, gbr             ! Set GBR
+        mov.w   r0, @(0x000, gbr)   ! Disable interrupts and give VDP access to the MD
+        mov.w   r0, @(0x100, gbr)   ! Disable 32X display
 
         ! Jump to the reset vector in the boot ROM of the executing SH2 (hopefully this is good enough)
         mov.l   __initial_sr, r1
