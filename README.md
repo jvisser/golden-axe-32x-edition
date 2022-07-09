@@ -4,20 +4,27 @@ Golden Axe 32X conversion patch for the original Sega Mega Drive game.
 
 ## How to build
 ### Prerequisites
-- `rom/rom.bin`: Golden Axe ROM image
-  - SHA256: `e9f5340ecf8151253eb6fcda136c4d4d8940e373340ce2eeb2bf24f9f6c1004d`
-- `java 17+`
-- `maven 3+`
-- [`marsdev`](https://github.com/andwn/marsdev)
+#### Required
+- `rom/rom.bin`: Golden Axe ROM image file (SHA256: `e9f5340ecf8151253eb6fcda136c4d4d8940e373340ce2eeb2bf24f9f6c1004d`)
+- `jdk 17+`: To build and run the tools
+- `maven 3+`: To build the tools
+- [`marsdev`](https://github.com/andwn/marsdev): To build the patch file
 
-### Run
+#### Optional
+- [`flips`](https://github.com/Alcaro/Flips): To apply the patch file
+
+### Build targets
+Run once:
 - `make build-tools` once to build the required tools
-- `make`
 
-If successful the patch file `out/patch.ips` should exist.
+Run either:
+- `make` to produce the IPS patch file `out/patch.ips`
+- `make apply-patch` to run make and apply the patch file to produce `out/rom.32x`
+    - This requires flips
 
 ### Other targets
-- `make clean`: Cleanup the output directory
+- `make clean`: Clean the output directory
+- `make rebuild`: Clean + make
 - `make dump-gfx`: Dump game graphics and visual metadata defined in `config/datavis.yaml` to directory `dump`.
 
 ## Documentation

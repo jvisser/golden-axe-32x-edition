@@ -44,8 +44,8 @@
         .dc.l   _sh2_size                       | Size
         .dc.l   0x06000000                      | Master SH2 initial address
         .dc.l   0x06000004                      | Slave SH2 initial address
-        .dc.l   0x05fffefc                      | Master SH2 VBR
-        .dc.l   0x05ffff0c                      | Slave SH2 VBR
+        .dc.l   0x05ffff00                      | Master SH2 VBR
+        .dc.l   0x05ffff14                      | Slave SH2 VBR
     patch_end
 
 

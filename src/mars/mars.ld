@@ -25,6 +25,18 @@ PROVIDE (__mstack = 0x0603ff00);
 PROVIDE (__sstack = 0x06040000);
 
 
+/* Default interrupt handlers if not defined anywhere else */
+PROVIDE (_master_int_pwm = 0x06000008);
+PROVIDE (_master_int_command = 0x06000008);
+PROVIDE (_master_int_hblank = 0x06000008);
+PROVIDE (_master_int_vblank = 0x06000008);
+
+PROVIDE (_slave_int_pwm = 0x06000008);
+PROVIDE (_slave_int_command = 0x06000008);
+PROVIDE (_slave_int_hblank = 0x06000008);
+PROVIDE (_slave_int_vblank = 0x06000008);
+
+
 SECTIONS
 {
     .text : SUBALIGN(4)
