@@ -64,11 +64,13 @@ SHSOBJS     = $(patsubst $(SHSRC)/%.s, $(SHBUILD)/obj/%.o, $(SHSS))
 SHCOBJS    += $(patsubst $(SHSRC)/%.c, $(SHBUILD)/obj/%.o, $(SHCS))
 SHOBJS      = $(SHSOBJS) $(SHCOBJS)
 
-.PHONY: pre-build build-assets build-tools dump-gfx clean rebuild
+.PHONY: pre-build build-assets build-tools dump-gfx clean rebuild apply-patch
 
 rebuild: clean release
 
 release: pre-build build-assets $(SHBUILD)/mars.bin $(BUILD)/patch.ips
+
+apply-patch: release $(BUILD)/rom.32x
 
 clean:
 	@rm -f -r $(BUILD)
@@ -111,6 +113,8 @@ $(SHBUILD)/mars.bin: $(SHBUILD)/mars.elf
 $(MDASSETS)/amazon.nem: $(ROM)
 	$(TOOLSBIN)/nemcmp -x0x7A25A $< $@
 
+$(MDBUILD)/obj/boot.o: $(SHBUILD)/mars.bin
+
 # Assemble MD m68k modules
 $(MDOBJS): $(MDBUILD)/obj/%.o : $(MDSRC)/%.s
 	@echo "MDAS $<"
@@ -131,3 +135,7 @@ $(BUILD)/patch.ips: $(MDBUILD)/patch.elf
 	@$(MDOBJC) -O binary $< $(MDBUILD)/patch.bin
 	@$(MDOBJC) --dump-section patch_index=$(MDBUILD)/patch.index $<
 	java -jar $(JAVATOOLS)/MakeIPS/target/MakeIPS.jar -i $(MDBUILD)/patch.index -p $(MDBUILD)/patch.bin $@
+
+# Apply patch and create patched ROM image file for testing
+$(BUILD)/rom.32x: $(BUILD)/patch.ips
+	flips --apply --ips $< $(ROM) $@
