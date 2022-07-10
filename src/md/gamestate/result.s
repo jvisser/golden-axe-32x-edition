@@ -7,8 +7,7 @@
 
 
     patch_start 0x006100
-        jsr     game_state_init_result.l
-        nop
+        jmp     game_state_init_result.l
     patch_end
 
 

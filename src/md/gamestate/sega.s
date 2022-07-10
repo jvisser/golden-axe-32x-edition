@@ -8,17 +8,21 @@
     .include "patch.i"
 
 
-    patch_start 0x000dbc
-        jmp     game_state_handler_sega
-        jsr     0x0034bc
+    patch_start 0x000db8
+        jsr     game_state_handler_sega.l
         nop
     patch_end
+
+
+    .equ audio_init,    0x0034bc
 
 
     |-------------------------------------------------------------------
     | Run custom sega logo code
     |-------------------------------------------------------------------
     game_state_handler_sega:
+        jsr     audio_init.w
+
         jsr     vdp_disable_display
         jsr     vdp_reset
         jsr     img_load_sega_logo

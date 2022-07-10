@@ -63,7 +63,7 @@
 
     !-------------------------------------------------------------------
     ! Master startup code
-    ! NB: Kega fusion has issues with a delay slot instruction here than nop for some reason
+    ! NB: Kega fusion has issues with a delay slot instruction here other than nop for some reason
     !-------------------------------------------------------------------
     __master:
         bsr     __setup_interrupts
@@ -76,7 +76,7 @@
 
     !-------------------------------------------------------------------
     ! Slave startup code
-    ! NB: Kega fusion has issues with a delay slot instruction here than nop for some reason
+    ! NB: Kega fusion has issues with a delay slot instruction here other than nop for some reason
     !-------------------------------------------------------------------
     __slave:
         bsr     __setup_interrupts
