@@ -1,3 +1,9 @@
+/*
+ * Slave SH2 main loop
+ *
+ * Executes commands received from the MD or master SH2
+ */
+
 #include "mars.h"
 
 

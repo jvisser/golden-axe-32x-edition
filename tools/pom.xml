@@ -76,6 +76,8 @@
     <modules>
         <module>MakeIPS</module>
         <module>DataVis</module>
+        <module>ImgConv</module>
+        <module>LibCompress</module>
     </modules>
 
 </project>

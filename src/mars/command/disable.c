@@ -1,5 +1,17 @@
+/*
+ * Disable command
+ *
+ * Disables the 32X display and clears the front facing framebuffer.
+ *
+ * Params:
+ * - None
+ */
+
 #include "mars.h"
+#include "vdp.h"
+#include "draw.h"
 #include "command.h"
+
 
 static void process();
 static void post_process();
@@ -14,19 +26,18 @@ md_command CMD_DISABLE =
 
 static void process()
 {
-    MARS_SYS_INTMSK = MARS_SYS_INTMSK_FM;
-    MARS_VDP_DISPMODE = 0;
+    vdp_set_display_mode(DISPLAY_MODE_BLANK);
 }
 
 
 static void post_process()
 {
-    // Clear framebuffer
-    for (int i = 0; i < 0x10000; i++)
+    // Clear framebuffers
+    for (int i = 0; i < 2; i++)
     {
-        MARS_FRAMEBUFFER[i] = 0;
-    }
+        draw_fill(0);
 
-    // Swap buffer on next vblank
-    MARS_VDP_FBCTL ^= 1;
+        // Should have immediate effect since we disabled the display
+        vdp_swap_frame_buffer();
+    }
 }

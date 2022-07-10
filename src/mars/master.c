@@ -1,5 +1,12 @@
+/*
+ * Master SH2 main loop
+ *
+ * Executes commands received from the MD
+ */
+
 #include "mars.h"
 #include "command.h"
+
 
 // Master commands
 extern md_command CMD_DISABLE;
