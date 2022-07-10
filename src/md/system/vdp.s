@@ -29,9 +29,8 @@
         bclr    #6, (vdp_reg_mode2 + 1).w
         bsr     vdp_update_mode_2_sync
 
-        | Disable display on the 32X
-        moveq   #MARSCOMM_DISABLE, %d0
-        jmp     mars_comm
+        mars_comm_safe MARSCOMM_DISABLE
+        rts
 
 
     |-------------------------------------------------------------------
