@@ -32,12 +32,13 @@ static void process()
 
 static void post_process()
 {
-    // Clear framebuffers
-    for (int i = 0; i < 2; i++)
-    {
-        draw_fill(0);
-
-        // Should have immediate effect since we disabled the display
-        vdp_swap_frame_buffer();
-    }
+// Disable for now, could cause unnecessary wait time when multiple commands arrive in quick succession
+//    // Clear framebuffers
+//    for (u32 i = 0; i < 2; i++)
+//    {
+//        draw_fill(0);
+//
+//        // Should have immediate effect since we disabled the display
+//        vdp_swap_frame_buffer();
+//    }
 }
