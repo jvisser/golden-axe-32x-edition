@@ -40,15 +40,21 @@
     |-------------------------------------------------------------------
     mars_comm:
         tst.w   %d0
-        beq     2f
+        beq     .exit
 
         move.l  %a6, -(%sp)
         lea     (MARS_REG_BASE), %a6
 
-        | Halt Z80
+        | Halt Z80 if not halted already
+        btst    #0, (Z80_BUS_REQUEST)
+        beq     2f
         move.w  #0x100, (Z80_BUS_REQUEST)
     1:  btst    #0, (Z80_BUS_REQUEST)
         bne     1b
+        and     #0x1e, %ccr
+        bra     3f
+    2:  or      #0x01, %ccr
+    3:
 
         | Give the 32X access to ROM (RV = 0)
         bclr    #0, MARS_DMAC + 1(%a6)
@@ -69,8 +75,9 @@
         | Give MD access to ROM (RV = 1)
         bset    #0, MARS_DMAC + 1(%a6)
 
-        | Resume Z80
+        | Resume Z80 if we halted it
+        bcs     1f
         move.w  #0, (Z80_BUS_REQUEST)
-
-        move.l  (%sp)+, %a6
-    2:  rts
+    1:  move.l  (%sp)+, %a6
+    .exit:
+        rts
