@@ -63,22 +63,28 @@
 
     !-------------------------------------------------------------------
     ! Master startup code
+    ! NB: Kega fusion has issues with a delay slot instruction here than nop for some reason
     !-------------------------------------------------------------------
-    __master:                           ! NB: Kega fusion has issues with the delay slot's here
+    __master:
         bsr     __setup_interrupts
+        nop
         mov.l   __master_main, r14
-        jmp     @r14                    ! Start master program
         mov.l   __master_stack, sp
+        jmp     @r14                    ! Start master program
+        nop
 
 
     !-------------------------------------------------------------------
     ! Slave startup code
+    ! NB: Kega fusion has issues with a delay slot instruction here than nop for some reason
     !-------------------------------------------------------------------
-    __slave:                            ! NB: Kega fusion has issues with the delay slot's here
+    __slave:
         bsr     __setup_interrupts
+        nop
         mov.l   __slave_main, r14
-        jmp     @r14                    ! Start slave program
         mov.l   __slave_stack, sp
+        jmp     @r14                    ! Start slave program
+        nop
 
 
     !-------------------------------------------------------------------
