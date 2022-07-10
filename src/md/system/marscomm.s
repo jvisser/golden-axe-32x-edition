@@ -2,6 +2,7 @@
 | 32X sub program communication
 |--------------------------------------------------------------------
 
+    .include "md.i"
     .include "mars.i"
 
 
@@ -44,6 +45,11 @@
         move.l  %a6, -(%sp)
         lea     (MARS_REG_BASE), %a6
 
+        | Halt Z80
+        move.w  #0x100, (Z80_BUS_REQUEST)
+    1:  btst    #0, (Z80_BUS_REQUEST)
+        bne     1b
+
         | Give the 32X access to ROM (RV = 0)
         bclr    #0, MARS_DMAC + 1(%a6)
 
@@ -62,6 +68,9 @@
 
         | Give MD access to ROM (RV = 1)
         bset    #0, MARS_DMAC + 1(%a6)
+
+        | Resume Z80
+        move.w  #0, (Z80_BUS_REQUEST)
 
         move.l  (%sp)+, %a6
     2:  rts

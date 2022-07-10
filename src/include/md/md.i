@@ -5,8 +5,10 @@
     |-------------------------------------------------------------------
     | Memory map
     |-------------------------------------------------------------------
-    .equ VDP_DATA,      0xc00000
-    .equ VDP_CTRL,      0xc00004
+    .equ VDP_DATA,          0xc00000
+    .equ VDP_CTRL,          0xc00004
 
-    .equ RAM_START,     0xff0000
-    .equ RAM_SIZE,      0x010000
+    .equ RAM_START,         0xff0000
+    .equ RAM_SIZE,          0x010000
+
+    .equ Z80_BUS_REQUEST,   0xa11100

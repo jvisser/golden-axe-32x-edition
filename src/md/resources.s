@@ -37,5 +37,8 @@
     | Send image load command
     |-------------------------------------------------------------------
     img_command:
+        move.w  %d0, -(%sp)
         moveq   #MARSCOMM_IMAGE, %d0
-        jmp     mars_comm
+        jsr     mars_comm
+        move.w  (%sp)+, %d0
+        rts

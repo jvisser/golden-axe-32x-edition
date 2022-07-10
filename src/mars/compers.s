@@ -46,8 +46,7 @@
         shal    r6
         add     r5, r6          ! r6 = source data addr
 
-    1:
-        mov.w   @r6+, r0
+    1:  mov.w   @r6+, r0
         mov.w   r0, @r5
         dt      r1
         bf/s    1b
