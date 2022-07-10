@@ -45,7 +45,7 @@ static void process()
     u16* pixel_data = palette + color_count;
 
     // Compress directly into the framebuffer
-    comper_decompress(pixel_data, (u16*) (MARS_FRAMEBUFFER + 256));
+    comper_decompress(pixel_data, (MARS_FRAMEBUFFER + 256));
 
     reset_line_table();
 
