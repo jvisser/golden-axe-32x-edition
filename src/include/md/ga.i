@@ -27,10 +27,10 @@
     |-------------------------------------------------------------------
     | Variables
     |-------------------------------------------------------------------
-    .equ requested_game_state,      0xffc170   | .w
-    .equ current_game_state,        0xffc172   | .w
+    .equ requested_game_state,      0xffffc170  | .w
+    .equ current_game_state,        0xffffc172  | .w
 
-    .equ vblank_update_flags,       0xffc183   | .b
+    .equ vblank_update_flags,       0xffffc183  | .b
 
-    .equ vdp_reg_mode1,             0xffc114   | .w in register set command format
-    .equ vdp_reg_mode2,             0xffc116   | .w in register set command format
+    .equ vdp_reg_mode1,             0xffffc114  | .w in register set command format
+    .equ vdp_reg_mode2,             0xffffc116  | .w in register set command format

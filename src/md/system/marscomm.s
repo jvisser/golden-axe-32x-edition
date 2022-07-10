@@ -32,7 +32,7 @@
 
     |-------------------------------------------------------------------
     | Send command to the 32X sub program.
-    | Command specific parameters must be set on the communication registers before calling.
+    | Command specific parameters must be set in the communication registers before calling.
     |
     | Params:
     | - d0.w: non zero command id
@@ -54,7 +54,8 @@
         move.w  %d0, MARS_COMM0(%a6)
 
         | Wait for command ready
-        cmp.w   MARS_COMM1(%a6), %d0
+    1:  cmp.w   MARS_COMM1(%a6), %d0
+        bne     1b
 
         | Send ACK
         clr.w   MARS_COMM0(%a6)

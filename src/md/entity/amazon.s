@@ -9,7 +9,7 @@
     .section    .rodata
     .align      2
 
-    amazon_tile_data:   .incbin "amazon.nem"
+    amazon_tile_data:   .incbin "amazon.pat"
 
 
     |-------------------------------------------------------------------

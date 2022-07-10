@@ -7,6 +7,7 @@ MDBIN       = $(MARSDEV)/m68k-elf/bin
 SHBIN       = $(MARSDEV)/sh-elf/bin
 
 # Project paths
+ASSETSRC    = assets
 MDSRC       = src/md
 SHSRC       = src/mars
 INCLUDE     = src/include
@@ -64,6 +65,10 @@ SHSOBJS     = $(patsubst $(SHSRC)/%.s, $(SHBUILD)/obj/%.o, $(SHSS))
 SHCOBJS    += $(patsubst $(SHSRC)/%.c, $(SHBUILD)/obj/%.o, $(SHCS))
 SHOBJS      = $(SHSOBJS) $(SHCOBJS)
 
+# Generate asset target lists
+MDPNGSRC    = $(wildcard $(ASSETSRC)/img/*.png)
+MDIMGS      = $(patsubst $(ASSETSRC)/img/%.png, $(MDASSETS)/img/%.img, $(MDPNGSRC))
+
 .PHONY: pre-build build-assets build-tools dump-gfx clean rebuild apply-patch
 
 rebuild: clean release
@@ -87,7 +92,7 @@ pre-build:
 	@mkdir -p $(MDASSETS)
 	@mkdir -p $(SHBUILD)
 
-build-assets: $(MDASSETS)/amazon.nem
+build-assets: $(MDIMGS) $(MDASSETS)/amazon.pat
 
 # Assemble 32X SH2 assembly modules
 $(SHSOBJS): $(SHBUILD)/obj/%.o : $(SHSRC)/%.s
@@ -110,8 +115,13 @@ $(SHBUILD)/mars.bin: $(SHBUILD)/mars.elf
 	$(SHOBJC) -O binary $< $@
 
 # Extract amazon tile data
-$(MDASSETS)/amazon.nem: $(ROM)
+$(MDASSETS)/amazon.pat: $(ROM)
+	echo "$(MDIMGS)"
 	$(TOOLSBIN)/nemcmp -x0x7A25A $< $@
+
+# Transform images
+$(MDIMGS): $(MDASSETS)/img/%.img : $(ASSETSRC)/img/%.png
+	java -jar $(JAVATOOLS)/ImgConv/target/ImgConv.jar $< $@
 
 $(MDBUILD)/obj/boot.o: $(SHBUILD)/mars.bin
 
