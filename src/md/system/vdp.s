@@ -11,9 +11,11 @@
     .global vdp_vsync_wait
     .global vdp_enable_display
     .global vdp_disable_display
+    .global vdp_reset
 
 
-    .equ vblank_int_handler, 0x000cf6
+    .equ vblank_int_handler,    0x000cf6
+    .equ vdp_reset,             0x000df6
 
 
     |-------------------------------------------------------------------

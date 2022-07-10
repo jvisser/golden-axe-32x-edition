@@ -8,8 +8,10 @@
     .include "patch.i"
 
 
-    patch_start 0x000db8
+    patch_start 0x000dbc
         jmp     game_state_handler_sega
+        jsr     0x0034bc
+        nop
     patch_end
 
 
@@ -17,11 +19,9 @@
     | Run custom sega logo code
     |-------------------------------------------------------------------
     game_state_handler_sega:
-
-        move.l  #sega_logo_image, (MARS_REG_BASE + MARS_COMM4)
-        moveq   #MARSCOMM_IMAGE, %d0
-        jsr     mars_comm
-
+        jsr     vdp_disable_display
+        jsr     vdp_reset
+        jsr     img_load_sega_logo
         jsr     vdp_enable_display
 
         | Wait 2 seconds to show logo
