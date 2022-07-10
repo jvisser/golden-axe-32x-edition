@@ -3,7 +3,7 @@
  *
  * Disables the 32X display and clears the front facing framebuffer.
  *
- * Params:
+ * Parameters:
  * - None
  */
 

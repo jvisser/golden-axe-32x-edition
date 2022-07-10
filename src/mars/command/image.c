@@ -3,7 +3,7 @@
  *
  * Load and display the specified image
  *
- * Params:
+ * Parameters:
  * - COMM4L: ROM offset of the compressed image data
  */
 
