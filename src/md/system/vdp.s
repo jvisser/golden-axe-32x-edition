@@ -22,9 +22,9 @@
 
     vdp_disable_display:
         bclr    #6, (vdp_reg_mode2 + 1).w
-        bsr     vdp_update_mode_2_sync
+        bsr     vdp_reg_mode_2_sync
 
-        mars_comm_safe MARSCOMM_DISABLE
+        mars_comm_disable
         rts
 
 
@@ -42,7 +42,7 @@
     |-------------------------------------------------------------------
     | Sync mode 2 shadow register with the VDP
     |-------------------------------------------------------------------
-    vdp_update_mode_2_sync:
+    vdp_reg_mode_2_sync:
         move.w  (vdp_reg_mode2).w, (VDP_CTRL)
         rts
 
