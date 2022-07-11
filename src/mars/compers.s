@@ -16,10 +16,9 @@
     _comper_decompress:
         mov     #-1, r7
         shll8   r7
-        mov     #1, r2
 
+        sett
     .loop:
-        dt      r2
         bf      .descriptor_ok
 
         mov.w   @r4+, r3        ! Read next descriptor
@@ -52,12 +51,13 @@
         bf/s    1b
         add     #2, r5
         bra     .loop
-        nop
+        dt      r2
 
     .uncompressed:
         mov.w   r6, @r5
-        bra     .loop
         add     #2, r5
+        bra     .loop
+        dt      r2
 
     .exit:
         rts
