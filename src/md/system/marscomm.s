@@ -37,47 +37,45 @@
     |
     | Params:
     | - d0.w: non zero command id
+    | - d1.w: comm port base offset relative to MARS_REG_BASE
     |-------------------------------------------------------------------
     mars_comm:
         tst.w   %d0
         beq     .exit
 
-        move.l  %a6, -(%sp)
-        lea     (MARS_REG_BASE), %a6
-
         | Halt Z80 if not halted already
         btst    #0, (Z80_BUS_REQUEST)
         beq     2f
-        move.w  #0x100, (Z80_BUS_REQUEST)
+        move.w  #0x0100, (Z80_BUS_REQUEST)
     1:  btst    #0, (Z80_BUS_REQUEST)
         bne     1b
-        and     #0x1e, %ccr
-        bra     3f
-    2:  or      #0x01, %ccr
-    3:
+        pea     .z80_resume
+
+    2:  move.l  %a6, -(%sp)
+        lea     (MARS_REG_BASE), %a6
 
         | Give the 32X access to ROM (RV = 0)
         bclr    #0, MARS_DMAC + 1(%a6)
 
         | Clear response register
-        clr.w   MARS_COMM1(%a6)
+        clr.w   2(%a6, %d1.w)
 
         | Send command
-        move.w  %d0, MARS_COMM0(%a6)
+        move.w  %d0, (%a6, %d1.w)
 
         | Wait for command ready
-    1:  cmp.w   MARS_COMM1(%a6), %d0
+    1:  cmp.w   2(%a6, %d1.w), %d0
         bne     1b
 
         | Send ACK
-        clr.w   MARS_COMM0(%a6)
+        clr.w   (%a6, %d1.w)
 
         | Give MD access to ROM (RV = 1)
         bset    #0, MARS_DMAC + 1(%a6)
 
-        | Resume Z80 if we halted it
-        bcs     1f
-        move.w  #0, (Z80_BUS_REQUEST)
-    1:  move.l  (%sp)+, %a6
+        move.l  (%sp)+, %a6
     .exit:
+        rts
+    .z80_resume:
+        move.w  #0, (Z80_BUS_REQUEST)
         rts

@@ -6,13 +6,13 @@
 #ifndef __VDP_H__
 #define __VDP_H__
 
-#include "mars.h"
+#include "types.h"
 
 
 #define DISPLAY_MODE_BLANK          0x0000
 #define DISPLAY_MODE_PACKED         0x0001
 #define DISPLAY_MODE_DIRECT_COLOR   0x0002
-#define DISPLAY_MODE_REL            0x0003
+#define DISPLAY_MODE_RLE            0x0003
 
 
 extern void vdp_vsync_wait();

@@ -13,7 +13,7 @@
 #include "comper.h"
 
 
-static void process();
+static void process(u16* param_base);
 static void post_process();
 
 
@@ -35,12 +35,12 @@ static void reset_line_table()
 }
 
 
-static void process()
+static void process(u16* param_base)
 {
     // Disable display
     vdp_set_display_mode(DISPLAY_MODE_BLANK);
 
-    u16* palette = (u16*) (MARS_ROM + MARS_COMM4L);
+    u16* palette = (u16*) (MARS_ROM + *((u32*)param_base));
     u16 color_count = *palette++;
     u16* pixel_data = palette + color_count;
 

@@ -13,7 +13,7 @@
 #include "command.h"
 
 
-static void process();
+static void process(u16* param_base);
 static void post_process();
 
 
@@ -24,7 +24,7 @@ md_command CMD_DISABLE =
 };
 
 
-static void process()
+static void process(__attribute__((unused)) u16* param_base)
 {
     vdp_set_display_mode(DISPLAY_MODE_BLANK);
 }

@@ -5,6 +5,7 @@
  */
 
 #include "mars.h"
+#include "command.h"
 
 
 static void init()
@@ -21,5 +22,5 @@ void slave(void)
 {
     init();
 
-    while (1);
+    command_main(&MARS_COMM2);
 }

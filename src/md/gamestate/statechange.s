@@ -21,5 +21,5 @@
         move.w  #0xffff, (requested_game_state).w
         move.w  %d0, (current_game_state).w
 
-        mars_comm_safe MARSCOMM_DISABLE
+        mars_comm_disable
         rts
