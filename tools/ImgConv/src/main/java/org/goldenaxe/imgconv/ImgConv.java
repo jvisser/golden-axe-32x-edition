@@ -97,9 +97,9 @@ public class ImgConv implements Callable<Integer>
         outputStream.write(colorCount & 0xff);
         for (int i = 0; i < colorCount; i++)
         {
-            int red = (int) Math.round((double) colorModel.getRed(i) / 8);
-            int green = (int) Math.round((double) colorModel.getGreen(i) / 8);
-            int blue = (int) Math.round((double) colorModel.getBlue(i) / 8);
+            int red = colorModel.getRed(i) / 8;
+            int green = colorModel.getGreen(i) / 8;
+            int blue = colorModel.getBlue(i) / 8;
 
             int color = (blue << 10) | (green << 5) | red;
 
