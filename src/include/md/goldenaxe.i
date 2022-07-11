@@ -2,9 +2,16 @@
 | Golden Axe game constants/variables and subroutine addresses
 |--------------------------------------------------------------------
 
+    .ifnotdef   __GOLDEN_AXE_I__
+    .equ        __GOLDEN_AXE_I__, 1
+
     |-------------------------------------------------------------------
     | Constants
     |-------------------------------------------------------------------
+
+    | Bit numbers
+    .equ VBLANK_UPDATE_SPRITE_ATTR, 0x01
+    .equ VBLANK_UPDATE_CONTROLLER,  0x02
 
     | Game states
     .equ GAME_STATE_SEGA,           0x00
@@ -40,21 +47,4 @@
     .equ SONG_INTERMISSION,         0x8c
     .equ SONG_CREDITS,              0x8e
 
-
-    |-------------------------------------------------------------------
-    | Variables
-    |-------------------------------------------------------------------
-    .equ requested_game_state,      0xffffc170  | .w
-    .equ current_game_state,        0xffffc172  | .w
-
-    .equ vblank_update_flags,       0xffffc183  | .b
-
-    .equ vdp_reg_mode1,             0xffffc114  | .w in register set command format
-    .equ vdp_reg_mode2,             0xffffc116  | .w in register set command format
-
-
-    |-------------------------------------------------------------------
-    | Sub routines
-    |-------------------------------------------------------------------
-    .equ nemesis_decompress_vram,   0x002fc8
-    .equ sound_command,             0x0035e8
+    .endif

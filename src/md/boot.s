@@ -8,12 +8,25 @@
 
 
     |-------------------------------------------------------------------
-    | SH2 sub program(s) loaded by the 32X boot ROM. See 32X Header.
+    | Disable the nemesis decompression to RAM subroutine.
+    | We use the freed up RAM (about 15k!) for our .data/.bss sections
     |-------------------------------------------------------------------
-    .section sh2
-        .incbin "mars.bin"
+    patch_start 0x002fda
+        rts
+    patch_end
 
-    .text
+
+    |-------------------------------------------------------------------
+    | Disable the original game's clear RAM code.
+    | We don't want our .data/.bss sections to be erased later on
+    |-------------------------------------------------------------------
+    patch_start 0x000c1c
+        bra     0x000c26
+    patch_end
+
+    patch_start 0x000b28
+        bra     0x000b2e
+    patch_end
 
 
     |-------------------------------------------------------------------
@@ -58,19 +71,6 @@
     |-------------------------------------------------------------------
     patch_start 0x0003f0
         .incbin "ip.bin"
-    patch_end
-
-
-    |-------------------------------------------------------------------
-    | Patch out the original game's clear RAM routines.
-    | We don't want our .data/.bss sections to be erased
-    |-------------------------------------------------------------------
-    patch_start 0x000c1c
-        bra     0x000c26
-    patch_end
-
-    patch_start 0x000b28
-        bra     0x000b2e
     patch_end
 
 
@@ -138,8 +138,7 @@
             lea     (RAM_START), %a0
             move.w  #(RAM_SIZE / 4) - 1, %d0
             moveq   #0, %d1
-        1:
-            move.l  %d1, (%a0)+
+        1:  move.l  %d1, (%a0)+
             dbf     %d0, 1b
 
             | Copy initialized data to RAM

@@ -2,7 +2,7 @@
 | Called whenever the game state/mode changes
 |--------------------------------------------------------------------
 
-    .include "ga.i"
+    .include "goldenaxe.i"
     .include "marscomm.i"
     .include "patch.i"
 
