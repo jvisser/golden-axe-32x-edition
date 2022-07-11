@@ -32,6 +32,4 @@
         moveq   #120, %d0
     1:  jsr     vdp_vsync_wait
         dbf     %d0, 1b
-
-        move.w  #GAME_STATE_TITLE, requested_game_state
         rts
