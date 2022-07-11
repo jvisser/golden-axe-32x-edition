@@ -2,7 +2,8 @@
 | Add arcade background to result screen
 |--------------------------------------------------------------------
 
-    .include "ga.i"
+    .include "goldenaxe.i"
+    .include "marscomm.i"
     .include "patch.i"
 
 
@@ -15,6 +16,7 @@
     | Show arcade background
     |-------------------------------------------------------------------
     game_state_init_result:
-        jsr     img_load_dungeon_background
+        mars_comm_image img_dungeon_background
+
         move.w  #SONG_ENDING, %d7
         jmp     sound_command

@@ -2,7 +2,7 @@
 | Replace the sega logo game state subroutine.
 |--------------------------------------------------------------------
 
-    .include "ga.i"
+    .include "goldenaxe.i"
     .include "mars.i"
     .include "marscomm.i"
     .include "patch.i"
@@ -14,9 +14,6 @@
     patch_end
 
 
-    .equ audio_init,    0x0034bc
-
-
     |-------------------------------------------------------------------
     | Run custom sega logo code
     |-------------------------------------------------------------------
@@ -25,11 +22,19 @@
 
         jsr     vdp_disable_display
         jsr     vdp_reset
-        jsr     img_load_sega_logo
+
+        mars_comm_image img_sega_logo
+
         jsr     vdp_enable_display
 
         | Wait 2 seconds to show logo
-        moveq   #120, %d0
-    1:  jsr     vdp_vsync_wait
-        dbf     %d0, 1b
-        rts
+        moveq   #120, %d1
+    1:  move.w  #VBLANK_UPDATE_CONTROLLER, %d0
+        jsr     vdp_vsync_wait
+
+        move.b  (ctrl_player_1_changed).w, %d0
+        or.b    (ctrl_player_2_changed).w, %d0
+        andi.b  #0xf0, %d0                          | If any player pressed a/b/c/start exit
+        bne     1f
+        dbf     %d1, 1b
+    1:  rts

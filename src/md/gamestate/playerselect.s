@@ -3,6 +3,7 @@
 |--------------------------------------------------------------------
 
     .include "patch.i"
+    .include "marscomm.i"
 
 
     patch_start 0x004384
@@ -17,4 +18,6 @@
     game_state_init_player_select:
         ori     #0x0700, %sr
         jsr     vdp_disable_display
-        jmp     img_load_dungeon_background
+
+        mars_comm_image img_dungeon_background
+        rts
