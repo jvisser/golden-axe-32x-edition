@@ -8,23 +8,23 @@
  */
 
 #include "mars.h"
-#include "vdp.h"
 #include "command.h"
 #include "comper.h"
+#include "noop.h"
+#include "palette.h"
 
 
 static void process(u16* param_base);
-static void post_process();
 
 
-md_command CMD_IMAGE =
+command CMD_IMAGE =
 {
     process,
-    post_process
+    no_operation
 };
 
 
-static void reset_line_table()
+static void reset_line_table(void)
 {
     u16 offset = 256;
     for (u32 i = 0; i < 224; i++)
@@ -37,27 +37,15 @@ static void reset_line_table()
 
 static void process(u16* param_base)
 {
-    // Disable display
-    vdp_set_display_mode(DISPLAY_MODE_BLANK);
+    image_command_parameters* parameters = (image_command_parameters*) param_base;
 
-    u16* palette = (u16*) (MARS_ROM + *((u32*)param_base));
-    u16 color_count = *palette++;
+    u16* palette = (u16*) ROM_ADDR(parameters->data_address);
+    u16  color_count = *palette++;
     u16* pixel_data = palette + color_count;
-
-    // Compress directly into the framebuffer
-    comper_decompress(pixel_data, (MARS_FRAMEBUFFER + 256));
 
     reset_line_table();
 
-    vdp_update_palette(palette, 0, color_count);
-}
+    comper_decompress(pixel_data, (MARS_FRAMEBUFFER + 256)); // Decompress directly into the framebuffer
 
-
-static void post_process()
-{
-    // Set framebuffer to the front
-    vdp_swap_frame_buffer();
-
-    // Enable display
-    vdp_set_display_mode(DISPLAY_MODE_PACKED);
+    pal_replace(parameters->palette_id, palette, 0, color_count);
 }

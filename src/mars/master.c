@@ -8,7 +8,7 @@
 #include "command.h"
 
 
-static void init()
+static void init(void)
 {
     // Wait for the SH2 to gain access to the VDP
     while ((MARS_SYS_INTMSK & MARS_SYS_INTMSK_FM) == 0);

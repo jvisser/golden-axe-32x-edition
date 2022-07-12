@@ -8,22 +8,22 @@
     .include "patch.i"
 
 
+    |-------------------------------------------------------------------
+    | Run custom sega logo code
+    |-------------------------------------------------------------------
     patch_start 0x000db8
         jsr     game_state_handler_sega.l
         nop
     patch_end
 
-
-    |-------------------------------------------------------------------
-    | Run custom sega logo code
-    |-------------------------------------------------------------------
     game_state_handler_sega:
         jsr     audio_init.w
 
         jsr     vdp_disable_display
         jsr     vdp_reset
 
-        mars_comm_image img_sega_logo
+        lea     img_sega_logo, %a0
+        jsr     mars_comm_image_fade_in
 
         jsr     vdp_enable_display
 

@@ -69,11 +69,11 @@ SHOBJS      = $(SHSOBJS) $(SHCOBJS)
 MDPNGSRC    = $(wildcard $(ASSETSRC)/img/*.png)
 MDIMGS      = $(patsubst $(ASSETSRC)/img/%.png, $(MDASSETS)/img/%.img, $(MDPNGSRC))
 
-.PHONY: pre-build build-assets build-tools dump-gfx clean rebuild apply-patch
+.PHONY: pre-build build-tools dump-gfx clean rebuild apply-patch
 
 rebuild: clean release
 
-release: pre-build build-assets $(SHBUILD)/mars.bin $(BUILD)/patch.ips
+release: pre-build $(SHBUILD)/mars.bin $(BUILD)/patch.ips
 
 apply-patch: release $(BUILD)/rom.32x
 
@@ -91,8 +91,6 @@ dump-gfx:
 pre-build:
 	@mkdir -p $(MDASSETS)
 	@mkdir -p $(SHBUILD)
-
-build-assets: $(MDIMGS) $(MDASSETS)/amazon.pat
 
 # Assemble 32X SH2 assembly modules
 $(SHSOBJS): $(SHBUILD)/obj/%.o : $(SHSRC)/%.s
@@ -123,7 +121,7 @@ $(MDASSETS)/amazon.pat: $(ROM)
 $(MDIMGS): $(MDASSETS)/img/%.img : $(ASSETSRC)/img/%.png
 	java -jar $(JAVATOOLS)/ImgConv/target/ImgConv.jar $< $@
 
-$(MDBUILD)/obj/boot.o: $(SHBUILD)/mars.bin
+$(MDBUILD)/obj/resources.o: $(MDIMGS) $(MDASSETS)/amazon.pat $(SHBUILD)/mars.bin
 
 # Assemble MD m68k modules
 $(MDOBJS): $(MDBUILD)/obj/%.o : $(MDSRC)/%.s

@@ -132,7 +132,7 @@
         |-------------------------------------------------------------------
         init:
             | 32X sub program handshake
-            jsr     mars_comm_init
+            jsr     __mars_comm_init
 
             | Clear RAM
             lea     (RAM_START), %a0

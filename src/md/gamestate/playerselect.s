@@ -2,22 +2,25 @@
 | Add arcade background to player select
 |--------------------------------------------------------------------
 
+    .include "goldenaxe.i"
     .include "patch.i"
     .include "marscomm.i"
 
 
-    patch_start 0x004384
-        jsr     game_state_init_player_select.l
-        nop
+    |-------------------------------------------------------------------
+    | Load arcade background and initiate fade in
+    |-------------------------------------------------------------------
+    patch_start 0x004436
+        jmp     game_state_handler_player_select_init.l
     patch_end
 
+    game_state_handler_player_select_init:
+        move.l  %a0, -(%sp)
+        lea     img_dungeon_background, %a0
+        jsr     mars_comm_image_fade_in
+        movea.l (%sp)+, %a0
 
-    |-------------------------------------------------------------------
-    | Show arcade background
-    |-------------------------------------------------------------------
-    game_state_init_player_select:
-        ori     #0x0700, %sr
-        jsr     vdp_disable_display
+        jsr     palette_interpolate_full
 
-        mars_comm_image img_dungeon_background
-        rts
+        move.w  #SONG_TITLE, %d7
+        jmp     sound_command
