@@ -42,7 +42,7 @@
     .equ SONG_DEATH_BRINGER,        0x87
     .equ SONG_ENDING,               0x8d
     .equ SONG_GAME_OVER,            0x88
-    .equ SONG_TITLE,                0x89
+    .equ SONG_TITLE,                0x89        | Also for player select
     .equ SONG_CAMP,                 0x8b
     .equ SONG_INTERMISSION,         0x8c
     .equ SONG_CREDITS,              0x8e

@@ -23,7 +23,7 @@ public class MakeIPS implements Callable<Integer>
 
     @CommandLine.Option (names = {
             "-p", "--patch-content-file"
-    }, required = true, description = "The patch context file")
+    }, required = true, description = "The patch content file")
     Path patchContextPath;
 
     @CommandLine.Option (names = {

@@ -23,9 +23,7 @@
     vdp_disable_display:
         bclr    #6, (vdp_reg_mode2 + 1).w
         bsr     vdp_reg_mode_2_sync
-
-        mars_comm_disable
-        rts
+        jmp     mars_comm_display_disable
 
 
     |-------------------------------------------------------------------

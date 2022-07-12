@@ -4,14 +4,16 @@
 
 #include "command.h"
 
-extern md_command CMD_DISABLE;
-extern md_command CMD_IMAGE;
+extern command CMD_DISPLAY;
+extern command CMD_IMAGE;
+extern command CMD_PALETTE;
 
 
-static md_command* commands[] =
+static command* commands[] =
 {
-    &CMD_DISABLE,
+    &CMD_DISPLAY,
     &CMD_IMAGE,
+    &CMD_PALETTE,
 };
 
 
@@ -28,7 +30,7 @@ void command_main(volatile u16* comm_base)
         while (!(commandId = *comm0));
 
         // Handle command
-        md_command* command = commands[commandId - 1];
+        command* command = commands[commandId - 1];
 
         // Only need param to be volatile within this loop the value is constant when processing the command.
         command->process((u16*) param);
