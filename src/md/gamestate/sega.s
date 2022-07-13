@@ -17,10 +17,9 @@
     patch_end
 
     game_state_handler_sega:
-        jsr     audio_init.w
-
         jsr     vdp_disable_display
         jsr     vdp_reset
+        jsr     audio_init.w
 
         lea     (img_sega_logo), %a0
         jsr     mars_comm_image_fade_in
@@ -34,7 +33,13 @@
 
         move.b  (ctrl_player_1_changed), %d0
         or.b    (ctrl_player_2_changed), %d0
-        andi.b  #0xf0, %d0                          | If any player pressed a/b/c/start exit
-        bne     1f
+        andi.b  #0xf0, %d0                          | If any player pressed a/b/c/start exit immediately
+        bne     3f
         dbf     %d1, 1b
-    1:  rts
+
+        | Fade out and wait (takes 16 frames)
+        jsr     mars_comm_palette_fade_out
+        moveq   #16, %d1
+    2:  jsr     vdp_vsync_wait
+        dbf     %d1, 2b
+    3:  rts
