@@ -17,7 +17,7 @@
     patch_end
 
     state_change_handler:
-        move.w  #0xffff, (requested_game_state).w
-        move.w  %d0, (current_game_state).w
+        move.w  #0xffff, (requested_game_state)
+        move.w  %d0, (current_game_state)
 
         jmp     mars_comm_display_disable

@@ -14,7 +14,7 @@
  * +--------------------+
  * .                    .
  * .                    .
- * +--------------------+ <- 0x00ff8200 (RAM)
+ * +--------------------+ <- 0xffff8200 (RAM)
  * | .data              |   Use the top part of the 0xff8000 - 0xffbc20 (~15k) dynamic RAM area which was mainly used for decompressed tile data of the amazon entity.
  * |                    |   The lower part is still used by the game credits though (up until 0xff8200).
  * |                    |   This allows us to use the absolute short addressing mode of the 68k nicely
@@ -35,7 +35,7 @@ MEMORY
 	ROM (rx)        : ORIGIN = 0x00000000, LENGTH = 0x00080000
 	ROM_EXT (rx)    : ORIGIN = 0x00080000, LENGTH = 0x00380000
 	PATCH_IDX (r)   : ORIGIN = 0x00400000, LENGTH = 0x00080000
-	RAM (rwx)       : ORIGIN = 0x00ff8200, LENGTH = 0x00003a20
+	RAM (rwx)       : ORIGIN = 0xffff8200, LENGTH = 0x00003a20
 }
 
 

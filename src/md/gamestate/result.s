@@ -16,7 +16,7 @@
 
     game_state_handler_result_init:
         move.l  %a0, -(%sp)
-        lea     img_dungeon_background, %a0
+        lea     (img_dungeon_background), %a0
         jsr     mars_comm_image_fade_in
         movea.l (%sp)+, %a0
 

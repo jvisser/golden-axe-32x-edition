@@ -21,7 +21,7 @@
     patch_end
 
     vdp_disable_display:
-        bclr    #6, (vdp_reg_mode2 + 1).w
+        bclr    #6, (vdp_reg_mode2 + 1)
         bsr     vdp_reg_mode_2_sync
         jmp     mars_comm_display_disable
 
@@ -34,14 +34,14 @@
     patch_end
 
     vdp_enable_display:
-        bset    #6, (vdp_reg_mode2 + 1).w
+        bset    #6, (vdp_reg_mode2 + 1)
 
 
     |-------------------------------------------------------------------
     | Sync mode 2 shadow register with the VDP
     |-------------------------------------------------------------------
     vdp_reg_mode_2_sync:
-        move.w  (vdp_reg_mode2).w, (VDP_CTRL)
+        move.w  (vdp_reg_mode2), (VDP_CTRL)
         rts
 
 

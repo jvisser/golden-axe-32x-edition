@@ -17,6 +17,6 @@
     mars_palette_fadeout:
         jsr     mars_comm_palette_fade_out
 
-        lea     palette_target, %a1
+        lea     (palette_target), %a1
         moveq   #7, %d1
         rts
