@@ -9,36 +9,29 @@
 
 
     |--------------------------------------------------------------------
-    | Commands
+    | Command processor
     |--------------------------------------------------------------------
     .equ MARSCOMM_MASTER,                   MARS_COMM0
     .equ MARSCOMM_SLAVE,                    MARS_COMM2
 
 
     |--------------------------------------------------------------------
-    | Commands and subcommands
+    | Commands
     |--------------------------------------------------------------------
-    | Palette id used by image and palette commands
-    .equ MARSCOMM_PALETTE_0,                0x00000000
-    .equ MARSCOMM_PALETTE_1,                0x01000000
 
+    .equ MARSCOMM_CMD_DISPLAY_ENABLE,       0x0100
+    .equ MARSCOMM_CMD_DISPLAY_DISABLE,      0x0101
+    .equ MARSCOMM_CMD_DISPLAY_SWAP,         0x0102
 
-    .equ MARSCOMM_CMD_DISPLAY,              0x01
-    | Sub commands
-    .equ MARSCOMM_CMD_DISPLAY_ENABLE,       0x0000
-    .equ MARSCOMM_CMD_DISPLAY_DISABLE,      0x0001
-    .equ MARSCOMM_CMD_DISPLAY_SWAP,         0x0002
+    .equ MARSCOMM_CMD_IMAGE_PAL0,           0x0200
+    .equ MARSCOMM_CMD_IMAGE_PAL1,           0x0201
 
-
-    .equ MARSCOMM_CMD_IMAGE,                0x02
-
-
-    .equ MARSCOMM_CMD_PALETTE,              0x03
-    | Sub commands
-    .equ MARSCOMM_CMD_PALETTE_FILL,         0x00000000
-    .equ MARSCOMM_CMD_PALETTE_LOAD,         0x10000000
-    .equ MARSCOMM_CMD_PALETTE_COMMIT,       0x20000000
-    .equ MARSCOMM_CMD_PALETTE_TRANSITION,   0x30000000
+    .equ MARSCOMM_CMD_PALETTE_FILL_PAL0,    0x0300
+    .equ MARSCOMM_CMD_PALETTE_FILL_PAL1,    0x0301
+    .equ MARSCOMM_CMD_PALETTE_LOAD_PAL0,    0x0302
+    .equ MARSCOMM_CMD_PALETTE_LOAD_PAL1,    0x0303
+    .equ MARSCOMM_CMD_PALETTE_COMMIT,       0x0304
+    .equ MARSCOMM_CMD_PALETTE_TRANSITION,   0x0306
 
 
     |--------------------------------------------------------------------

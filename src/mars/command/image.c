@@ -2,9 +2,6 @@
  * Image command
  *
  * Load and display the specified image
- *
- * Parameters:
- * - COMM4L: ROM offset of the compressed image data
  */
 
 #include "mars.h"
@@ -14,7 +11,7 @@
 #include "palette.h"
 
 
-static void process(u16* param_base);
+static void process(u16* image_data_address, u32 command_id);
 
 
 command CMD_IMAGE =
@@ -35,17 +32,15 @@ static void reset_line_table(void)
 }
 
 
-static void process(u16* param_base)
+static void process(u16* image_data_address, u32 command_id)
 {
-    image_command_parameters* parameters = (image_command_parameters*) param_base;
-
-    u16* palette = (u16*) ROM_ADDR(parameters->data_address);
+    u16* palette = (u16*) ROM_ADDR(*(u32*)image_data_address);
     u16  color_count = *palette++;
     u16* pixel_data = palette + color_count;
+
+    pal_replace(command_id & 0xff, palette, 0, color_count);
 
     reset_line_table();
 
     comper_decompress(pixel_data, (MARS_FRAMEBUFFER + 256)); // Decompress directly into the framebuffer
-
-    pal_replace(parameters->palette_id, palette, 0, color_count);
 }

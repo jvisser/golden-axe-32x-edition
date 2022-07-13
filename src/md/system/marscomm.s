@@ -23,7 +23,7 @@
     |--------------------------------------------------------------------
     mars_comm_display_disable:
         mars_comm_call_start
-        mars_comm_p1 MARSCOMM_SLAVE, MARSCOMM_CMD_DISPLAY, #MARSCOMM_CMD_DISPLAY_DISABLE
+        mars_comm   MARSCOMM_SLAVE, MARSCOMM_CMD_DISPLAY_DISABLE
         mars_comm_call_end
         rts
 
@@ -33,7 +33,7 @@
     |--------------------------------------------------------------------
     mars_comm_display_enable:
         mars_comm_call_start
-        mars_comm_p1 MARSCOMM_SLAVE, MARSCOMM_CMD_DISPLAY, #MARSCOMM_CMD_DISPLAY_ENABLE
+        mars_comm   MARSCOMM_SLAVE, MARSCOMM_CMD_DISPLAY_ENABLE
         mars_comm_call_end
         rts
 
@@ -43,8 +43,8 @@
     |--------------------------------------------------------------------
     mars_comm_palette_fade_in:
         mars_comm_call_start
-        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE, #MARSCOMM_CMD_PALETTE_FILL
-        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE, #MARSCOMM_CMD_PALETTE_TRANSITION
+        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE_FILL_PAL0, #0x00ff0000
+        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE_TRANSITION
         mars_comm_call_end
         rts
 
@@ -54,8 +54,8 @@
     |--------------------------------------------------------------------
     mars_comm_palette_fade_out:
         mars_comm_call_start
-        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE, #0x01000000  | How the hell do you pass #MARSCOMM_CMD_PALETTE_FILL|MARSCOMM_PALETTE_1 as a macro argument?
-        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE, #MARSCOMM_CMD_PALETTE_TRANSITION
+        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE_FILL_PAL1, #0x00ff0000
+        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE_TRANSITION
         mars_comm_call_end
         rts
 
@@ -68,13 +68,11 @@
     |--------------------------------------------------------------------
     mars_comm_image:
         mars_comm_call_start
-
-        mars_comm_p1 MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY, #MARSCOMM_CMD_DISPLAY_DISABLE
-        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_IMAGE, %a0
-        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE, #MARSCOMM_CMD_PALETTE_COMMIT
-        mars_comm_p1 MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY, #MARSCOMM_CMD_DISPLAY_SWAP
-        mars_comm_p1 MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY, #MARSCOMM_CMD_DISPLAY_ENABLE
-
+        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY_DISABLE
+        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_IMAGE_PAL0, %a0
+        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE_COMMIT
+        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY_SWAP
+        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY_ENABLE
         mars_comm_call_end
         rts
 
@@ -87,23 +85,13 @@
     |--------------------------------------------------------------------
     mars_comm_image_fade_in:
         mars_comm_call_start
-
-        move.l  %d0, -(%sp)
-
-        | Store image palette in the target palette on the 32X
-        move.l  %a0, %d0
-        ori.l   #MARSCOMM_PALETTE_1, %d0
-
-        mars_comm_p1 MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY, #MARSCOMM_CMD_DISPLAY_DISABLE
-        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE, #MARSCOMM_CMD_PALETTE_FILL
-        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE, #MARSCOMM_CMD_PALETTE_COMMIT
-        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_IMAGE, %d0
-        mars_comm_p1 MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY, #MARSCOMM_CMD_DISPLAY_SWAP
-        mars_comm_p1 MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY, #MARSCOMM_CMD_DISPLAY_ENABLE
-        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE, #MARSCOMM_CMD_PALETTE_TRANSITION
-
-        move.l  (%sp)+, %d0
-
+        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY_DISABLE
+        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE_FILL_PAL0, #0x00ff0000
+        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE_COMMIT
+        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_IMAGE_PAL1, %a0
+        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY_SWAP
+        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY_ENABLE
+        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE_TRANSITION
         mars_comm_call_end
         rts
 
