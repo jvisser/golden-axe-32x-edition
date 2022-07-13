@@ -1,10 +1,5 @@
 /*
- * Disable command
- *
- * Disables the 32X display and clears the front facing framebuffer.
- *
- * Parameters:
- * - None
+ * Display commands
  */
 
 #include "mars.h"
@@ -14,7 +9,7 @@
 #include "command.h"
 
 
-static void process();
+static void process(u16* param_base, u32 command_id);
 
 
 command CMD_DISPLAY =
@@ -24,11 +19,9 @@ command CMD_DISPLAY =
 };
 
 
-static void process(u16* param_base)
+static void process(u16* param_base, u32 command_id)
 {
-    display_command_parameters* parameters = (display_command_parameters*) param_base;
-
-    switch (parameters->sub_command)
+    switch (command_id & 0xff)
     {
         case CMD_DISPLAY_ENABLE:
             vdp_set_display_mode(DISPLAY_MODE_PACKED);

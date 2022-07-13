@@ -49,6 +49,6 @@
 #define MARS_VDP_FBCTL_FS               0x0001
 
 
-#define ROM_ADDR(address)               (MARS_ROM + ((address) & 0x00ffffff))
+#define ROM_ADDR(address)               (MARS_ROM + (u32) (address))
 
 #endif

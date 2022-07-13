@@ -48,7 +48,7 @@ MDASFLAGS   = -m68000 $(MDINCLUDE)
 SHASFLAGS   = --small $(SHINCLUDE)
 
 # Linker flags
-MDLDFLAGS   = -L $(MDBUILD) -T $(MDSRC)/md.ld -nostdlib -N -x
+MDLDFLAGS   = -L $(MDBUILD) -T $(MDSRC)/md.ld -nostdlib -N
 SHLDFLAGS   = -T $(SHSRC)/mars.ld -nostdlib
 
 # C compiler flags

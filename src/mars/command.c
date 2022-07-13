@@ -26,22 +26,21 @@ void command_main(volatile u16* comm_base)
     while (1)
     {
         // Wait for command from the MD
-        u16 commandId;
-        while (!(commandId = *comm0));
-
-        // Handle command
-        command* command = commands[commandId - 1];
+        u16 command_id;
+        while (!(command_id = *comm0));
 
         // Only need param to be volatile within this loop the value is constant when processing the command.
-        command->process((u16*) param);
+        command* command = commands[(command_id >> 8) - 1];
+
+        command->process((u16*) param, command_id);
 
         // Send ready signal to MD
-        *comm1 = commandId;
+        *comm1 = command_id;
 
         // Wait for ACK from MD
         while (*comm0);
 
         // Run post command tasks
-        command->post_process();
+        command->post_process(command_id);
     }
 }
