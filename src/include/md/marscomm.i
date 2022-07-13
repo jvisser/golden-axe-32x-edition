@@ -65,7 +65,7 @@
     .macro mars_comm port, command
         move.w  #\command, %d5
         move.w  #\port, %d6
-        jsr     __mars_comm
+        jsr     __mars_comm.w
     .endm
 
 

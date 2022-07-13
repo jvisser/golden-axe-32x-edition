@@ -94,56 +94,67 @@ pre-build:
 
 # Assemble 32X SH2 assembly modules
 $(SHSOBJS): $(SHBUILD)/obj/%.o : $(SHSRC)/%.s
-	@echo "SHAS $<"
+	@echo "SHAS $@: $<"
 	@mkdir -p $(dir $@)
 	@$(SHAS) $(SHASFLAGS) $(SHINCLUDE) $< -o $@
 
 # Assemble 32X SH2 c modules
 $(SHCOBJS): $(SHBUILD)/obj/%.o : $(SHSRC)/%.c
-	@echo "SHCC $<"
+	@echo "SHCC $@: $<"
 	@mkdir -p $(dir $@)
 	@$(SHCC) $(SHCCFLAGS) $(SHINCLUDE) -c $< -o $@
 
 # Link 32X sub program
 $(SHBUILD)/mars.elf: $(SHOBJS)
+	@echo "SHCC(LD) $@: $?"
 	@$(SHCC) $(SHLDFLAGS) $(SHOBJS) -o $@ $(SHLIBS)
 
 # Create 32X sub program binary
 $(SHBUILD)/mars.bin: $(SHBUILD)/mars.elf
-	$(SHOBJC) -O binary $< $@
+	@echo "SHOBJC $@: $<"
+	@$(SHOBJC) -O binary $< $@
 
 # Extract amazon tile data
 $(MDASSETS)/amazon.pat: $(ROM)
-	echo "$(MDIMGS)"
-	$(TOOLSBIN)/nemcmp -x0x7A25A $< $@
+	@echo "NEMCMP $@: $<"
+	@$(TOOLSBIN)/nemcmp -x0x7A25A $< $@
 
 # Transform images
 $(MDIMGS): $(MDASSETS)/img/%.img : $(ASSETSRC)/img/%.png
-	java -jar $(JAVATOOLS)/ImgConv/target/ImgConv.jar $< $@
+	@echo "IMGCONV $@: $<"
+	@java -jar $(JAVATOOLS)/ImgConv/target/ImgConv.jar $< $@
 
 $(MDBUILD)/obj/resources.o: $(MDIMGS) $(MDASSETS)/amazon.pat $(SHBUILD)/mars.bin
 
 # Assemble MD m68k modules
 $(MDOBJS): $(MDBUILD)/obj/%.o : $(MDSRC)/%.s
-	@echo "MDAS $<"
+	@echo "MDAS $@: $<"
 	@mkdir -p $(dir $@)
 	@$(MDAS) $(MDASFLAGS) $< -o $@
 
 # Generate intermediate MD object file used to generate the linker script include file for the patches
 $(MDBUILD)/patch.o: $(MDOBJS)
+	@echo "MDLD $@: $?"
 	@$(MDLD) -relocatable $(MDOBJS) -o $@
 
+# Generate linker script for patches
+$(MDBUILD)/patch.ld.generated: $(MDBUILD)/patch.o
+	@echo "MAKE_PATCH_LD $@: $<"
+	@scripts/make_patch_ld $(MDSIZE) $< $@
+
 # Generate linked output
-$(MDBUILD)/patch.elf: $(MDBUILD)/patch.o
-	@scripts/make_patch_ld $(MDSIZE) $< $(MDBUILD)/patch.ld.generated
-	$(MDLD) $(MDLDFLAGS) $< -o $@
+$(MDBUILD)/patch.elf: $(MDBUILD)/patch.o $(MDBUILD)/patch.ld.generated
+	@echo "MDLD $@: $?"
+	@$(MDLD) $(MDLDFLAGS) $< -o $@
 
 # Generate .ips file
 $(BUILD)/patch.ips: $(MDBUILD)/patch.elf
+	@echo "MAKEIPS $@: $<"
 	@$(MDOBJC) -O binary $< $(MDBUILD)/patch.bin
 	@$(MDOBJC) --dump-section patch_index=$(MDBUILD)/patch.index $<
-	java -jar $(JAVATOOLS)/MakeIPS/target/MakeIPS.jar -i $(MDBUILD)/patch.index -p $(MDBUILD)/patch.bin $@
+	@java -jar $(JAVATOOLS)/MakeIPS/target/MakeIPS.jar -i $(MDBUILD)/patch.index -p $(MDBUILD)/patch.bin $@
 
 # Apply patch and create patched ROM image file for testing
 $(BUILD)/rom.32x: $(BUILD)/patch.ips
-	flips --apply --ips $< $(ROM) $@
+	@echo "FLIPS $@: $<"
+	@flips --apply --ips $< $(ROM) $@

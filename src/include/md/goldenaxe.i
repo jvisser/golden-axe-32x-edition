@@ -6,6 +6,37 @@
     .equ        __GOLDEN_AXE_I__, 1
 
     |-------------------------------------------------------------------
+    | Variables
+    |-------------------------------------------------------------------
+    .equ requested_game_state,      0xffffc170  | .w
+    .equ current_game_state,        0xffffc172  | .w
+
+    .equ vblank_update_flags,       0xffffc183  | .b
+
+    .equ vdp_reg_mode1,             0xffffc114  | .w in register set command format
+    .equ vdp_reg_mode2,             0xffffc116  | .w in register set command format
+
+    .equ ctrl_player_1,             0xffffc176  | .b
+    .equ ctrl_player_1_changed,     0xffffc177  | .b
+    .equ ctrl_player_2,             0xffffc178  | .b
+    .equ ctrl_player_2_changed,     0xffffc179  | .b
+
+    .equ palette_base,              0xffffc000
+    .equ palette_target,            0xffffc080
+
+
+    |-------------------------------------------------------------------
+    | Original golden axe sub routines
+    |-------------------------------------------------------------------
+    .equ nemesis_decompress_vram,   0x00002fc8
+    .equ audio_init,                0x000034bc
+    .equ sound_command,             0x000035e8
+    .equ vblank_int_handler,        0x00000cf6
+    .equ vdp_reset,                 0x00000df6
+    .equ palette_interpolate_full,  0x00003126
+
+
+    |-------------------------------------------------------------------
     | Constants
     |-------------------------------------------------------------------
 

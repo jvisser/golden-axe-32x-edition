@@ -54,7 +54,7 @@
     |--------------------------------------------------------------------
     mars_comm_palette_fade_out:
         mars_comm_call_start
-        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE, #0x01000000  | How the hell do you pass #MARSCOMM_CMD_PALETTE_FILL|MARSCOMM_PALETTE_1 as an argument?
+        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE, #0x01000000  | How the hell do you pass #MARSCOMM_CMD_PALETTE_FILL|MARSCOMM_PALETTE_1 as a macro argument?
         mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE, #MARSCOMM_CMD_PALETTE_TRANSITION
         mars_comm_call_end
         rts
@@ -100,7 +100,7 @@
         mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_IMAGE, %d0
         mars_comm_p1 MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY, #MARSCOMM_CMD_DISPLAY_SWAP
         mars_comm_p1 MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY, #MARSCOMM_CMD_DISPLAY_ENABLE
-        mars_comm_lp MARSCOMM_SLAVE, MARSCOMM_CMD_PALETTE, #MARSCOMM_CMD_PALETTE_TRANSITION
+        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE, #MARSCOMM_CMD_PALETTE_TRANSITION
 
         move.l  (%sp)+, %d0
 

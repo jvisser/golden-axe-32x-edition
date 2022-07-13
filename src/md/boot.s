@@ -123,7 +123,7 @@
             bset    #0, MARS_DMAC + 1(%a6)
 
             | Jump to init code in ROM
-            jmp     (init).w
+            jmp     init.w                      | Need to force abs short or else it gets optimized to a relative branch
         init_boot_strap_end:
 
 
