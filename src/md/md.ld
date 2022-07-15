@@ -75,8 +75,10 @@ SECTIONS
         _data = .;
 
         *(.data .data.*)
+        . = ALIGN(2);
     } > RAM
     _data_size = SIZEOF(.data);
+    _data_size_w = _data_size / 2;
 
     .bss :
     {

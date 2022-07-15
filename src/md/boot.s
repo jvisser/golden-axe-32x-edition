@@ -144,9 +144,7 @@
             | Copy initialized data to RAM
             lea     (_data_source), %a0
             lea     (_data), %a1
-            move.w  #_data_size + 1, %d0
-            lsr.w   #1, %d0
-            subq.w  #1, %d0
+            move.w  #_data_size_w - 1, %d0
         1:  move.w  (%a0)+, (%a1)+
             dbf     %d0, 1b
 
