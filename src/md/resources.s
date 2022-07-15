@@ -2,11 +2,6 @@
 | Global resources
 |--------------------------------------------------------------------
 
-    .include "patch.i"
-    .include "mars.i"
-    .include "marscomm.i"
-
-
     .global img_sega_logo
     .global img_dungeon_background
 
