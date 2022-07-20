@@ -51,4 +51,10 @@
 
 #define ROM_ADDR(address)               (MARS_ROM + (u32) (address))
 
+
+// There is no memory allocator atm.
+// This can be used as free memory up until the top of the master cpu stack.
+extern u8* __free_ram_start;
+
+
 #endif

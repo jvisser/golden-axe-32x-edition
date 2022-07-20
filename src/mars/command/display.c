@@ -9,7 +9,7 @@
 #include "command.h"
 
 
-static void process(u16* param_base, u32 command_id);
+static void process(u32 command_id, u16* param_base);
 
 
 command CMD_DISPLAY =
@@ -19,7 +19,7 @@ command CMD_DISPLAY =
 };
 
 
-static void process(u16* param_base, u32 command_id)
+static void process(u32 command_id, u16* param_base)
 {
     switch (command_id & 0xff)
     {

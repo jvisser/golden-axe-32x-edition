@@ -1,5 +1,7 @@
 |--------------------------------------------------------------------
 | 32X sub program commands
+|
+| GAS macros are way too limited :(
 |--------------------------------------------------------------------
 
     .ifnotdef   __MARS_COMM_I__
@@ -32,6 +34,11 @@
     .equ MARSCOMM_CMD_PALETTE_LOAD_PAL1,    0x0303
     .equ MARSCOMM_CMD_PALETTE_COMMIT,       0x0304
     .equ MARSCOMM_CMD_PALETTE_TRANSITION,   0x0306
+    .equ MARSCOMM_CMD_PALETTE_SUBTRACT,     0x0308
+    .equ MARSCOMM_CMD_PALETTE_COPY_PAL0,    0x030a
+    .equ MARSCOMM_CMD_PALETTE_COPY_PAL1,    0x030b
+
+    .equ MARSCOMM_CMD_VERTICAL_SCROLL,      0x0400
 
 
     |--------------------------------------------------------------------
@@ -53,10 +60,20 @@
 
 
     |--------------------------------------------------------------------
-    | Ensures all used registers are preserved
+    | Run command using immediate value
     |--------------------------------------------------------------------
     .macro mars_comm port, command
         move.w  #\command, %d5
+        move.w  #\port, %d6
+        jsr     __mars_comm.w
+    .endm
+
+
+    |--------------------------------------------------------------------
+    | Run command using variable command value
+    |--------------------------------------------------------------------
+    .macro mars_comm_dyn_cmd port, command
+        move.w  \command, %d5
         move.w  #\port, %d6
         jsr     __mars_comm.w
     .endm

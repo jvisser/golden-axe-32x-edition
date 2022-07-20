@@ -16,6 +16,9 @@
     .global mars_comm_palette_fade_out
     .global mars_comm_image
     .global mars_comm_image_fade_in
+    .global mars_comm_vertical_scroll
+    .global mars_comm_palette_subtract
+    .global mars_comm_palette_finalize
 
 
     |--------------------------------------------------------------------
@@ -43,8 +46,8 @@
     |--------------------------------------------------------------------
     mars_comm_palette_fade_in:
         mars_comm_call_start
-        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE_FILL_PAL0, #0x00ff0000
-        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE_TRANSITION
+        mars_comm_lp MARSCOMM_SLAVE, MARSCOMM_CMD_PALETTE_FILL_PAL0,  #0x00ff0000
+        mars_comm_lp MARSCOMM_SLAVE, MARSCOMM_CMD_PALETTE_TRANSITION, #0x00ff0842
         mars_comm_call_end
         rts
 
@@ -54,8 +57,38 @@
     |--------------------------------------------------------------------
     mars_comm_palette_fade_out:
         mars_comm_call_start
-        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE_FILL_PAL1, #0x00ff0000
-        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE_TRANSITION
+        mars_comm_lp MARSCOMM_SLAVE, MARSCOMM_CMD_PALETTE_FILL_PAL1,  #0x00ff0000
+        mars_comm_lp MARSCOMM_SLAVE, MARSCOMM_CMD_PALETTE_TRANSITION, #0x00ff0842
+        mars_comm_call_end
+        rts
+
+
+    |--------------------------------------------------------------------
+    | Subtract the specified color value from the current palette
+    |
+    | Parameters:
+    | - d0.w: color value
+    |--------------------------------------------------------------------
+    mars_comm_palette_subtract:
+        mars_comm_call_start
+        move.w  %d0, -(%sp)
+
+        swap    %d0
+        move.w  #0x00ff, %d0
+        swap    %d0
+        mars_comm_lp MARSCOMM_SLAVE, MARSCOMM_CMD_PALETTE_SUBTRACT, %d0
+
+        move.w  (%sp)+, %d0
+        mars_comm_call_end
+        rts
+
+
+    |--------------------------------------------------------------------
+    | Set the target palette equal to the current palette
+    |--------------------------------------------------------------------
+    mars_comm_palette_finalize:
+        mars_comm_call_start
+        mars_comm   MARSCOMM_SLAVE, MARSCOMM_CMD_PALETTE_COPY_PAL0
         mars_comm_call_end
         rts
 
@@ -64,7 +97,7 @@
     | Load and show an image on the 32X
     |
     | Parameters:
-    |- a0: image address
+    | - a0: image address
     |--------------------------------------------------------------------
     mars_comm_image:
         mars_comm_call_start
@@ -81,7 +114,7 @@
     | Load an image on the 32X and fade in
     |
     | Parameters:
-    |- a0: image address
+    | - a0: image address
     |--------------------------------------------------------------------
     mars_comm_image_fade_in:
         mars_comm_call_start
@@ -91,7 +124,26 @@
         mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_IMAGE_PAL1, %a0
         mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY_SWAP
         mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY_ENABLE
-        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE_TRANSITION
+        mars_comm_lp MARSCOMM_SLAVE,  MARSCOMM_CMD_PALETTE_TRANSITION, #0x00ff0842
+        mars_comm_call_end
+        rts
+
+
+    |--------------------------------------------------------------------
+    | Update 32X linetable for vertical scrolling 256 line image
+    |
+    | Parameters:
+    | - d0.w: vertical scroll value
+    |--------------------------------------------------------------------
+    mars_comm_vertical_scroll:
+        mars_comm_call_start
+        move.w  %d0, -(%sp)
+        andi.w  #0xff, %d0
+        ori.w   #MARSCOMM_CMD_VERTICAL_SCROLL, %d0
+
+        mars_comm_dyn_cmd MARSCOMM_MASTER, %d0
+
+        move.w  (%sp)+, %d0
         mars_comm_call_end
         rts
 
@@ -115,7 +167,7 @@
 
 
     .data       | Use the .data section to store this routine in RAM allowing RV switching
-    .align  2
+    .balign 2
 
     |-------------------------------------------------------------------
     | Send command to the 32X sub program.

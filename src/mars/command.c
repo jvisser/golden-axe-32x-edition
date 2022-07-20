@@ -7,6 +7,7 @@
 extern command CMD_DISPLAY;
 extern command CMD_IMAGE;
 extern command CMD_PALETTE;
+extern command CMD_VERTICAL_SCROLL;
 
 
 static command* commands[] =
@@ -14,6 +15,7 @@ static command* commands[] =
     &CMD_DISPLAY,
     &CMD_IMAGE,
     &CMD_PALETTE,
+    &CMD_VERTICAL_SCROLL
 };
 
 
@@ -21,7 +23,9 @@ void command_main(volatile u16* comm_base)
 {
     volatile u16* comm0 = comm_base;
     volatile u16* comm1 = comm_base + 1;
-    volatile u16* param = comm_base + 4;
+    volatile u32* param = (u32*)(comm_base + 4);
+
+    u32 command_param;
 
     while (1)
     {
@@ -29,10 +33,14 @@ void command_main(volatile u16* comm_base)
         u16 command_id;
         while (!(command_id = *comm0));
 
-        // Only need param to be volatile within this loop the value is constant when processing the command.
+        // Copy parameters
+        command_param = *param;
+
+        // Get command handler
         command* command = commands[(command_id >> 8) - 1];
 
-        command->process((u16*) param, command_id);
+        // Run command main task
+        command->process(command_id, (u16*) &command_param);
 
         // Send ready signal to MD
         *comm1 = command_id;
@@ -41,6 +49,6 @@ void command_main(volatile u16* comm_base)
         while (*comm0);
 
         // Run post command tasks
-        command->post_process(command_id);
+        command->post_process(command_id, (u16*) &command_param);
     }
 }
