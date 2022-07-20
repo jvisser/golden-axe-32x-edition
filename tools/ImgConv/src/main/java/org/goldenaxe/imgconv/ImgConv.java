@@ -79,11 +79,11 @@ public class ImgConv implements Callable<Integer>
         if (image.getType() != BufferedImage.TYPE_BYTE_INDEXED)
         {
             throw new IllegalArgumentException(
-                    format("Incorrect image type (%d). Only TYPE_BYTE_INDEXED supported.", image.getType()));
+                    format("Incorrect image type (%d). Only TYPE_BYTE_INDEXED(%d) supported.", image.getType(), BufferedImage.TYPE_BYTE_INDEXED));
         }
-        if (image.getWidth() != 320 && image.getHeight() != 224)
+        if (image.getWidth() != 320)
         {
-            throw new IllegalArgumentException("Image width and height must be 320x224");
+            throw new IllegalArgumentException("Image width should be 320px");
         }
 
         return image;

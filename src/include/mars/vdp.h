@@ -20,7 +20,7 @@ extern void vdp_clear_frame_buffer(void);
 extern void vdp_set_display_mode(u32 mode);
 extern void vdp_swap_frame_buffer(void);
 extern void vdp_update_palette(u16* colors, u32 offset, u32 count);
-extern u32 vdp_enabled(void);
+extern u32  vdp_enabled(void);
 
 
 #endif

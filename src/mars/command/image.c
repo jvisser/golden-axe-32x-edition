@@ -11,7 +11,7 @@
 #include "palette.h"
 
 
-static void process(u16* image_data_address, u32 command_id);
+static void process(u32 command_id, u16* image_data_address);
 
 
 command CMD_IMAGE =
@@ -32,13 +32,13 @@ static void reset_line_table(void)
 }
 
 
-static void process(u16* image_data_address, u32 command_id)
+static void process(u32 command_id, u16* image_data_address)
 {
     u16* palette = (u16*) ROM_ADDR(*(u32*)image_data_address);
     u16  color_count = *palette++;
     u16* pixel_data = palette + color_count;
 
-    pal_replace(command_id & 0xff, palette, 0, color_count);
+    pal_replace(command_id & 0xff, 0, color_count, palette);
 
     reset_line_table();
 
