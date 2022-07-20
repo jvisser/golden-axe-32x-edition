@@ -15,6 +15,7 @@
     patch_end
 
     mars_palette_fadeout:
+        jsr     mars_comm_palette_finalize
         jsr     mars_comm_palette_fade_out
 
         lea     (palette_target), %a1
