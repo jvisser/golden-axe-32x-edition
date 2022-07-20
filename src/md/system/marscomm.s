@@ -87,16 +87,6 @@
 
 
     |--------------------------------------------------------------------
-    | Set the target palette equal to the current palette
-    |--------------------------------------------------------------------
-    mars_comm_palette_finalize:
-        mars_comm_call_start
-        mars_comm   MARSCOMM_SLAVE, MARSCOMM_CMD_PALETTE_COPY_PAL0
-        mars_comm_call_end
-        rts
-
-
-    |--------------------------------------------------------------------
     | Load and show an image on the 32X
     |
     | Parameters:
