@@ -107,6 +107,12 @@
 
 
         |-------------------------------------------------------------------
+        | Fade out palette in 8 steps at 30fps
+        |-------------------------------------------------------------------
+        .equ palette_fade_out,                  0x000031ce
+
+
+        |-------------------------------------------------------------------
         | Interpolates palette_target from palette_base at 30 fps in 8 iterations
         |
         | Parameters:
