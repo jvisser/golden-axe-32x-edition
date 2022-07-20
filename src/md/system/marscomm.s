@@ -7,6 +7,9 @@
     .include "marscomm.i"
 
 
+    .equ    __Z80_SAFE, 0           | Set to 1 to halt the Z80 while RV=1
+
+
     .global __mars_comm_init
     .global __mars_comm
 
@@ -181,6 +184,7 @@
         tst.w   %d5
         beq     .exit
 
+    .ifne __Z80_SAFE
         | Halt Z80 if not halted already
         btst    #0, (Z80_BUS_REQUEST)
         beq     2f
@@ -188,8 +192,10 @@
     1:  btst    #0, (Z80_BUS_REQUEST)
         bne     1b
         pea     .z80_resume
+    2:
+    .endif
 
-    2:  move.l  %a6, -(%sp)
+        move.l  %a6, -(%sp)
         lea     (MARS_REG_BASE), %a6
 
         | Give the 32X access to ROM (RV = 0)
