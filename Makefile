@@ -140,7 +140,7 @@ $(MDBUILD)/patch.o: $(MDOBJS)
 # Generate linker script for patches
 $(MDBUILD)/patch.ld.generated: $(MDBUILD)/patch.o
 	@echo "MAKE_PATCH_LD $@: $<"
-	@scripts/make_patch_ld $(MDSIZE) $< $@
+	@scripts/make-patch-ld $(MDSIZE) $< $@
 
 # Generate linked output
 $(MDBUILD)/patch.elf: $(MDBUILD)/patch.o $(MDBUILD)/patch.ld.generated
