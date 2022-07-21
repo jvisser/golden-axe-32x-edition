@@ -18,7 +18,7 @@ command CMD_VERTICAL_SCROLL =
 };
 
 
-static void post_process(u32 command_id, u16* param_base)
+static void post_process(u32 command_id, UNUSED u16* param_base)
 {
     u32 vertical_scroll = command_id & 0xff;
 

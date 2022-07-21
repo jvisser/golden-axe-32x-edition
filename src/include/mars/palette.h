@@ -19,7 +19,7 @@ extern void pal_fill(u32 palette_id, u32 offset, u32 count, u16 color);
 extern void pal_replace(u32 palette_id, u32 offset, u32 count, u16 *colors);
 
 // Copy the specified palette to the opposing palette
-extern void pal_copy(palette_id);
+extern void pal_copy(u32 palette_id);
 
 // Transition the current palette by step_size towards the target palette by step_size (=color value to add subtract)
 // Returns non zero if changes have been made

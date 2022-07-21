@@ -4,6 +4,7 @@
 
 #include "mars.h"
 #include "command.h"
+#include "noop.h"
 #include "vdp.h"
 #include "palette.h"
 
@@ -19,9 +20,8 @@ command CMD_PALETTE =
 };
 
 
-static void process(u32 command_id, u16* param_base)
+static void process(u32 command_id, UNUSED u16* param_base)
 {
-    u32 palette_id  = command_id & 0x01;
     u32 action_id   = command_id & 0xfe;
 
     switch (action_id)

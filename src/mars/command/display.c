@@ -19,7 +19,7 @@ command CMD_DISPLAY =
 };
 
 
-static void process(u32 command_id, u16* param_base)
+static void process(u32 command_id, UNUSED u16* param_base)
 {
     switch (command_id & 0xff)
     {
