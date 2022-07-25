@@ -6,7 +6,7 @@
   <property name="pal-dusk" type="file" value="dusk.hex"/>
   <property name="pal-night" type="file" value="night.hex"/>
  </properties>
- <tileset firstgid="1" source="../tileset/height.tsx"/>
+ <tileset firstgid="1" source="../../tileset/height.tsx"/>
  <imagelayer id="2" name="Tiles">
   <image source="turtle-village.png" width="1536" height="448"/>
  </imagelayer>

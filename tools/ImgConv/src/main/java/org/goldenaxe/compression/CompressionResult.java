@@ -2,7 +2,6 @@ package org.goldenaxe.compression;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
 import java.util.List;
 
 

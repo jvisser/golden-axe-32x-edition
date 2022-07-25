@@ -8,7 +8,7 @@
 #include "types.h"
 
 
-#define MARS_ROM                        ((u8*)  0x22000000 )
+#define MARS_ROM                        ((u8*)  0x02000000 )
 #define MARS_CRAM                       ((u16*) 0x20004200 )
 #define MARS_FRAMEBUFFER                ((u16*) 0x24000000 )
 #define MARS_OVERWRITE_IMG              ((u16*) 0x24020000 )

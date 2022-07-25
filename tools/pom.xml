@@ -65,6 +65,11 @@
                 <version>31.1-jre</version>
             </dependency>
             <dependency>
+                <groupId>org.tiledreader</groupId>
+                <artifactId>TiledReader</artifactId>
+                <version>1.1.0</version>
+            </dependency>
+            <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
                 <version>5.8.2</version>
@@ -77,7 +82,7 @@
         <module>MakeIPS</module>
         <module>DataVis</module>
         <module>ImgConv</module>
-        <module>LibCompress</module>
+        <module>MapConv</module>
     </modules>
 
 </project>

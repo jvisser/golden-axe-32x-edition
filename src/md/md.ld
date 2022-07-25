@@ -54,6 +54,10 @@ SECTIONS
     {
         _text = .;
 
+        KEEP(*(sh2_resources))                      /* Mapped exactly at the end of the original ROM so the address is predictable/fixed on the SH2 side */
+
+        . = ALIGN(2);
+
         *(.text .text.*)
         *(.rodata .rodata.*)
 
