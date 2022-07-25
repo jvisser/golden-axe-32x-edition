@@ -68,6 +68,8 @@ SHOBJS      = $(SHSOBJS) $(SHCOBJS)
 # Generate asset target lists
 MDPNGSRC    = $(wildcard $(ASSETSRC)/img/*.png)
 MDIMGS      = $(patsubst $(ASSETSRC)/img/%.png, $(MDASSETS)/img/%.img, $(MDPNGSRC))
+MDMAPSRC    = $(wildcard $(ASSETSRC)/map/**/*.tmx)
+MDMAPOBJS   = $(patsubst $(ASSETSRC)/map/%.tmx, $(MDASSETS)/map/%.o, $(MDMAPSRC))
 
 .PHONY: pre-build build-tools dump-gfx clean rebuild apply-patch
 
@@ -124,6 +126,12 @@ $(MDIMGS): $(MDASSETS)/img/%.img : $(ASSETSRC)/img/%.png
 	@echo "IMGCONV $@: $<"
 	@java -jar $(JAVATOOLS)/ImgConv/target/ImgConv.jar $< $@
 
+# Transform maps
+$(MDMAPOBJS): $(MDASSETS)/map/%.o : $(ASSETSRC)/map/%.tmx
+	@echo "MAPCONV $@: $<"
+	@mkdir -p $(dir $@)
+	@java -jar $(JAVATOOLS)/MapConv/target/MapConv.jar $< | $(MDAS) $(MDASFLAGS) -o $@ --
+
 $(MDBUILD)/obj/resources.o: $(MDIMGS) $(MDASSETS)/amazon.pat $(SHBUILD)/mars.bin
 
 # Assemble MD m68k modules
@@ -133,9 +141,9 @@ $(MDOBJS): $(MDBUILD)/obj/%.o : $(MDSRC)/%.s
 	@$(MDAS) $(MDASFLAGS) $< -o $@
 
 # Generate intermediate MD object file used to generate the linker script include file for the patches
-$(MDBUILD)/patch.o: $(MDOBJS)
+$(MDBUILD)/patch.o: $(MDOBJS) $(MDMAPOBJS)
 	@echo "MDLD $@: $?"
-	@$(MDLD) -relocatable $(MDOBJS) -o $@
+	@$(MDLD) -relocatable $(MDOBJS) $(MDMAPOBJS) -o $@
 
 # Generate linker script for patches
 $(MDBUILD)/patch.ld.generated: $(MDBUILD)/patch.o
