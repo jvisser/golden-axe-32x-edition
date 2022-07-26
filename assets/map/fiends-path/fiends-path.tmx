@@ -8,7 +8,7 @@
  </properties>
  <tileset firstgid="1" source="../../tileset/height.tsx"/>
  <imagelayer id="2" name="Tiles">
-  <image source="fields-path.png" width="1536" height="512"/>
+  <image source="fiends-path.png" width="1536" height="512"/>
  </imagelayer>
  <layer id="1" name="Height" width="192" height="64" opacity="0.58">
   <data encoding="csv">

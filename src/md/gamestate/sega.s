@@ -34,12 +34,14 @@
         move.b  (ctrl_player_1_changed), %d0
         or.b    (ctrl_player_2_changed), %d0
         andi.b  #0xf0, %d0                          | If any player pressed a/b/c/start exit immediately
-        bne     3f
+        bne     .exit
         dbf     %d1, 1b
 
         | Fade out and wait (takes 16 frames)
         jsr     mars_comm_palette_fade_out
         moveq   #16, %d1
-    2:  jsr     vdp_vsync_wait
-        dbf     %d1, 2b
-    3:  rts
+    1:  jsr     vdp_vsync_wait
+        dbf     %d1, 1b
+
+    .exit:
+        rts
