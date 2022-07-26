@@ -21,7 +21,6 @@
     .global mars_comm_image_fade_in
     .global mars_comm_vertical_scroll
     .global mars_comm_palette_subtract
-    .global mars_comm_palette_finalize
 
 
     |--------------------------------------------------------------------
@@ -29,7 +28,7 @@
     |--------------------------------------------------------------------
     mars_comm_display_disable:
         mars_comm_call_start
-        mars_comm   MARSCOMM_SLAVE, MARSCOMM_CMD_DISPLAY_DISABLE
+        mars_comm   MARS_COMM_SLAVE, MARS_COMM_CMD_DISPLAY_DISABLE
         mars_comm_call_end
         rts
 
@@ -39,7 +38,7 @@
     |--------------------------------------------------------------------
     mars_comm_display_enable:
         mars_comm_call_start
-        mars_comm   MARSCOMM_SLAVE, MARSCOMM_CMD_DISPLAY_ENABLE
+        mars_comm   MARS_COMM_SLAVE, MARS_COMM_CMD_DISPLAY_ENABLE
         mars_comm_call_end
         rts
 
@@ -49,8 +48,8 @@
     |--------------------------------------------------------------------
     mars_comm_palette_fade_in:
         mars_comm_call_start
-        mars_comm_lp MARSCOMM_SLAVE, MARSCOMM_CMD_PALETTE_FILL_PAL0,  #0x00ff0000
-        mars_comm_lp MARSCOMM_SLAVE, MARSCOMM_CMD_PALETTE_TRANSITION, #0x00ff0842
+        mars_comm_lp MARS_COMM_SLAVE, MARS_COMM_CMD_PALETTE_FILL_PAL0,  #0x00ff0000
+        mars_comm_lp MARS_COMM_SLAVE, MARS_COMM_CMD_PALETTE_TRANSITION, #0x00ff0842
         mars_comm_call_end
         rts
 
@@ -60,8 +59,8 @@
     |--------------------------------------------------------------------
     mars_comm_palette_fade_out:
         mars_comm_call_start
-        mars_comm_lp MARSCOMM_SLAVE, MARSCOMM_CMD_PALETTE_FILL_PAL1,  #0x00ff0000
-        mars_comm_lp MARSCOMM_SLAVE, MARSCOMM_CMD_PALETTE_TRANSITION, #0x00ff0842
+        mars_comm_lp MARS_COMM_SLAVE, MARS_COMM_CMD_PALETTE_FILL_PAL1,  #0x00ff0000
+        mars_comm_lp MARS_COMM_SLAVE, MARS_COMM_CMD_PALETTE_TRANSITION, #0x00ff0842
         mars_comm_call_end
         rts
 
@@ -79,7 +78,7 @@
         swap    %d0
         move.w  #0x00ff, %d0
         swap    %d0
-        mars_comm_lp MARSCOMM_SLAVE, MARSCOMM_CMD_PALETTE_SUBTRACT, %d0
+        mars_comm_lp MARS_COMM_SLAVE, MARS_COMM_CMD_PALETTE_SUBTRACT, %d0
 
         move.w  (%sp)+, %d0
         mars_comm_call_end
@@ -94,11 +93,11 @@
     |--------------------------------------------------------------------
     mars_comm_image:
         mars_comm_call_start
-        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY_DISABLE
-        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_IMAGE_PAL0, %a0
-        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE_COMMIT
-        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY_SWAP
-        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY_ENABLE
+        mars_comm    MARS_COMM_MASTER, MARS_COMM_CMD_DISPLAY_DISABLE
+        mars_comm_lp MARS_COMM_MASTER, MARS_COMM_CMD_IMAGE_PAL0, %a0
+        mars_comm    MARS_COMM_MASTER, MARS_COMM_CMD_PALETTE_COMMIT
+        mars_comm    MARS_COMM_MASTER, MARS_COMM_CMD_DISPLAY_SWAP
+        mars_comm    MARS_COMM_MASTER, MARS_COMM_CMD_DISPLAY_ENABLE
         mars_comm_call_end
         rts
 
@@ -111,13 +110,13 @@
     |--------------------------------------------------------------------
     mars_comm_image_fade_in:
         mars_comm_call_start
-        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY_DISABLE
-        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE_FILL_PAL0, #0x00ff0000
-        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_PALETTE_COMMIT
-        mars_comm_lp MARSCOMM_MASTER, MARSCOMM_CMD_IMAGE_PAL1, %a0
-        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY_SWAP
-        mars_comm    MARSCOMM_MASTER, MARSCOMM_CMD_DISPLAY_ENABLE
-        mars_comm_lp MARSCOMM_SLAVE,  MARSCOMM_CMD_PALETTE_TRANSITION, #0x00ff0842
+        mars_comm    MARS_COMM_MASTER, MARS_COMM_CMD_DISPLAY_DISABLE
+        mars_comm_lp MARS_COMM_MASTER, MARS_COMM_CMD_PALETTE_FILL_PAL0, #0x00ff0000
+        mars_comm    MARS_COMM_MASTER, MARS_COMM_CMD_PALETTE_COMMIT
+        mars_comm_lp MARS_COMM_MASTER, MARS_COMM_CMD_IMAGE_PAL1, %a0
+        mars_comm    MARS_COMM_MASTER, MARS_COMM_CMD_DISPLAY_SWAP
+        mars_comm    MARS_COMM_MASTER, MARS_COMM_CMD_DISPLAY_ENABLE
+        mars_comm_lp MARS_COMM_SLAVE,  MARS_COMM_CMD_PALETTE_TRANSITION, #0x00ff0842
         mars_comm_call_end
         rts
 
@@ -132,9 +131,9 @@
         mars_comm_call_start
         move.w  %d0, -(%sp)
         andi.w  #0xff, %d0
-        ori.w   #MARSCOMM_CMD_VERTICAL_SCROLL, %d0
+        ori.w   #MARS_COMM_CMD_VERTICAL_SCROLL, %d0
 
-        mars_comm_dyn_cmd MARSCOMM_MASTER, %d0
+        mars_comm_dyn_cmd MARS_COMM_MASTER, %d0
 
         move.w  (%sp)+, %d0
         mars_comm_call_end
@@ -177,12 +176,12 @@
     .ifne __Z80_SAFE
         | Halt Z80 if not halted already
         btst    #0, (Z80_BUS_REQUEST)
-        beq     2f
+        beq     .z80_halted
         move.w  #0x0100, (Z80_BUS_REQUEST)
     1:  btst    #0, (Z80_BUS_REQUEST)
         bne     1b
         pea     .z80_resume
-    2:
+    .z80_halted:
     .endif
 
         move.l  %a6, -(%sp)

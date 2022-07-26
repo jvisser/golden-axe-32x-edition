@@ -31,6 +31,8 @@ public class MapConv implements Callable<Integer>
     private static final List<String> PALETTE_NAMES = List.of("dawn", "day", "dusk", "night");
     private static final int BLOCK_SIZE = 2;
     private static final int IMG_CELL_SIZE = 8;
+    private static final PrintStream STDOUT = System.out;
+
 
     private static final String BYTE_FORMAT = ".dc.b 0x%02x%n";
     private static final String WORD_FORMAT = ".dc.w 0x%04x%n";
@@ -50,7 +52,7 @@ public class MapConv implements Callable<Integer>
     public Integer call() throws Exception
     {
         String name = new File(inputFile).getName();
-        String symbolPrefix = "map_" + name.substring(0, name.indexOf(".")).replace('-', '_') + "_";
+        String symbol = "map_" + name.substring(0, name.indexOf(".")).replace('-', '_');
 
         FileSystemTiledReader tiledReader = new FileSystemTiledReader();
         TiledMap map = tiledReader.getMap(inputFile);
@@ -73,54 +75,75 @@ public class MapConv implements Callable<Integer>
         TileMap foregroundTileMap = createForegroundTileMap(map.getWidth(), map.getHeight());
         TileMap heightTileMap = createHeightTileMap(heightLayer, map.getWidth(), map.getHeight());
 
-        System.out.println(".section .rodata");
-        System.out.println(".balign 2");
+        // Export constants for relocations
+        constant(symbol + "_width", map.getWidth());
+        constant(symbol + "_height", map.getHeight());
+        constant(symbol + "_block_width", map.getWidth() / BLOCK_SIZE);
+        constant(symbol + "_block_height", map.getHeight() / BLOCK_SIZE);
 
-        constant(symbolPrefix + "width", map.getWidth());
-        constant(symbolPrefix + "height", map.getHeight());
-        constant(symbolPrefix + "block_width", map.getWidth() / BLOCK_SIZE);
-        constant(symbolPrefix + "block_height", map.getHeight() / BLOCK_SIZE);
+        STDOUT.println(".section .rodata");
 
-        write(symbolPrefix + "foreground_map", BYTE_FORMAT, 1, foregroundTileMap.getCompressedTileMap());
-        write(symbolPrefix + "height_map", BYTE_FORMAT, 1, heightTileMap.getCompressedTileMap());
-        write2(symbolPrefix + "foreground_blocks", WORD_FORMAT, 2, foregroundTileMap.getBlocks());
-        write2(symbolPrefix + "height_blocks", WORD_FORMAT, 2, heightTileMap.getBlocks());
+        // Export MD map data
+        write2(symbol + "_foreground_blocks", WORD_FORMAT, 2, foregroundTileMap.getBlocks());
+        write2(symbol + "_height_blocks", WORD_FORMAT, 2, heightTileMap.getBlocks());
+        write(symbol + "_foreground_map", BYTE_FORMAT, 1, foregroundTileMap.getCompressedTileMap());
+        write(symbol + "_height_map", BYTE_FORMAT, 1, heightTileMap.getCompressedTileMap());
 
-        write(symbolPrefix + "mars_map", WORD_FORMAT, 4, imageTileMap.getMap());
-        write2(symbolPrefix + "mars_tiles", BYTE_FORMAT, 4, imageTileMap.getBlocks());
+        // Export 32X map struct
+        writeAddress(symbol + "_mars", 4);
+        writeLong(map.getWidth());
+        writeLong(map.getHeight());
+        writeLong((imageTileMap.getMap().size() + 1) / 2);   // size in In long words/32 bit values
+        write(symbol + "_mars_map", WORD_FORMAT, 4, imageTileMap.getMap());
+        writeLong(imageTileMap.getBlocks().size());   // size in blocks (64 bytes)
+        write2(symbol + "_mars_tiles", BYTE_FORMAT, 4, imageTileMap.getBlocks());
         for (int i = 0; i < palettes.size(); i++)
         {
-            write(symbolPrefix + "palette_" + PALETTE_NAMES.get(i), WORD_FORMAT, 4, palettes.get(i));
+            write(symbol + "_palette_" + PALETTE_NAMES.get(i), WORD_FORMAT, 4, palettes.get(i));
         }
-        System.out.println();
+
+        STDOUT.println();
         return 0;
+    }
+
+    private void writeWord(int value)
+    {
+        STDOUT.printf(WORD_FORMAT, value);
+    }
+
+    private void writeLong(int value)
+    {
+        STDOUT.printf(LONG_FORMAT, value);
+    }
+
+    private void writeAddress(String symbol, int alignment)
+    {
+        STDOUT.printf(".global %s%n", symbol);
+        STDOUT.printf(".balign %d%n", alignment);
+        STDOUT.printf("%s:%n", symbol);
     }
 
     private void constant(String symbol, int value)
     {
-        PrintStream stdout = System.out;
-
-        stdout.printf(".global %s%n", symbol);
-        stdout.printf(".equ %s,%d%n", symbol, value);
+        STDOUT.printf(".global %s%n", symbol);
+        STDOUT.printf(".equ %s,%d%n", symbol, value);
     }
 
-    private void write2(String symbol, String format, int align, List<List<Integer>> values)
+    private void write2(String symbol, String format, int alignment, List<List<Integer>> values)
     {
-        write(symbol, format, align, values.stream().flatMap(Collection::stream).toList());
+        write(symbol, format, alignment, values.stream().flatMap(Collection::stream).toList());
     }
 
-    private void write(String symbol, String format, int align, List<Integer> values)
+    private void write(String symbol, String format, int alignment, List<Integer> values)
     {
-        write(symbol, format, align, values.stream());
+        write(symbol, format, alignment, values.stream());
     }
 
-    private void write(String symbol, String format, int align, Stream<Integer> values)
+    private void write(String symbol, String format, int alignment, Stream<Integer> values)
     {
         PrintStream stdout = System.out;
 
-        stdout.printf(".global %s%n", symbol);
-        stdout.printf(".balign %d%n", align);
-        stdout.printf("%s:%n", symbol);
+        writeAddress(symbol, alignment);
 
         values.forEach(v -> stdout.printf(format, v));
     }

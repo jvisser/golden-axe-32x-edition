@@ -1,5 +1,5 @@
 |--------------------------------------------------------------------
-| VDP routines
+| VDP patches
 |--------------------------------------------------------------------
 
     .include "md.i"
@@ -9,40 +9,19 @@
 
 
     .global vdp_vsync_wait
-    .global vdp_enable_display
-    .global vdp_disable_display
 
 
     |-------------------------------------------------------------------
     | Disable display
     |-------------------------------------------------------------------
     patch_start 0x002dca
-        jmp     vdp_disable_display
+        jmp     _vdp_disable_display
     patch_end
 
-    vdp_disable_display:
+    _vdp_disable_display:
         bclr    #6, (vdp_reg_mode2 + 1)
-        bsr     vdp_reg_mode_2_sync
-        jmp     mars_comm_display_disable
-
-
-    |-------------------------------------------------------------------
-    | Enable display
-    |-------------------------------------------------------------------
-    patch_start 0x002dca
-        jmp     vdp_enable_display
-    patch_end
-
-    vdp_enable_display:
-        bset    #6, (vdp_reg_mode2 + 1)
-
-
-    |-------------------------------------------------------------------
-    | Sync mode 2 shadow register with the VDP
-    |-------------------------------------------------------------------
-    vdp_reg_mode_2_sync:
         move.w  (vdp_reg_mode2), (VDP_CTRL)
-        rts
+        jmp     mars_comm_display_disable
 
 
     |--------------------------------------------------------------------
@@ -81,7 +60,8 @@
         move.b  %d0, (vblank_update_flags)
 
         btst    #6, (vdp_reg_mode2 + 1)     | Check if display is enabled
-        beq     2f
+        beq     .display_disabled
+
         move.l  %a0, -(%sp)
         lea     (VDP_CTRL + 1), %a0
     1:  btst    #3, (%a0)                   | Wait until we are out of vblank (if in vblank at this point we have a frameskip)
@@ -91,4 +71,6 @@
         move.l  (%sp)+, %a0
 
         jmp     vblank_int_handler
-    2:  rts
+
+    .display_disabled:
+        rts

@@ -55,6 +55,8 @@
         .equ requested_game_state,              0xffffc170  | .w
         .equ current_game_state,                0xffffc172  | .w
 
+        .equ current_level,                     0xfffffe2c  | .w
+
         .equ vblank_update_flags,               0xffffc183  | .b
 
         .equ vdp_reg_mode1,                     0xffffc114  | .w in register set command format
@@ -88,6 +90,8 @@
         .equ audio_init,                        0x000034bc
         .equ vblank_int_handler,                0x00000cf6
         .equ vdp_reset,                         0x00000df6
+        .equ vdp_disable_display,               0x00002dca
+        .equ vdp_enable_display,                0x00002dc2
 
 
         |-------------------------------------------------------------------
