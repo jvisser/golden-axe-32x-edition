@@ -49,10 +49,17 @@
         .equ SONG_INTERMISSION,                 0x8c
         .equ SONG_CREDITS,                      0x8e
 
+        | Entity struct offsets
+        .equ ENTITY_STATE,                      0x42
+        .equ ENTITY_X,                          0x1c
+
 
     |-------------------------------------------------------------------
     | Variables
     |-------------------------------------------------------------------
+
+        .equ entity_player_1,                   0xffffd000
+        .equ entity_player_2,                   0xffffd080
 
         .equ requested_game_state,              0xffffc170  | .w
         .equ current_game_state,                0xffffc172  | .w
