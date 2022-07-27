@@ -9,6 +9,7 @@
 
 
     .global vdp_vsync_wait
+    .global vdp_clear_name_tables
 
 
     |-------------------------------------------------------------------
@@ -73,4 +74,17 @@
         jmp     vblank_int_handler
 
     .display_disabled:
+        rts
+
+
+    |-------------------------------------------------------------------
+    | Clear the plane A/B nametable
+    |-------------------------------------------------------------------
+    vdp_clear_name_tables:
+        move.l  #VDP_ADDR_SET_NAME_TBL_A, (VDP_CTRL)
+        lea     (VDP_DATA), %a0
+        move.w  #0x1fff, %d0
+        moveq   #0, %d1
+    1:  move.w  %d1, (%a0)
+        dbf     %d0, 1b
         rts

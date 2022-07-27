@@ -1,5 +1,5 @@
 |--------------------------------------------------------------------
-| Render the title background using the 32X
+| Title screen patches
 |--------------------------------------------------------------------
 
     .include "goldenaxe.i"
@@ -34,17 +34,17 @@
     |-------------------------------------------------------------------
     | Load the background on the 32X
     |-------------------------------------------------------------------
-    patch_start 0x00406e
+    patch_start 0x004056
         jsr     game_state_handler_title_init.l
+        nop
     patch_end
 
     game_state_handler_title_init:
-        move.l  %a0, -(%sp)
         lea     (img_title_background), %a0
         jsr     mars_comm_image_fade_in
-        movea.l (%sp)+, %a0
 
-        jmp     sound_command
+        andi    #0xf8ff, %sr
+        jmp     vdp_enable_display
 
 
     |-------------------------------------------------------------------
@@ -70,11 +70,8 @@
 
     game_state_handler_title_fade_palette_step:
 
-        | d0 is fade down palette index at this point
-        move.w  %d0, -(%sp)
-        move.w  %d1, -(%sp)
-
         | Create subtract color (same value for each color component)
+        | d0 is fade down palette index at this point
         lsr.w   #1, %d0
         addq.w  #2, %d0
         move.w  %d0, %d1
@@ -85,13 +82,8 @@
 
         jsr     mars_comm_palette_subtract
 
-        move.w  (%sp)+, %d1
-        move.w  (%sp)+, %d0
-
         movea.l (%a0), %a6
-        jsr     palette_update_dynamic
-
-        rts
+        jmp     palette_update_dynamic
 
 
     |-------------------------------------------------------------------

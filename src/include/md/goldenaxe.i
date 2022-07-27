@@ -9,9 +9,11 @@
     | Constants
     |-------------------------------------------------------------------
 
-        | Bit numbers
         .equ VBLANK_UPDATE_SPRITE_ATTR,         0x01
         .equ VBLANK_UPDATE_CONTROLLER,          0x02
+
+        .equ VDP_ADDR_SET_NAME_TBL_A,           0x40000003    | VRAM address 0xC000
+        .equ VDP_ADDR_SET_NAME_TBL_B,           0x60000003    | VRAM address 0xE000
 
         | Game states
         .equ GAME_STATE_SEGA,                   0x00
@@ -56,6 +58,7 @@
         .equ current_game_state,                0xffffc172  | .w
 
         .equ current_level,                     0xfffffe2c  | .w
+        .equ demo_index,                        0xfffffe08  | .b
 
         .equ vblank_update_flags,               0xffffc183  | .b
 
@@ -89,9 +92,14 @@
 
         .equ audio_init,                        0x000034bc
         .equ vblank_int_handler,                0x00000cf6
+
         .equ vdp_reset,                         0x00000df6
         .equ vdp_disable_display,               0x00002dca
         .equ vdp_enable_display,                0x00002dc2
+        .equ vdp_clear_palette,                 0x00002eec
+
+        .equ screen_transition_from_dark,       0x00003690
+        .equ screen_transition_to_dark,         0x000036d8
 
 
         |-------------------------------------------------------------------

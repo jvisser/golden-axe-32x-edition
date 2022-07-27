@@ -38,4 +38,19 @@
     .equ MARS_COMM6,            0x2c
     .equ MARS_COMM7,            0x2e
 
+
+    |-------------------------------------------------------------------
+    | Controller inputs
+    |-------------------------------------------------------------------
+
+    .equ CTRL_UP,               0x01
+    .equ CTRL_DOWN,             0x02
+    .equ CTRL_LEFT,             0x04
+    .equ CTRL_RIGHT,            0x08
+    .equ CTRL_B,                0x10
+    .equ CTRL_C,                0x20
+    .equ CTRL_A,                0x40
+    .equ CTRL_START,            0x80
+    .equ CTRL_ABCS,             0xf0
+
     .endif
