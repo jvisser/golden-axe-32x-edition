@@ -1,8 +1,9 @@
 |--------------------------------------------------------------------
-| Replace the sega logo game state subroutine.
+| Sega logo screen patches
 |--------------------------------------------------------------------
 
     .include "goldenaxe.i"
+    .include "md.i"
     .include "mars.i"
     .include "marscomm.i"
     .include "patch.i"
@@ -26,14 +27,14 @@
 
         jsr     vdp_enable_display
 
-        | Wait 2 seconds to show logo
+        | Show the Sega logo for 2 seconds or until the player presses an action button
         moveq   #120, %d1
     1:  move.w  #VBLANK_UPDATE_CONTROLLER, %d0
         jsr     vdp_vsync_wait
 
         move.b  (ctrl_player_1_changed), %d0
         or.b    (ctrl_player_2_changed), %d0
-        andi.b  #0xf0, %d0                          | If any player pressed a/b/c/start exit immediately
+        andi.b  #CTRL_ABCS, %d0
         bne     .exit
         dbf     %d1, 1b
 

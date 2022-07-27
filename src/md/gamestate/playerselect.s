@@ -1,5 +1,5 @@
 |--------------------------------------------------------------------
-| Add arcade background to player select
+| Player select screen patches
 |--------------------------------------------------------------------
 
     .include "goldenaxe.i"
@@ -15,10 +15,8 @@
     patch_end
 
     game_state_handler_player_select_init:
-        move.l  %a0, -(%sp)
         lea     (img_dungeon_background), %a0
         jsr     mars_comm_image_fade_in
-        movea.l (%sp)+, %a0
 
         jsr     palette_interpolate_full
 
