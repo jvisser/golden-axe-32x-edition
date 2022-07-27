@@ -28,15 +28,9 @@
         jsr     vdp_enable_display
 
         | Show the Sega logo for 2 seconds or until the player presses an action button
-        moveq   #120, %d1
-    1:  move.w  #VBLANK_UPDATE_CONTROLLER, %d0
-        jsr     vdp_vsync_wait
-
-        move.b  (ctrl_player_1_changed), %d0
-        or.b    (ctrl_player_2_changed), %d0
-        andi.b  #CTRL_ABCS, %d0
-        bne     .exit
-        dbf     %d1, 1b
+        moveq   #60*2, %d1
+        jsr     wait_n_frames
+        bcs     .exit               | skip fade out if player requested starting the game
 
         | Fade out and wait (takes 16 frames)
         jsr     mars_comm_palette_fade_out
