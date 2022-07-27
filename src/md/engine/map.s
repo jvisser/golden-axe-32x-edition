@@ -38,8 +38,6 @@
     patch_end
 
     mars_load_map:
-        move.l  %a0, -(%sp)
-
         mars_comm_call_start
 
         | Setup map load parameters
@@ -66,8 +64,6 @@
         mars_comm   MARS_COMM_MASTER, MARS_COMM_CMD_DISPLAY_ENABLE
     .no_map:
         mars_comm_call_end
-
-        move.l  (%sp)+, %a0
 
         andi    #0xf8ff, %sr
         jsr     vdp_enable_display
