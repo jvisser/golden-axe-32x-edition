@@ -11,4 +11,6 @@
     .equ M_OK,                  0x4d5f4f4b
     .equ S_OK,                  0x535f4f4b
 
+    .equ SH2_ROM_BASE,          0x22000000  | uncached
+
     .endif

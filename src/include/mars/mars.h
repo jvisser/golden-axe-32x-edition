@@ -8,7 +8,7 @@
 #include "types.h"
 
 
-#define MARS_ROM                        ((u8*)  0x02000000 )
+#define MARS_ROM                        ((u8*)  0x22000000 )
 #define MARS_CRAM                       ((u16*) 0x20004200 )
 #define MARS_FRAMEBUFFER                ((u16*) 0x24000000 )
 #define MARS_OVERWRITE_IMG              ((u16*) 0x24020000 )
@@ -49,12 +49,15 @@
 #define MARS_VDP_FBCTL_FS               0x0001
 
 
+#define CACHED(address)                 (((u32) (address)) & ~0x20000000)
+#define UNCACHED(address)               (((u32) (address)) | 0x20000000)
+
 #define ROM_ADDR(address)               (MARS_ROM + (u32) (address))
 
 
 // There is no memory allocator atm.
 // This can be used as free memory up until the top of the master cpu stack.
-extern u8* __free_ram_start;
+extern u8* _free_ram_start;
 
 
 #endif

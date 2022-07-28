@@ -30,7 +30,7 @@ Run either:
 
 ## Documentation
 The `doc` dir contains some early reverse engineering notes of the game.
-As such they are not written in a completely user friendly way but does contain useful information about some of the game's inner workings.
+As such they are not written in a completely user friendly way but do contain useful information about some of the game's inner workings.
 
 The Kaitai struct files in the `doc/struct` dir are specifically made for exploration of the game's data structures in the [Kaitai Web IDE](https://ide.kaitai.io/devel/#).
 More formal struct files that can be used to generate a binary parser can be found in the `src/main/resources/kaitai` dir in the source code of the `DataVis` tool.

@@ -3,6 +3,7 @@
 |--------------------------------------------------------------------
 
     .include "goldenaxe.i"
+    .include "mars.i"
     .include "patch.i"
     .include "marscomm.i"
 
@@ -10,15 +11,15 @@
     .section    sh2_map_table
 
     |--------------------------------------------------------------------
-    | 32X map table mapped at 0x02080000 in the SH2 address space (see md.ld)
+    | 32X map table mapped at 0x22080000 in the SH2 address space (see md.ld)
     | Content in sync with MD map table at 0x0015ac
     |--------------------------------------------------------------------
     mars_map_table:
-        .dc.l   map_wilderness_mars
-        .dc.l   map_turtle_village_mars
-        .dc.l   map_town_mars
-        .dc.l   map_fiends_path_mars
-        .dc.l   map_eagles_head_mars
+        .dc.l   SH2_ROM_BASE + map_wilderness_mars
+        .dc.l   SH2_ROM_BASE + map_turtle_village_mars
+        .dc.l   SH2_ROM_BASE + map_town_mars
+        .dc.l   SH2_ROM_BASE + map_fiends_path_mars
+        .dc.l   SH2_ROM_BASE + map_eagles_head_mars
         .dc.l   0
         .dc.l   0
         .dc.l   0
@@ -40,7 +41,7 @@
     mars_load_map:
         mars_comm_call_start
 
-        | Setup map load parameters
+        | Setup map command load parameters
         lea     (MARS_REG_BASE), %a0
         move.w  (vertical_scroll), %d5
         lsr.w   #4, %d5
@@ -50,8 +51,8 @@
         move.b  %d5, MARS_COMM_MASTER + MARS_COMM_P1_L(%a0)             | horizontal scroll in 16px units
         move.w  (current_level), MARS_COMM_MASTER + MARS_COMM_P2(%a0)   | current map index
 
-        | TODO: Send map load command
-        |mars_comm MARS_COMM_MASTER, MARS_COMM_MAP_LOAD
+        | Send map load command
+        mars_comm MARS_COMM_MASTER, MARS_COMM_CMD_MAP_LOAD
 
         | Enable 32X display only if there is a map in the map table for the current level
         lea     (mars_map_table), %a0
