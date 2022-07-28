@@ -69,3 +69,23 @@
         andi    #0xf8ff, %sr
         jsr     vdp_enable_display
         rts
+
+
+    |-------------------------------------------------------------------
+    | Patch map scroll routine to scroll on the 32X also
+    |-------------------------------------------------------------------
+    patch_start 0x000f6a
+        jmp     mars_scroll_map.l
+    patch_end
+
+    mars_scroll_map:
+        mars_comm_call_start
+        mars_comm_p2 MARS_COMM_MASTER, MARS_COMM_CMD_MAP_SCROLL, vertical_scroll, horizontal_scroll
+        mars_comm_call_end
+
+        tst.w   %d7
+        beq     .exit
+        pea     0x000f70    | Resume original code after return
+
+    .exit:
+        rts

@@ -53,6 +53,9 @@ static map_def ALIGNED(4)** md_map_table = (map_def**) 0x22080000;
 static map_def ALIGNED(4)*  map_definition = 0;
 static map_data             map;
 
+static u32 vertical_scroll;
+static u32 horizontal_scroll;
+
 
 static void process(u32 command_id, u16* param_base)
 {
@@ -82,6 +85,9 @@ static void process(u32 command_id, u16* param_base)
             {
                 map.palettes[i] = (map_palette*) (map_base + map_definition->palette_offsets[i]);
             }
+
+            vertical_scroll = load_parameters->vertical_scroll << 4;
+            horizontal_scroll = load_parameters->horizontal_scroll << 4;
         }
     }
 }
@@ -92,5 +98,19 @@ static void post_process(u32 command_id, u16* param_base)
     if (!map_definition)
     {
         return;
+    }
+
+    u32 action_id = command_id & 0xff;
+
+    switch (action_id)
+    {
+        case CMD_MAP_SCROLL:
+            {
+                map_scroll_parameters* scroll_parameters = (map_scroll_parameters*) param_base;
+
+                vertical_scroll = scroll_parameters->vertical_scroll;
+                horizontal_scroll = scroll_parameters->horizontal_scroll;
+            }
+            break;
     }
 }
