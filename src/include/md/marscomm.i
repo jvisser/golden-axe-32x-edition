@@ -51,6 +51,10 @@
 
     .equ MARS_COMM_CMD_VERTICAL_SCROLL,     0x0400
 
+    .equ MARS_COMM_CMD_MAP_LOAD,            0x0500
+    .equ MARS_COMM_CMD_MAP_SCROLL,          0x0501
+    .equ MARS_COMM_CMD_MAP_PALETTE,         0x0502
+
 
     |--------------------------------------------------------------------
     | Save used registers

@@ -10,7 +10,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,6 +40,8 @@ public class MapConv implements Callable<Integer>
     private static final String WORD_FORMAT = ".dc.w 0x%04x%n";
     private static final String LONG_FORMAT = ".dc.l 0x%08x%n";
 
+    private String symbolPrefix;
+
     @CommandLine.Parameters (index = "0", paramLabel = "INPUT", description = "The input map (.tmx) file")
     String inputFile;
 
@@ -52,7 +56,7 @@ public class MapConv implements Callable<Integer>
     public Integer call() throws Exception
     {
         String name = new File(inputFile).getName();
-        String symbol = "map_" + name.substring(0, name.indexOf(".")).replace('-', '_');
+        symbolPrefix = "map_" + name.substring(0, name.indexOf(".")).replace('-', '_');
 
         FileSystemTiledReader tiledReader = new FileSystemTiledReader();
         TiledMap map = tiledReader.getMap(inputFile);
@@ -69,41 +73,53 @@ public class MapConv implements Callable<Integer>
 
         // For 32X side
         TileMap imageTileMap = createImageTileMap(imageLayer);
-        List<List<Integer>> palettes = readPalettes(map);
+        Map<String, List<Integer>> palettes = readPalettes(map);
 
         // For MD side
         TileMap foregroundTileMap = createForegroundTileMap(map.getWidth(), map.getHeight());
         TileMap heightTileMap = createHeightTileMap(heightLayer, map.getWidth(), map.getHeight());
 
         // Export constants for relocations
-        constant(symbol + "_width", map.getWidth());
-        constant(symbol + "_height", map.getHeight());
-        constant(symbol + "_block_width", map.getWidth() / BLOCK_SIZE);
-        constant(symbol + "_block_height", map.getHeight() / BLOCK_SIZE);
+        constant("width", map.getWidth());
+        constant("height", map.getHeight());
+        constant("block_width", map.getWidth() / BLOCK_SIZE);
+        constant("block_height", map.getHeight() / BLOCK_SIZE);
 
         STDOUT.println(".section .rodata");
 
         // Export MD map data
-        write2(symbol + "_foreground_blocks", WORD_FORMAT, 2, foregroundTileMap.getBlocks());
-        write2(symbol + "_height_blocks", WORD_FORMAT, 2, heightTileMap.getBlocks());
-        write(symbol + "_foreground_map", BYTE_FORMAT, 1, foregroundTileMap.getCompressedTileMap());
-        write(symbol + "_height_map", BYTE_FORMAT, 1, heightTileMap.getCompressedTileMap());
+        write2("foreground_blocks", WORD_FORMAT, 2, foregroundTileMap.getBlocks());
+        write2("height_blocks", WORD_FORMAT, 2, heightTileMap.getBlocks());
+        write("foreground_map", BYTE_FORMAT, 1, foregroundTileMap.getCompressedTileMap());
+        write("height_map", BYTE_FORMAT, 1, heightTileMap.getCompressedTileMap());
 
         // Export 32X map struct
-        writeAddress(symbol + "_mars", 4);
+        String marsDataStartLabel = "mars_data_start";
+        String marsDataEndLabel = "mars_data_end";
+
+        // Header
+        writeAddress("mars", 4);
         writeLong(map.getWidth());
         writeLong(map.getHeight());
-        writeLong((imageTileMap.getMap().size() + 1) / 2);   // size in In long words/32 bit values
-        write(symbol + "_mars_map", WORD_FORMAT, 4, imageTileMap.getMap());
-        writeLong(imageTileMap.getBlocks().size());   // size in blocks (64 bytes)
-        write2(symbol + "_mars_tiles", BYTE_FORMAT, 4, imageTileMap.getBlocks());
-        for (int i = 0; i < palettes.size(); i++)
-        {
-            write(symbol + "_palette_" + PALETTE_NAMES.get(i), WORD_FORMAT, 4, palettes.get(i));
-        }
+        writeOffsetLong(marsDataStartLabel, "mars_map", 4); // Tile map offset
+        writeOffsetLong(marsDataStartLabel, "mars_tiles", 4); // Tile data offset
+        palettes.forEach((paletteLabel, values) -> writeOffsetLong(marsDataStartLabel, paletteLabel, 4));
+        writeOffsetLong(marsDataStartLabel, "mars_data_end", 4); // data size in long words
+
+        // Data
+        writeAddress(marsDataStartLabel, 4);
+        write("mars_map", WORD_FORMAT, 4, imageTileMap.getMap());
+        write2("mars_tiles", BYTE_FORMAT, 4, imageTileMap.getBlocks());
+        palettes.forEach((paletteLabel, palette) -> write(paletteLabel, WORD_FORMAT, 4, palette));
+        writeAddress(marsDataEndLabel, 4);
 
         STDOUT.println();
         return 0;
+    }
+
+    private void writeOffsetLong(String baseLabel, String targetLabel, int elementSize)
+    {
+        STDOUT.printf(".dc.l ((%s-%s)/%d)%n", globalSymbol(targetLabel), globalSymbol(baseLabel), elementSize);
     }
 
     private void writeWord(int value)
@@ -118,15 +134,22 @@ public class MapConv implements Callable<Integer>
 
     private void writeAddress(String symbol, int alignment)
     {
-        STDOUT.printf(".global %s%n", symbol);
+        String globalSymbol = globalSymbol(symbol);
+        STDOUT.printf(".global %s%n", globalSymbol);
         STDOUT.printf(".balign %d%n", alignment);
-        STDOUT.printf("%s:%n", symbol);
+        STDOUT.printf("%s:%n", globalSymbol);
     }
 
     private void constant(String symbol, int value)
     {
-        STDOUT.printf(".global %s%n", symbol);
-        STDOUT.printf(".equ %s,%d%n", symbol, value);
+        String globalSymbol = globalSymbol(symbol);
+        STDOUT.printf(".global %s%n", globalSymbol);
+        STDOUT.printf(".equ %s,%d%n", globalSymbol, value);
+    }
+
+    private String globalSymbol(String symbol)
+    {
+        return symbolPrefix + "_" + symbol;
     }
 
     private void write2(String symbol, String format, int alignment, List<List<Integer>> values)
@@ -159,12 +182,12 @@ public class MapConv implements Callable<Integer>
         return tileMap;
     }
 
-    private List<List<Integer>> readPalettes(TiledMap map) throws IOException
+    private Map<String, List<Integer>> readPalettes(TiledMap map) throws IOException
     {
-        List<List<Integer>> palettes = new ArrayList<>();
+        Map<String, List<Integer>> palettes = new LinkedHashMap<>();
         for (String paletteName : PALETTE_NAMES)
         {
-            palettes.add(readPalette((TiledFile) map.getProperty("pal-" + paletteName)));
+            palettes.put(globalSymbol("palette_" + paletteName), readPalette((TiledFile) map.getProperty("pal-" + paletteName)));
         }
         return palettes;
     }
@@ -176,7 +199,8 @@ public class MapConv implements Callable<Integer>
         {
             List<Integer> rgb = readHexPalette(f);
 
-            List<Integer> palette = new ArrayList<>(rgb.size());
+            List<Integer> palette = new ArrayList<>(rgb.size() + 1);
+            palette.add(rgb.size());
             palette.addAll(rgb);
             return palette;
         }

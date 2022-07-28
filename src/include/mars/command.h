@@ -25,6 +25,8 @@ extern void command_main(volatile u16* comm_base);
 #define CMD_ID_IMAGE                0x02
 #define CMD_ID_PALETTE              0x03
 #define CMD_ID_VERTICAL_SCROLL      0x04
+#define CMD_ID_MAP                  0x05
+
 
 // Sub commands
 #define CMD_DISPLAY_ENABLE          0x00
@@ -47,13 +49,35 @@ extern void command_main(volatile u16* comm_base);
 #define CMD_PALETTE_COPY_PAL0       0x0a
 #define CMD_PALETTE_COPY_PAL1       0x0b
 
-
 typedef struct
 {
     u8  offset;
     u8  count;
     u16 color;
 } palette_parameters;
+
+#define CMD_MAP_LOAD                0x00
+#define CMD_MAP_SCROLL              0x01
+#define CMD_MAP_PALETTE             0x02
+
+typedef struct
+{
+    u8  vertical_scroll;
+    u8  horizontal_scroll;
+    u16 map_index;
+} map_load_parameters;
+
+typedef struct
+{
+    u16  vertical_scroll;
+    u16  horizontal_scroll;
+} map_scroll_parameters;
+
+typedef struct
+{
+    u8  palette_index;
+    u8  transition;
+} map_palette_parameters;
 
 
 #endif

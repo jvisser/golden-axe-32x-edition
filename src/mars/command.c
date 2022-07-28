@@ -8,6 +8,7 @@ extern command CMD_DISPLAY;
 extern command CMD_IMAGE;
 extern command CMD_PALETTE;
 extern command CMD_VERTICAL_SCROLL;
+extern command CMD_MAP;
 
 
 static command* commands[] =
@@ -15,7 +16,8 @@ static command* commands[] =
     &CMD_DISPLAY,
     &CMD_IMAGE,
     &CMD_PALETTE,
-    &CMD_VERTICAL_SCROLL
+    &CMD_VERTICAL_SCROLL,
+    &CMD_MAP
 };
 
 
