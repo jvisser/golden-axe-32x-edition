@@ -77,13 +77,13 @@ rebuild: clean release
 
 release: pre-build $(SHBUILD)/mars.bin $(BUILD)/patch.ips
 
-apply-patch: release $(BUILD)/rom.32x
+patch: release $(BUILD)/rom.32x
 
 clean:
 	@rm -f -r $(BUILD)
 
 # Build java tools
-build-tools:
+init:
 	mvn -f $(JAVATOOLS)/pom.xml clean package
 
 # Dump graphics data from the original game's ROM file
