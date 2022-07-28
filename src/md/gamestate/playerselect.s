@@ -18,3 +18,12 @@
         lea     (img_dungeon_background), %a0
         move.w  #SONG_TITLE, %d7
         jmp     show_image_with_sound
+
+
+    |-------------------------------------------------------------------
+    | Disable palette change when cycling characters
+    |-------------------------------------------------------------------
+    patch_start 0x004682
+        nop
+        nop
+    patch_end
