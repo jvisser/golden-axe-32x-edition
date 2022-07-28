@@ -17,11 +17,6 @@
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.goldenaxe</groupId>
-            <artifactId>LibCompress</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 
     <build>
