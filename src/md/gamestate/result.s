@@ -1,15 +1,15 @@
-|--------------------------------------------------------------------
-| Result screen patches
-|--------------------------------------------------------------------
+/*
+ * Result screen patches
+ */
 
-    .include "goldenaxe.i"
-    .include "patch.i"
-    .include "marscomm.i"
+#include "goldenaxe.h"
+#include "patch.h"
+#include "marscomm.h"
 
 
-    |-------------------------------------------------------------------
-    | Load arcade background and initiate fade in
-    |-------------------------------------------------------------------
+    /**********************************************************
+     * Load arcade background and initiate fade in
+     */
     patch_start 0x0060fc
         jmp     game_state_handler_result_init.l
     patch_end
