@@ -19,7 +19,7 @@ ROM         = rom/rom.bin
 JAVATOOLS   = tools
 
 # Includes paths
-MDINCLUDE   = -I $(INCLUDE)/md -I $(MDSRC) -I $(MDASSETS) -I $(SHBUILD)
+MDINCLUDE   = -I $(INCLUDE)/md -I $(MDSRC) -I $(ASSETSRC) -I $(MDASSETS) -I $(SHBUILD)
 SHINCLUDE   = -I $(INCLUDE)/mars
 
 # m68k GCC and Binutils
