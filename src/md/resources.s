@@ -27,9 +27,11 @@
     resource img_sega_logo,             "img/sega.img"
     resource img_death_adder,           "img/deathadder.img"
     resource img_dungeon_background,    "img/bgdungeon.img"
-    resource img_title_background,      "img/bgtitle.img"           | TODO: Tiled image support for the 32X... comper can't compress images like very well
+    resource img_title_background,      "img/bgtitle.img"
 
     resource pat_amazon,                "amazon.pat"                | Decompressed amazon tiledata
+
+    resource nem_pat_empty,             "empty.pat.nem"
 
 
     .noaltmacro

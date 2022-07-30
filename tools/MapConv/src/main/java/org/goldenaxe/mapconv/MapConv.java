@@ -82,6 +82,8 @@ public class MapConv implements Callable<Integer>
         // Export constants for relocations
         constant("width", map.getWidth());
         constant("height", map.getHeight());
+        constant("pixel_width", map.getWidth() * IMG_CELL_SIZE);
+        constant("pixel_height", map.getHeight() * IMG_CELL_SIZE);
         constant("block_width", map.getWidth() / BLOCK_SIZE);
         constant("block_height", map.getHeight() / BLOCK_SIZE);
 
