@@ -2,14 +2,14 @@
 | Player select screen patches
 |--------------------------------------------------------------------
 
-    .include "goldenaxe.i"
-    .include "patch.i"
-    .include "marscomm.i"
+#include "goldenaxe.h"
+#include "patch.h"
+#include "marscomm.h"
 
 
-    |-------------------------------------------------------------------
-    | Load arcade background and initiate fade in
-    |-------------------------------------------------------------------
+    /**********************************************************
+     * Load arcade background and initiate fade in
+     */
     patch_start 0x004436
         jmp     game_state_handler_player_select_init.l
     patch_end
@@ -20,9 +20,9 @@
         jmp     show_image_with_sound
 
 
-    |-------------------------------------------------------------------
-    | Disable palette change when cycling characters
-    |-------------------------------------------------------------------
+    /**********************************************************
+     * Disable palette change when cycling characters
+     */
     patch_start 0x004682
         nop
         nop

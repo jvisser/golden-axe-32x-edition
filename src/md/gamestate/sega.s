@@ -1,17 +1,17 @@
-|--------------------------------------------------------------------
-| Sega logo screen patches
-|--------------------------------------------------------------------
+/*
+ * Sega logo screen patches
+ */
 
-    .include "goldenaxe.i"
-    .include "md.i"
-    .include "mars.i"
-    .include "marscomm.i"
-    .include "patch.i"
+#include "goldenaxe.h"
+#include "md.h"
+#include "mars.h"
+#include "marscomm.h"
+#include "patch.h"
 
 
-    |-------------------------------------------------------------------
-    | Run custom sega logo code
-    |-------------------------------------------------------------------
+    /**********************************************************
+     * Run custom sega logo code
+     */
     patch_start 0x000db8
         jsr     game_state_handler_sega.l
         nop
@@ -27,12 +27,12 @@
 
         jsr     vdp_enable_display
 
-        | Show the Sega logo for 2 seconds or until the player presses an action button
+        /* Show the Sega logo for 2 seconds or until the player presses an action button */
         moveq   #60*2, %d1
         jsr     wait_n_frames
-        bcs     .exit               | skip fade out if player requested starting the game
+        bcs     .exit               /* skip fade out if player requested starting the game */
 
-        | Fade out and wait (takes 16 frames)
+        /* Fade out and wait (takes 16 frames) */
         jsr     mars_comm_palette_fade_out
         moveq   #16, %d1
     1:  jsr     vdp_vsync_wait

@@ -1,15 +1,15 @@
-|--------------------------------------------------------------------
-| Palette functions
-|--------------------------------------------------------------------
+/*
+ * Palette functions
+ */
 
-    .include "goldenaxe.i"
-    .include "patch.i"
-    .include "marscomm.i"
+#include "goldenaxe.h"
+#include "patch.h"
+#include "marscomm.h"
 
 
-    |-------------------------------------------------------------------
-    | Patch palette fadeout to also fade out on the 32X
-    |-------------------------------------------------------------------
+    /**********************************************************
+     * Patch palette fadeout to also fade out on the 32X
+     */
     patch_start 0x0031d2
         jsr     mars_palette_fadeout.l
     patch_end

@@ -1,17 +1,17 @@
-|--------------------------------------------------------------------
-| Global resources
-|--------------------------------------------------------------------
+/*
+ * Global resources
+ */
 
-    |--------------------------------------------------------------------
-    | 32X SH2 sub program binary
-    |--------------------------------------------------------------------
+    /**********************************************************
+     * 32X SH2 sub program binary
+     */
     .section    sh2
         .incbin "mars.bin"
 
 
-    |--------------------------------------------------------------------
-    | Game assets
-    |--------------------------------------------------------------------
+    /**********************************************************
+     * Game assets
+     */
     .section    .rodata
 
     .altmacro
@@ -29,7 +29,7 @@
     resource img_dungeon_background,    "img/bgdungeon.img"
     resource img_title_background,      "img/bgtitle.img"
 
-    resource pat_amazon,                "amazon.pat"                | Decompressed amazon tiledata
+    resource pat_amazon,                "amazon.pat"                /* Decompressed amazon tiledata */
 
     resource nem_pat_empty,             "empty.pat.nem"
 

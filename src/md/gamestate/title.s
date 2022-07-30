@@ -1,19 +1,19 @@
-|--------------------------------------------------------------------
-| Title screen patches
-|--------------------------------------------------------------------
+/*
+ * Title screen patches
+ */
 
-    .include "goldenaxe.i"
-    .include "mars.i"
-    .include "marscomm.i"
-    .include "patch.i"
+#include "goldenaxe.h"
+#include "mars.h"
+#include "marscomm.h"
+#include "patch.h"
 
 
     .equ    title_palette_dark, 0x015be0
 
 
-    |-------------------------------------------------------------------
-    | Disable loading the MD version of the title background
-    |-------------------------------------------------------------------
+    /**********************************************************
+     * Disable loading the MD version of the title background
+     */
     patch_start 0x003ff4
         nop
         nop
@@ -31,9 +31,9 @@
     patch_end
 
 
-    |-------------------------------------------------------------------
-    | Load the background on the 32X
-    |-------------------------------------------------------------------
+    /**********************************************************
+     * Load the background on the 32X
+     */
     patch_start 0x004056
         jsr     game_state_handler_title_init.l
         nop
@@ -47,9 +47,9 @@
         jmp     vdp_enable_display
 
 
-    |-------------------------------------------------------------------
-    | Update vertical scroll for the background on the 32X
-    |-------------------------------------------------------------------
+    /**********************************************************
+     * Update vertical scroll for the background on the 32X
+     */
     patch_start 0x0040ac
         jmp     game_state_handler_title_update_v_scroll.l
     patch_end
@@ -61,17 +61,18 @@
         rts
 
 
-    |-------------------------------------------------------------------
-    | Background palette fade
-    |-------------------------------------------------------------------
+    /**********************************************************
+     * Background palette fade
+     */
     patch_start 0x004174
         jmp     game_state_handler_title_fade_palette_step.l
     patch_end
 
     game_state_handler_title_fade_palette_step:
-
-        | Create subtract color (same value for each color component)
-        | d0 is fade down palette index at this point
+        /*
+         * Create subtract color (same value for each color component)
+         * d0 is fade down palette index at this point
+         */
         lsr.w   #1, %d0
         addq.w  #2, %d0
         move.w  %d0, %d1
@@ -86,16 +87,16 @@
         jmp     palette_update_dynamic
 
 
-    |-------------------------------------------------------------------
-    | Set dark background palette
-    |-------------------------------------------------------------------
+    /**********************************************************
+     * Set dark background palette
+     */
     patch_start 0x003ab2
         jsr     game_state_handler_title_set_dark_palette.l
     patch_end
 
     game_state_handler_title_set_dark_palette:
-        move.w  #0x294a, %d0                    | No need to save d0 here
+        move.w  #0x294a, %d0                    /* No need to save d0 here */
         jsr     mars_comm_palette_subtract
 
-        lea     (title_palette_dark).l, %a6     | Prepare palette_update_dynamic call
+        lea     (title_palette_dark).l, %a6     /* Prepare palette_update_dynamic call */
         rts

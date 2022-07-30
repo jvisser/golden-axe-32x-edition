@@ -1,15 +1,15 @@
-|--------------------------------------------------------------------
-| Called whenever the game state/mode changes
-|--------------------------------------------------------------------
+/*
+ * Called whenever the game state/mode changes
+ */
 
-    .include "goldenaxe.i"
-    .include "marscomm.i"
-    .include "patch.i"
+#include "goldenaxe.h"
+#include "marscomm.h"
+#include "patch.h"
 
 
-    |-------------------------------------------------------------------
-    | Disable the 32X on game state changes
-    |-------------------------------------------------------------------
+    /**********************************************************
+     * Disable the 32X on game state changes
+     */
     patch_start 0x000c84
         jsr     state_change_handler.l
         nop

@@ -52,6 +52,7 @@ MDLDFLAGS   = -L $(MDBUILD) -T $(MDSRC)/md.ld -nostdlib -N
 SHLDFLAGS   = -T $(SHSRC)/mars.ld -nostdlib
 
 # C compiler flags
+MDCCFLAGS  = -m68000 -Wall -Wextra -std=c99 -ffreestanding -fshort-enums -Os -fomit-frame-pointer
 SHCCFLAGS  = -m2 -mb -Wall -Wextra -std=c99 -ffreestanding -fshort-enums -O3 -fomit-frame-pointer -flto -fuse-linker-plugin
 
 # Generate MD m68k object target list
@@ -98,7 +99,7 @@ pre-build:
 $(SHSOBJS): $(SHBUILD)/obj/%.o : $(SHSRC)/%.s
 	@echo "SHAS $@: $<"
 	@mkdir -p $(dir $@)
-	@$(SHAS) $(SHASFLAGS) $(SHINCLUDE) $< -o $@
+	@$(SHCC) -E -P $(SHINCLUDE) -D __ASSEMBLER__=1 -o /dev/stdout - < $< | $(SHAS) $(SHASFLAGS) -o $@ --
 
 # Assemble 32X SH2 c modules
 $(SHCOBJS): $(SHBUILD)/obj/%.o : $(SHSRC)/%.c
@@ -138,7 +139,7 @@ $(MDBUILD)/obj/resources.o: $(MDIMGS) $(MDASSETS)/amazon.pat $(SHBUILD)/mars.bin
 $(MDOBJS): $(MDBUILD)/obj/%.o : $(MDSRC)/%.s
 	@echo "MDAS $@: $<"
 	@mkdir -p $(dir $@)
-	@$(MDAS) $(MDASFLAGS) $< -o $@
+	@$(MDCC) -E -P $(MDINCLUDE) -D __ASSEMBLER__=1 -o /dev/stdout - < $< | $(MDAS) $(MDASFLAGS) -o $@ --
 
 # Generate intermediate MD object file used to generate the linker script include file for the patches
 $(MDBUILD)/patch.o: $(MDOBJS) $(MDMAPOBJS)

@@ -1,13 +1,13 @@
-|--------------------------------------------------------------------
-| 32X sub program communication
-|--------------------------------------------------------------------
+/*
+ * 32X sub program communication
+ */
 
-    .include "md.i"
-    .include "mars.i"
-    .include "marscomm.i"
+#include "md.h"
+#include "mars.h"
+#include "marscomm.h"
 
 
-    .equ    __Z80_SAFE, 0           | Set to 1 to halt the Z80 while RV=1
+    .equ    __Z80_SAFE, 0           /* Set to 1 to halt the Z80 while RV=1 */
 
 
     .global __mars_comm_init
@@ -23,9 +23,9 @@
     .global mars_comm_palette_subtract
 
 
-    |--------------------------------------------------------------------
-    | Disable 32X display
-    |--------------------------------------------------------------------
+    /**********************************************************
+     * Disable 32X display
+     */
     mars_comm_display_disable:
         mars_comm_call_start
         mars_comm   MARS_COMM_SLAVE, MARS_COMM_CMD_DISPLAY_DISABLE
@@ -33,9 +33,9 @@
         rts
 
 
-    |--------------------------------------------------------------------
-    | Enable 32X display
-    |--------------------------------------------------------------------
+    /**********************************************************
+     * Enable 32X display
+     */
     mars_comm_display_enable:
         mars_comm_call_start
         mars_comm   MARS_COMM_SLAVE, MARS_COMM_CMD_DISPLAY_ENABLE
@@ -43,9 +43,9 @@
         rts
 
 
-    |--------------------------------------------------------------------
-    | Palette fade in
-    |--------------------------------------------------------------------
+    /**********************************************************
+     * Palette fade in
+     */
     mars_comm_palette_fade_in:
         mars_comm_call_start
         mars_comm_lp MARS_COMM_SLAVE, MARS_COMM_CMD_PALETTE_FILL_PAL0,  #0x00ff0000
@@ -54,9 +54,9 @@
         rts
 
 
-    |--------------------------------------------------------------------
-    | Palette fade out
-    |--------------------------------------------------------------------
+    /**********************************************************
+     * Palette fade out
+     */
     mars_comm_palette_fade_out:
         mars_comm_call_start
         mars_comm_lp MARS_COMM_SLAVE, MARS_COMM_CMD_PALETTE_FILL_PAL1,  #0x00ff0000
@@ -65,12 +65,12 @@
         rts
 
 
-    |--------------------------------------------------------------------
-    | Subtract the specified color value from the current palette
-    |
-    | Parameters:
-    | - d0.w: color value
-    |--------------------------------------------------------------------
+    /**********************************************************
+     * Subtract the specified color value from the current palette
+     *
+     * Parameters:
+     * - d0.w: color value
+     */
     mars_comm_palette_subtract:
         mars_comm_call_start
         move.w  %d0, -(%sp)
@@ -85,12 +85,12 @@
         rts
 
 
-    |--------------------------------------------------------------------
-    | Load and show an image on the 32X
-    |
-    | Parameters:
-    | - a0: image address
-    |--------------------------------------------------------------------
+    /**********************************************************
+     * Load and show an image on the 32X
+     *
+     * Parameters:
+     * - a0: image address
+     */
     mars_comm_image:
         mars_comm_call_start
         mars_comm    MARS_COMM_MASTER, MARS_COMM_CMD_DISPLAY_DISABLE
@@ -102,12 +102,12 @@
         rts
 
 
-    |--------------------------------------------------------------------
-    | Load an image on the 32X and fade in
-    |
-    | Parameters:
-    | - a0: image address
-    |--------------------------------------------------------------------
+    /**********************************************************
+     * Load an image on the 32X and fade in
+     *
+     * Parameters:
+     * - a0: image address
+     */
     mars_comm_image_fade_in:
         mars_comm_call_start
         mars_comm    MARS_COMM_MASTER, MARS_COMM_CMD_DISPLAY_DISABLE
@@ -121,12 +121,12 @@
         rts
 
 
-    |--------------------------------------------------------------------
-    | Update 32X linetable for vertical scrolling 256 line image
-    |
-    | Parameters:
-    | - d0.w: vertical scroll value
-    |--------------------------------------------------------------------
+    /**********************************************************
+     * Update 32X linetable for vertical scrolling 256 line image
+     *
+     * Parameters:
+     * - d0.w: vertical scroll value
+     */
     mars_comm_vertical_scroll:
         mars_comm_call_start
         move.w  %d0, -(%sp)
@@ -140,17 +140,17 @@
         rts
 
 
-    |-------------------------------------------------------------------
-    | Sub program initial handshake.
-    | Should be called directly after ok signals from the 32X boot ROM's
-    |-------------------------------------------------------------------
+    /**********************************************************
+     * Sub program initial handshake.
+     * Should be called directly after ok signals from the 32X boot ROM's
+     */
     __mars_comm_init:
         lea     (MARS_REG_BASE), %a6
 
-        | Set HW/VDP access to the 32X side
+        /* Set HW/VDP access to the 32X side */
         bset    #7, MARS_ADP_CTL(%a6)
 
-        | Wait for the 32X to accept HW control
+        /* Wait for the 32X to accept HW control */
     1:  tst.l   MARS_COMM0(%a6)
         bne     1b
     1:  tst.l   MARS_COMM2(%a6)
@@ -158,23 +158,23 @@
         rts
 
 
-    .data       | Use the .data section to store this routine in RAM allowing RV switching
+    .data       /* Use the .data section to store this routine in RAM allowing RV switching */
     .balign 2
 
-    |-------------------------------------------------------------------
-    | Send command to the 32X sub program.
-    | Command specific parameters must be set in the communication registers before calling.
-    |
-    | Params:
-    | - d5.w: non zero command id
-    | - d6.w: comm port base offset relative to MARS_REG_BASE
-    |-------------------------------------------------------------------
+    /**********************************************************
+     * Send command to the 32X sub program.
+     * Command specific parameters must be set in the communication registers before calling.
+     *
+     * Params:
+     * - d5.w: non zero command id
+     * - d6.w: comm port base offset relative to MARS_REG_BASE
+     */
     __mars_comm:
         tst.w   %d5
         beq     .exit
 
     .ifne __Z80_SAFE
-        | Halt Z80 if not halted already
+        /* Halt Z80 if not halted already */
         btst    #0, (Z80_BUS_REQUEST)
         beq     .z80_halted
         move.w  #0x0100, (Z80_BUS_REQUEST)
@@ -187,23 +187,23 @@
         move.l  %a6, -(%sp)
         lea     (MARS_REG_BASE), %a6
 
-        | Give the 32X access to ROM (RV = 0)
+        /* Give the 32X access to ROM (RV = 0) */
         bclr    #0, MARS_DMAC + 1(%a6)
 
-        | Clear response register
+        /* Clear response register */
         clr.w   2(%a6, %d6.w)
 
-        | Send command
+        /* Send command */
         move.w  %d5, (%a6, %d6.w)
 
-        | Wait for command ready
+        /* Wait for command ready */
     1:  cmp.w   2(%a6, %d6.w), %d5
         bne     1b
 
-        | Send ACK
+        /* Send ACK */
         clr.w   (%a6, %d6.w)
 
-        | Give MD access to ROM (RV = 1)
+        /* Give MD access to ROM (RV = 1) */
         bset    #0, MARS_DMAC + 1(%a6)
 
         move.l  (%sp)+, %a6
