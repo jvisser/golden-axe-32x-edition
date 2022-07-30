@@ -31,7 +31,7 @@ typedef struct
     u32 data[];
 } map_def;
 
-typedef u16 block[32];
+typedef u16 const block[32];
 
 typedef struct
 {
@@ -41,17 +41,17 @@ typedef struct
 
 typedef struct
 {
-    u32                     width;
-    u32                     height;
-    u16         ALIGNED(4)* tile_map;
-    block       ALIGNED(4)* blocks;
-    map_palette ALIGNED(4)* palettes[4];
+    u32                             width;
+    u32                             height;
+    u16         const ALIGNED(4)*   tile_map;
+    block       const ALIGNED(4)*   blocks;
+    map_palette const ALIGNED(4)*   palettes[4];
 } map_data;
 
 
-static map_def ALIGNED(4)** md_map_table = (map_def**) 0x22080000;
-static map_def ALIGNED(4)*  map_definition = 0;
-static map_data             map;
+static map_def const ALIGNED(4)* const * const md_map_table = (map_def const**) 0x22080000;
+static map_def const ALIGNED(4)* map_definition = 0;
+static map_data map;
 
 static u32 vertical_scroll;
 static u32 horizontal_scroll;
@@ -71,7 +71,7 @@ static void process(u32 command_id, u16* param_base)
             u32* map_base = (u32*) UNCACHED(&_free_ram_start);
 
             u32* target = map_base;
-            u32* source = map_definition->data;
+            u32 const* source = map_definition->data;
             for (u32 i = 0; i < map_definition->data_size; i++)
             {
                 *target++ = *source++;
