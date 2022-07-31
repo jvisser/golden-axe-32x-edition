@@ -9,7 +9,7 @@
 
 
 /**********************************************************
- * Map event id's/offsets
+ * Map event
  */
 #define MAP_EVENT_NOTHING                               0x00
 #define MAP_EVENT_PALETTE_TRANSITION                    0x04
@@ -23,5 +23,9 @@
 #define MAP_EVENT_START_WATER_ANIMATION                 0x24
 #define MAP_EVENT_START_FEATHER_ANIMATION               0x28
 #define MAP_EVENT_START_BOSS_MUSIC                      0x2c
+
+// Event structure
+#define MAP_EVENT_ID                                    0x00
+#define MAP_EVENT_DATA                                  0x01
 
 #endif

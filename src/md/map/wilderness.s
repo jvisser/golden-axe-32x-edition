@@ -77,6 +77,14 @@
      * Event list
      */
     wilderness_event_list:
+        .dc.w   320
+        .dc.b   MAP_EVENT_PALETTE_TRANSITION
+        .dc.b   0x01
+
+        .dc.w   952
+        .dc.b   MAP_EVENT_PALETTE_TRANSITION
+        .dc.b   0x02
+
         .dc.w   960
         .dc.b   MAP_EVENT_START_BOSS_MUSIC
         .dc.b   0x00

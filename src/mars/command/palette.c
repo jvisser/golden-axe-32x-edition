@@ -61,14 +61,7 @@ static void post_process(u32 command_id, u16* param_base)
             break;
 
         case CMD_PALETTE_TRANSITION:
-            {
-                while (pal_transition_step(parameters->offset, parameters->count + 1, parameters->color))
-                {
-                    vdp_vsync_wait(1);
-
-                    pal_commit();
-                }
-            }
+            pal_transition(parameters->offset, parameters->count + 1, parameters->color);
             break;
 
         case CMD_PALETTE_COPY:

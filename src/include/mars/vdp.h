@@ -9,6 +9,9 @@
 #include "mars.h"
 
 
+#define COLOR(r,g,b)                (((r)&0x1f)|((g)&0x1f)<<5|((b)&0x1f)<<10)
+
+
 #define DISPLAY_MODE_BLANK          MARS_VDP_DISPMODE_BLANK
 #define DISPLAY_MODE_PACKED         MARS_VDP_DISPMODE_PACKED
 #define DISPLAY_MODE_DIRECT_COLOR   MARS_VDP_DISPMODE_DIRECT_COLOR
