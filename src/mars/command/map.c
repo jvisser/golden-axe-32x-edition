@@ -128,7 +128,7 @@ static void post_process(u32 command_id, u16* param_base)
                 if (palette_parameters->transition)
                 {
                     pal_replace(PAL_TARGET, 0, palette->color_count, palette->colors);
-                    pal_transition(0, palette->color_count, COLOR(1, 1, 1));
+                    pal_transition(0, palette->color_count, COLOR(1, 1, 1), 4);
                 }
                 else
                 {

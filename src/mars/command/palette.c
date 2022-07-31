@@ -61,7 +61,7 @@ static void post_process(u32 command_id, u16* param_base)
             break;
 
         case CMD_PALETTE_TRANSITION:
-            pal_transition(parameters->offset, parameters->count + 1, parameters->color);
+            pal_transition(parameters->offset, parameters->count + 1, parameters->color, 1);
             break;
 
         case CMD_PALETTE_COPY:

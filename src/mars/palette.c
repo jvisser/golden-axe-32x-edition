@@ -150,11 +150,11 @@ void pal_commit(void)
 }
 
 
-void pal_transition(u32 offset, u32 count, u32 step_size)
+void pal_transition(u32 offset, u32 count, u32 step_size, u32 wait_frames)
 {
     while (pal_transition_step(offset, count, step_size))
     {
-        vdp_vsync_wait(1);
+        vdp_vsync_wait(wait_frames);
 
         pal_commit();
     }
