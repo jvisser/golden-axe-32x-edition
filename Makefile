@@ -1,3 +1,5 @@
+# TODO: Auto generate .d dependency make files
+
 .DEFAULT_GOAL := release
 
 # Default paths, can be overridden by setting MARSDEV before calling make
@@ -96,6 +98,7 @@ pre-build:
 	@mkdir -p $(SHBUILD)
 
 # Assemble 32X SH2 assembly modules
+# Run preprocessor as a separate pass as gcc will not pass the include paths to AS needed for the .incbin directive :/
 $(SHSOBJS): $(SHBUILD)/obj/%.o : $(SHSRC)/%.s
 	@echo "SHAS $@: $<"
 	@mkdir -p $(dir $@)
@@ -136,6 +139,7 @@ $(MDMAPOBJS): $(MDASSETS)/map/%.o : $(ASSETSRC)/map/%.tmx
 $(MDBUILD)/obj/resources.o: $(MDIMGS) $(MDASSETS)/amazon.pat $(SHBUILD)/mars.bin
 
 # Assemble MD m68k modules
+# Run preprocessor as a separate pass as gcc will not pass the include paths to AS needed for the .incbin directive :/
 $(MDOBJS): $(MDBUILD)/obj/%.o : $(MDSRC)/%.s
 	@echo "MDAS $@: $<"
 	@mkdir -p $(dir $@)

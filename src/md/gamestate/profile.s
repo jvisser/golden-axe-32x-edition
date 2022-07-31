@@ -19,12 +19,14 @@
     /**********************************************************
      * Disable fade in like the arcade version
      */
-    /*patch_start 0x005552
+/*
+    patch_start 0x005552
         bsr     palette_update_dynamic.w
         nop
         nop
         nop
-    patch_end*/
+    patch_end
+*/
 
 
     /**********************************************************
@@ -43,7 +45,7 @@
         /* Show death adder profile for 5 seconds or until the player presses an action button */
         move.w  #5*60, %d1
         jsr     wait_n_frames
-        bcs     .player_exit        /* skip transition if player requested a return to the title screen */
+        bcs     .player_exit        // skip transition if player requested a return to the title screen
 
         jsr     screen_transition_to_dark
 

@@ -50,15 +50,15 @@
      * 32X Header
      */
     patch_start 0x0003c0
-        .ascii  "Golden Axe 32X  "              /* Module name (16 chars)     */
-        .dc.l   0x00010000                      /* Version                    */
-        .dc.l   _sh2                            /* ROM source offset          */
-        .dc.l   0                               /* SDRAM destination offset   */
-        .dc.l   _sh2_size                       /* Size                       */
-        .dc.l   0x06000000                      /* Master SH2 initial address */
-        .dc.l   0x06000004                      /* Slave SH2 initial address  */
-        .dc.l   0x05ffff00                      /* Master SH2 VBR             */
-        .dc.l   0x05ffff14                      /* Slave SH2 VBR              */
+        .ascii  "Golden Axe 32X  "              // Module name (16 chars)
+        .dc.l   0x00010000                      // Version
+        .dc.l   _sh2                            // ROM source offset
+        .dc.l   0                               // SDRAM destination offset
+        .dc.l   _sh2_size                       // Size
+        .dc.l   0x06000000                      // Master SH2 initial address
+        .dc.l   0x06000004                      // Slave SH2 initial address
+        .dc.l   0x05ffff00                      // Master SH2 VBR
+        .dc.l   0x05ffff14                      // Slave SH2 VBR
     patch_end
 
 
@@ -106,9 +106,9 @@
          * - page 89: Master boot ROM source code
          */
         mars_ready_wait:
-        1:  cmp.l   #M_OK, MARS_COMM0(%a6)      /* Wait for Master SH2 ready signal from master boot ROM */
+        1:  cmp.l   #M_OK, MARS_COMM0(%a6)      // Wait for Master SH2 ready signal from master boot ROM
             bne     1b
-        1:  cmp.l   #S_OK, MARS_COMM2(%a6)      /* Wait for Slave SH2 ready signal from slave boot ROM */
+        1:  cmp.l   #S_OK, MARS_COMM2(%a6)      // Wait for Slave SH2 ready signal from slave boot ROM
             bne     1b
             rts
 
@@ -125,7 +125,7 @@
             bset    #0, MARS_DMAC + 1(%a6)
 
             /* Jump to init code in ROM */
-            jmp     init.w                      /* Need to force abs short or else it gets optimized to a relative branch */
+            jmp     init.w                      // Need to force abs short or else it gets optimized to a relative branch
         init_boot_strap_end:
 
 

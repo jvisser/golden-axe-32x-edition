@@ -37,7 +37,7 @@
 
     /* Change vblank_int_handler into a subroutine */
     patch_start 0x000d60
-        rts /* rte = rts */
+        rts // rte = rts
     patch_end
 
     /* Reconfigure the VDP mode 2 register to disable vertical interrupts */
@@ -60,14 +60,14 @@
     vdp_vsync_wait:
         move.b  %d0, (vblank_update_flags)
 
-        btst    #6, (vdp_reg_mode2 + 1)     /* Check if display is enabled */
+        btst    #6, (vdp_reg_mode2 + 1)     // Check if display is enabled
         beq     .display_disabled
 
         move.l  %a0, -(%sp)
         lea     (VDP_CTRL + 1), %a0
-    1:  btst    #3, (%a0)                   /* Wait until we are out of vblank (if in vblank at this point we have a frameskip) */
+    1:  btst    #3, (%a0)                   // Wait until we are out of vblank (if in vblank at this point we have a frameskip)
         bne     1b
-    1:  btst    #3, (%a0)                   /* Wait until we are in vblank */
+    1:  btst    #3, (%a0)                   // Wait until we are in vblank
         beq     1b
         move.l  (%sp)+, %a0
 
