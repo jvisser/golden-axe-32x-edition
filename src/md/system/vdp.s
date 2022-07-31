@@ -37,7 +37,7 @@
 
     /* Change vblank_int_handler into a subroutine */
     patch_start 0x000d60
-        rts                 | rte = rts
+        rts /* rte = rts */
     patch_end
 
     /* Reconfigure the VDP mode 2 register to disable vertical interrupts */

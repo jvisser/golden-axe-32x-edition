@@ -1,6 +1,6 @@
-|--------------------------------------------------------------------
-| Player select screen patches
-|--------------------------------------------------------------------
+/*
+ * Player select screen patches
+ */
 
 #include "goldenaxe.h"
 #include "patch.h"

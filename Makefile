@@ -44,7 +44,7 @@ MDCC_VER    := $(shell $(MDCC) -dumpversion)
 SHCC_VER    := $(shell $(SHCC) -dumpversion)
 
 # Assembler flags
-MDASFLAGS   = -m68000 $(MDINCLUDE)
+MDASFLAGS   = -m68000 --bitwise-or $(MDINCLUDE)
 SHASFLAGS   = --small $(SHINCLUDE)
 
 # Linker flags
