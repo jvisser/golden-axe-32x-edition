@@ -27,7 +27,7 @@ extern u32 pal_transition_step(u32 offset, u32 count, u32 step_size);
 
 // Fully transition the current palette towards the target palette
 // Only returns when the transition is completed
-extern void pal_transition(u32 offset, u32 count, u32 step_size);
+extern void pal_transition(u32 offset, u32 count, u32 step_size, u32 wait_frames);
 
 // Commit the current palette to CRAM
 extern void pal_commit(void);
