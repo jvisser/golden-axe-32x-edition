@@ -53,5 +53,5 @@
         jsr     palette_interpolate_full
         move.w  (%sp)+, %d7
 
-        | Start sound after fade in
+        /* Start sound after fade in */
         jmp     sound_command

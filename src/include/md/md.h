@@ -61,6 +61,6 @@
  */
 
 #define TILE_ADDR(tile_id)          tile_id * 0x20
-#define VRAM_ADDR_SET(vram_addr)    0x40000000 | (((vram_addr) & 0x3fff) << 16) | ((vram_addr) & 0xc000) >> 14)
+#define VRAM_ADDR_SET(vram_addr)    0x40000000 | (((vram_addr) & 0x3fff) << 16) | (((vram_addr) & 0xc000) >> 14)
 
 #endif

@@ -60,6 +60,12 @@
 
 #define hud_player_palette                  0x00038492
 
+#define nem_pat_chicken_leg                 0x00040e8a
+#define chicken_leg_tile_count              176
+
+#define nem_pat_bad_brother                 0x0007532a
+#define bad_brother_tile_count              531
+
 
 /**********************************************************
  * Variables
