@@ -31,20 +31,20 @@
      */
     patch_start 0x001a7a
         /* Demo 1: Ax */
-        .dc.b       0       /* Wilderness */
-        .dc.b       0x28    /* Demo map offset */
-        .dc.b       0       /* Ax */
-        .dc.b       4       /* Flask count */
+        .dc.b       0       // Wilderness
+        .dc.b       0x28    // Demo map offset
+        .dc.b       0       // Ax
+        .dc.b       4       // Flask count
         /* Demo 2: Tyris */
-        .dc.b       0       /* Wilderness */
-        .dc.b       0x28    /* Demo map offset */
-        .dc.b       1       /* Tyris */
-        .dc.b       4       /* Flask count */
+        .dc.b       0       // Wilderness
+        .dc.b       0x28    // Demo map offset
+        .dc.b       1       // Tyris
+        .dc.b       4       // Flask count
         /* Demo 2: Gilius */
-        .dc.b       0       /* Wilderness */
-        .dc.b       0x28    /* Demo map offset */
-        .dc.b       2       /* Gilius */
-        .dc.b       1       /* Flask count */
+        .dc.b       0       // Wilderness
+        .dc.b       0x28    // Demo map offset
+        .dc.b       2       // Gilius
+        .dc.b       1       // Flask count
     patch_end
 
 
@@ -80,6 +80,8 @@
 
         /* Wait until magic done */
         .dc.b   255
+        .dc.b   0
+        .dc.b   48
         .dc.b   0
 
         /* End of input/demo */

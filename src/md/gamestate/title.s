@@ -95,8 +95,8 @@
     patch_end
 
     game_state_handler_title_set_dark_palette:
-        move.w  #0x294a, %d0                    /* No need to save d0 here */
+        move.w  #0x294a, %d0
         jsr     mars_comm_palette_subtract
 
-        lea     (title_palette_dark).l, %a6     /* Prepare palette_update_dynamic call */
+        lea     (title_palette_dark).l, %a6     // Prepare palette_update_dynamic call
         rts

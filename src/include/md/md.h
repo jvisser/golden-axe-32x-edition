@@ -60,7 +60,9 @@
  * Macros
  */
 
-#define TILE_ADDR(tile_id)          tile_id * 0x20
-#define VRAM_ADDR_SET(vram_addr)    0x40000000 | (((vram_addr) & 0x3fff) << 16) | (((vram_addr) & 0xc000) >> 14)
+#define TILE_ADDR(tile_id)              ((tile_id) * 0x20)
+#define VRAM_ADDR_SET(vram_addr)        (0x40000000 | (((vram_addr) & 0x3fff) << 16) | (((vram_addr) & 0xc000) >> 14))
+
+#define PALETTE_OFFSET(palette, color)  ((palette) * 0x20 + (color) * 2)
 
 #endif

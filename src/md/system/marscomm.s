@@ -7,7 +7,7 @@
 #include "marscomm.h"
 
 
-    .equ    __Z80_SAFE, 0           /* Set to 1 to halt the Z80 while RV=1 */
+    .equ    __Z80_SAFE, 0           // Set to 1 to halt the Z80 while RV=1
 
 
     .global __mars_comm_init
@@ -158,7 +158,7 @@
         rts
 
 
-    .data       /* Use the .data section to store this routine in RAM allowing RV switching */
+    .data       // Use the .data section to store this routine in RAM allowing RV switching
     .balign 2
 
     /**********************************************************

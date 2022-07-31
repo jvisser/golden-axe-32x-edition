@@ -29,7 +29,7 @@
     resource img_dungeon_background,    "img/bgdungeon.img"
     resource img_title_background,      "img/bgtitle.img"
 
-    resource pat_amazon,                "amazon.pat"                /* Decompressed amazon tiledata */
+    resource pat_amazon,                "amazon.pat"                // Decompressed amazon tiledata
 
     resource nem_pat_empty,             "empty.pat.nem"
 

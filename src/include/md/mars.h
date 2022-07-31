@@ -11,6 +11,7 @@
 
 #define SH2_ROM_BASE    0x22000000  // uncached
 
+
 /**********************************************************
  * 32x boot ROM response codes
  */
