@@ -16,7 +16,7 @@
 extern void pal_fill(u32 palette_id, u32 offset, u32 count, u16 color);
 
 // Fill the specified palette with the specified colors
-extern void pal_replace(u32 palette_id, u32 offset, u32 count, u16 *colors);
+extern void pal_replace(u32 palette_id, u32 offset, u32 count, u16 const *colors);
 
 // Copy the specified palette to the opposing palette
 extern void pal_copy(u32 palette_id);
@@ -24,6 +24,10 @@ extern void pal_copy(u32 palette_id);
 // Transition the current palette by step_size towards the target palette by step_size (=color value to add subtract)
 // Returns non zero if changes have been made
 extern u32 pal_transition_step(u32 offset, u32 count, u32 step_size);
+
+// Fully transition the current palette towards the target palette
+// Only returns when the transition is completed
+extern void pal_transition(u32 offset, u32 count, u32 step_size);
 
 // Commit the current palette to CRAM
 extern void pal_commit(void);

@@ -5,6 +5,7 @@
 #include "types.h"
 #include "mars.h"
 #include "vdp.h"
+#include "palette.h"
 
 
 static u16 current_palette[256];
@@ -29,7 +30,7 @@ void pal_fill(u32 palette_id, u32 offset, u32 count, u16 color)
 }
 
 
-void pal_replace(u32 palette_id, u32 offset, u32 count, u16 *colors)
+void pal_replace(u32 palette_id, u32 offset, u32 count, u16 const *colors)
 {
     u16* target = palettes[palette_id] + offset;
 
@@ -146,4 +147,15 @@ void pal_subtract(u32 offset, u32 count, u16 color)
 void pal_commit(void)
 {
     vdp_update_palette(current_palette, 0, 256);
+}
+
+
+void pal_transition(u32 offset, u32 count, u32 step_size)
+{
+    while (pal_transition_step(offset, count, step_size))
+    {
+        vdp_vsync_wait(1);
+
+        pal_commit();
+    }
 }

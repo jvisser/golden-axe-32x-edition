@@ -88,6 +88,13 @@ static void process(u32 command_id, u16* param_base)
 
             vertical_scroll = load_parameters->vertical_scroll << 4;
             horizontal_scroll = load_parameters->horizontal_scroll << 4;
+
+            // Set initial palette
+            pal_replace(PAL_CURRENT, 0, map.palettes[0]->color_count, map.palettes[0]->colors);
+            pal_commit();
+
+            // Render initial frame
+            // TODO...
         }
     }
 }
@@ -110,6 +117,25 @@ static void post_process(u32 command_id, u16* param_base)
 
                 vertical_scroll = scroll_parameters->vertical_scroll;
                 horizontal_scroll = scroll_parameters->horizontal_scroll;
+            }
+            break;
+
+        case CMD_MAP_PALETTE:
+            {
+                map_palette_parameters* palette_parameters = (map_palette_parameters*) param_base;
+                map_palette const* palette = map.palettes[palette_parameters->palette_index];
+
+                if (palette_parameters->transition)
+                {
+                    pal_replace(PAL_TARGET, 0, palette->color_count, palette->colors);
+                    pal_transition(0, palette->color_count, COLOR(1, 1, 1));
+                }
+                else
+                {
+                    pal_replace(PAL_CURRENT, 0, palette->color_count, palette->colors);
+                    vdp_vsync_wait(1);
+                    pal_commit();
+                }
             }
             break;
     }

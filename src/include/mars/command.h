@@ -75,8 +75,8 @@ typedef struct
 
 typedef struct
 {
-    u8  palette_index;
     u8  transition;
+    u8  palette_index;
 } map_palette_parameters;
 
 
