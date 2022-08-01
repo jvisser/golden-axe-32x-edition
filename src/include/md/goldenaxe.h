@@ -37,7 +37,7 @@
 // Song id's
 #define SONG_WILDERNESS                         0x81
 #define SONG_TURTLE_VILLAGE                     0x82
-#define SONG_MAIN_LAND_COAST                    0x84
+#define SONG_TOWN                               0x84
 #define SONG_FIENDS_PATH                        0x83
 #define SONG_EAGLES_HEAD                        0x86        // Also boss
 #define SONG_DEATH_ADDER                        0x85        // Also used for dungeon

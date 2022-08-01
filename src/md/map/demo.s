@@ -1,5 +1,5 @@
 /*
- * Demo map data patches
+ * Demo patches
  */
 
 #include "goldenaxe.h"
@@ -12,6 +12,7 @@
     .section .rodata
 
     .balign 2
+
 
     /**********************************************************
      * Map definition

@@ -1,5 +1,5 @@
 /*
- * Wilderness patches
+ * Eagles's head patches
  */
 
 #include "goldenaxe.h"
@@ -16,15 +16,15 @@
     /**********************************************************
      * Map definition
      */
-    patch_start 0x0015ac
-        .dc.l   wilderness_map_definition   // Patch map table entry
+    patch_start 0x0015bc
+        .dc.l   eagles_head_map_definition  // Patch map table entry
     patch_end
 
         /* Extended map data is prefixed */
-        .dc.l   wilderness_entity_palette_table - 4         // The first entry is always ignored so offset for that
-        .dc.l   wilderness_entity_group_graphics_table - 4  // The first entry is always ignored so offset for that
-        .dc.l   wilderness_entity_load_slot_descriptor_table
-    wilderness_map_definition:
+        .dc.l   eagles_head_entity_palette_table - 4            // The first entry is always ignored so offset for that
+        .dc.l   eagles_head_entity_group_graphics_table - 4     // The first entry is always ignored so offset for that
+        .dc.l   eagles_head_entity_load_slot_descriptor_table
+    eagles_head_map_definition:
         /* Palette list */
         .dc.l   hud_player_palette
         .dc.l   0
@@ -35,55 +35,55 @@
         .dc.l   0
 
         /* Tile map data */
-        .dc.l   map_wilderness_foreground_blocks
-        .dc.l   map_wilderness_foreground_map
+        .dc.l   map_eagles_head_foreground_blocks
+        .dc.l   map_eagles_head_foreground_map
 
         /* Map dimensions */
-        .dc.w   map_wilderness_block_height
-        .dc.w   map_wilderness_block_width
+        .dc.w   map_eagles_head_block_height
+        .dc.w   map_eagles_head_block_width
 
         /* Initial scroll positions in blocks */
-        .dc.w   0       // Vertical
-        .dc.w   4       // Horizontal
+        .dc.w   4       // Vertical
+        .dc.w   0       // Horizontal
 
         /* Event list */
-        .dc.l   wilderness_event_list
+        .dc.l   eagles_head_event_list
 
         /* Height map data */
-        .dc.l   map_wilderness_height_map
-        .dc.l   map_wilderness_height_blocks
+        .dc.l   map_eagles_head_height_map
+        .dc.l   map_eagles_head_height_blocks
 
         /* Entity load list */
-        .dc.l   wilderness_entity_load_list
+        .dc.l   eagles_head_entity_load_list
 
         /* Player starting positions */
         .dc.w   0       // Player 1 Y (Baseline relative offset)
-        .dc.w   112     // Player 1 X
-        .dc.w   16      // Player 2 Y (Baseline relative offset)
-        .dc.w   80      // Player 2 X
+        .dc.w   256     // Player 1 X
+        .dc.w   0       // Player 2 Y (Baseline relative offset)
+        .dc.w   296     // Player 2 X
 
         /* Music id */
-        .dc.w   SONG_WILDERNESS
+        .dc.w   SONG_EAGLES_HEAD
 
 
     /**********************************************************
      * Y base line list
      */
-    patch_start 0x00877e
-        .dc.l   wilderness_y_baseline   // Patch y base line table entry
+    patch_start 0x00878e
+        .dc.l   eagles_head_y_baseline   // Patch y base line table entry
     patch_end
 
-    wilderness_y_baseline:
+    eagles_head_y_baseline:
         .dc.w   0x0000
 
-        .dc.w   map_wilderness_pixel_width
-        .dc.w   188
+        .dc.w   map_eagles_head_pixel_width
+        .dc.w   208
 
 
     /**********************************************************
      * Event list
      */
-    wilderness_event_list:
+    eagles_head_event_list:
         .dc.w   320
         .dc.b   MAP_EVENT_PALETTE_TRANSITION
         .dc.b   0x01
@@ -97,7 +97,7 @@
         .dc.b   0x00
 
         .dc.w   1216
-        .dc.b   MAP_EVENT_CAMPSITE_ON_ENEMY_DEFEAT
+        .dc.b   MAP_EVENT_END_GAME_ON_ENEMY_DEFEAT
         .dc.b   0x00
 
         .dc.w   1280
@@ -108,18 +108,18 @@
     /**********************************************************
      * Entity load list
      */
-     
-    wilderness_entity_load_list:
+
+    eagles_head_entity_load_list:
         .dc.w   1280
         .dc.w   0
 
         .dc.w   -1
 
 
-    wilderness_entity_group_graphics_table:
+    eagles_head_entity_group_graphics_table:
 
 
-    wilderness_entity_palette_table:
+    eagles_head_entity_palette_table:
 
 
-    wilderness_entity_load_slot_descriptor_table:
+    eagles_head_entity_load_slot_descriptor_table:
