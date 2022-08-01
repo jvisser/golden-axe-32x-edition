@@ -83,11 +83,11 @@
      * Entity load list
      */
     demo_entity_load_list:
-        .dc.w   0x0000
-        .dc.w   0x0000  // index into demo_entity_load_slot_descriptor_table
+        .dc.w   0       // Horizontal scroll trigger position
+        .dc.w   0       // index into demo_entity_load_slot_descriptor_table
 
-        .dc.w   0x0500
-        .dc.w   0x0000
+        .dc.w   1280
+        .dc.w   0
 
         .dc.w   -1
 
@@ -138,17 +138,14 @@
                     .dc.w    TILE_ADDR(1)                       // VRAM address (this relates to the tile_id parameter of map_entity_definition)
                     .dc.w    ENTITY_NEMESIS_OFFSET_CHICKEN_LEG  // Nemesis data id
 
-                    .dc.w    GAME_PLAY_VRAM_RESERVED_MAX
+                    .dc.w    TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX)
                     .dc.w    ENTITY_NEMESIS_OFFSET_BAD_BROTHER
 
                     .dc.w   0                                   // Terminate
 */
                 demo_map_entity_load_group_descriptor_0_0_pal0:
-                    .dc.b PALETTE_OFFSET(1, 1)
-                    .dc.b 14
-                        entity_palette_combine red1_4, yellow_3, skin_4, green_4
+                    entity_palette PALETTE_OFFSET(1, 1), 15, red1_4, yellow_3, skin_4, green_4
 
                 demo_map_entity_load_group_descriptor_0_0_pal1:
-                    .dc.b PALETTE_OFFSET(2, 5)
-                    .dc.b 5
-                        entity_palette_combine yellow_3, purple_3
+                    .dc.b
+                    entity_palette PALETTE_OFFSET(2, 5), 6, yellow_3, purple_3

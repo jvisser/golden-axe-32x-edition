@@ -69,7 +69,8 @@
 .endm
 
 
-.macro entity_palette_combine palettes:vararg
+.macro entity_palette offset, count, palettes:vararg
+    .dc.b \offset, \count - 1
     .irp palette_name, \palettes
         entity_palette_\palette_name
     .endr

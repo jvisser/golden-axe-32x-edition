@@ -107,8 +107,8 @@
      */
      
     wilderness_entity_load_list:
-        .dc.w   0x0500
-        .dc.w   0x0000
+        .dc.w   1280
+        .dc.w   0
 
         .dc.w   -1
 
