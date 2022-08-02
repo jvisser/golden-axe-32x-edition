@@ -10,6 +10,9 @@
 #include "marscomm.h"
 
 
+    .comm map_extended_event_data_table, 4
+
+
     /**********************************************************
      * 32X map table mapped at 0x22080000 in the SH2 address space (see md.ld)
      * Content in sync with MD map table at 0x0015ac
@@ -31,6 +34,20 @@
 
 
     .text
+
+
+    /**********************************************************
+     * Patch map load code to store extended event data table address
+     */
+    patch_start 0x001560
+        jsr     md_load_map.l
+    patch_end
+
+    md_load_map:
+        move.w  (%a5)+, %d1
+        move.l  (%a5)+, (next_event_trigger)
+        move.l  (%a5)+, (map_extended_event_data_table)
+        rts
 
 
     /**********************************************************
