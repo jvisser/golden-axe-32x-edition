@@ -37,6 +37,7 @@
 #define hud_player_palette                              0x00038492
 
 #define map_table                                       0x000015ac
+#define next_event_trigger                              0xffffc22a
 #define next_entity_load_trigger                        0xffffc26e
 
 #define entity_nemesis_data_table                       0x00013a74

@@ -49,6 +49,7 @@
 
         /* Event list */
         .dc.l   demo_event_list
+        .dc.l   0
 
         /* Height map data */
         .dc.l   map_wilderness_height_map

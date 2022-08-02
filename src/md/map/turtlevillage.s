@@ -44,6 +44,7 @@
 
         /* Event list */
         .dc.l   turtle_village_event_list
+        .dc.l   turtle_village_extended_event_data_table
 
         /* Height map data */
         .dc.l   map_turtle_village_height_map
@@ -99,6 +100,8 @@
         .dc.w   1280
         .dc.b   MAP_EVENT_NOTHING
         .dc.b   0x00
+
+    turtle_village_extended_event_data_table:
 
 
     /**********************************************************

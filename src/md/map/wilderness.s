@@ -44,6 +44,7 @@
 
         /* Event list */
         .dc.l   wilderness_event_list
+        .dc.l   wilderness_extended_event_data_table
 
         /* Height map data */
         .dc.l   map_wilderness_height_map
@@ -100,10 +101,12 @@
         .dc.b   MAP_EVENT_NOTHING
         .dc.b   0x00
 
+    wilderness_extended_event_data_table:
+
 
     /**********************************************************
      * Entity load list
      */
-     
+
     wilderness_entity_load_list:
         .dc.w   -1  // Terminate

@@ -44,6 +44,7 @@
 
         /* Event list */
         .dc.l   eagles_head_event_list
+        .dc.l   eagles_head_extended_event_data_table
 
         /* Height map data */
         .dc.l   map_eagles_head_height_map
@@ -99,6 +100,8 @@
         .dc.w   1280
         .dc.b   MAP_EVENT_NOTHING
         .dc.b   0x00
+
+    eagles_head_extended_event_data_table:
 
 
     /**********************************************************
