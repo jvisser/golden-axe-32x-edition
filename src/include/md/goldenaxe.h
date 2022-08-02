@@ -79,6 +79,7 @@
 #define demo_index                              0xfffffe08  // .b
 
 #define vblank_update_flags                     0xffffc183  // .b
+#define vblank_update_palette_flag              0xffffc17c  // .b
 
 #define vdp_reg_mode1                           0xffffc114  // .w in register set command format
 #define vdp_reg_mode2                           0xffffc116  // .w in register set command format
@@ -161,7 +162,8 @@
  * Parameters:
  * - a6: partial palette struct address
  */
-#define palette_update_dynamic                  0x00002eb4
+#define palette_update_dynamic_commit           0x00002eb4
+#define palette_update_dynamic                  0x00002eba
 
 
 /*
@@ -170,7 +172,8 @@
  * Parameters:
  * - a6: partial palette struct address
  */
-#define palette_update_base                     0x00002ed0
+#define palette_update_base_commit              0x00002ed0
+#define palette_update_base                     0x00002ed6
 
 
 /*

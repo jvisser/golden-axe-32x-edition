@@ -20,10 +20,6 @@
         .dc.l   eagles_head_map_definition  // Patch map table entry
     patch_end
 
-        /* Extended map data is prefixed */
-        .dc.l   eagles_head_entity_palette_table - 4            // The first entry is always ignored so offset for that
-        .dc.l   eagles_head_entity_group_graphics_table - 4     // The first entry is always ignored so offset for that
-        .dc.l   eagles_head_entity_load_slot_descriptor_table
     eagles_head_map_definition:
         /* Palette list */
         .dc.l   hud_player_palette
@@ -110,16 +106,4 @@
      */
 
     eagles_head_entity_load_list:
-        .dc.w   1280
-        .dc.w   0
-
-        .dc.w   -1
-
-
-    eagles_head_entity_group_graphics_table:
-
-
-    eagles_head_entity_palette_table:
-
-
-    eagles_head_entity_load_slot_descriptor_table:
+        .dc.w   -1  // Terminate

@@ -21,10 +21,6 @@
         .dc.l   demo_map_definition                     // Patch map table entry
     patch_end
 
-        /* Extended map data is prefixed */
-        .dc.l   demo_entity_palette_table - 4           // The first entry is always ignored so offset for that
-        .dc.l   demo_entity_group_graphics_table - 4    // The first entry is always ignored so offset for that
-        .dc.l   demo_entity_load_slot_descriptor_table
     demo_map_definition:
         /* Palette list */
         .dc.l   hud_player_palette
@@ -75,7 +71,7 @@
      * Event list
      */
     demo_event_list:
-        .dc.w   1280
+        .dc.w   1280    // horizontal trigger position
         .dc.b   MAP_EVENT_NOTHING
         .dc.b   0x00
 
@@ -84,69 +80,38 @@
      * Entity load list
      */
     demo_entity_load_list:
-        .dc.w   0       // Horizontal scroll trigger position
-        .dc.w   0       // index into demo_entity_load_slot_descriptor_table
-
-        .dc.w   1280
-        .dc.w   0
-
-        .dc.w   -1
-
-
-    demo_entity_group_graphics_table:
-        .dc.l   demo_map_entity_load_group_descriptor_0_0_graphics
-
-
-    demo_entity_palette_table:
-        .dc.l   demo_map_entity_load_group_descriptor_0_0_pal0
-        .dc.l   demo_map_entity_load_group_descriptor_0_0_pal1
-
-
-    demo_entity_load_slot_descriptor_table:
+        .dc.w   0       // horizontal trigger position
         .dc.l   demo_map_entity_load_slot_descriptor_0
 
-        demo_map_entity_load_slot_descriptor_0:
-            .dc.w   0   // number of load groups - 1
-            .dc.l   demo_map_entity_load_group_descriptor_0_0
+        .dc.w   -1      // Terminate
 
-            demo_map_entity_load_group_descriptor_0_0:
-                .dc.b   0   // load allowed when there are active enemies?
-                .dc.b   4   // offset (+4 0=skip) into demo_entity_group_graphics_table
-                .dc.w   5   // number of entities
 
-                    map_entity_definition 6, ENTITY_TYPE_CHICKEN_LEG,       180, 216, 1
-                    map_entity_definition 0, ENTITY_TYPE_LONGMOAN_SILVER,   180, 216
-                    map_entity_definition 1, ENTITY_TYPE_AMAZON_1,          210, 270
-                    map_entity_definition 2, ENTITY_TYPE_HENINGER_SILVER,   210, 186
-                    map_entity_definition 5, ENTITY_TYPE_BAD_BROTHER_GREEN, 160, 190, GAME_PLAY_VRAM_RESERVED_TILE_MAX
+    demo_map_entity_load_slot_descriptor_0:
+        .dc.w   0       // number of load groups descriptors - 1
+        .dc.l   demo_map_entity_load_group_descriptor_0_0
 
-                demo_map_entity_load_group_descriptor_0_0_graphics:
-                    /* Palettes to load */
-                    .dc.b    1                                  // index (+1 0=skip) into demo_entity_palette_table
-                    .dc.b    2                                  // index into demo_entity_palette_table
+        demo_map_entity_load_group_descriptor_0_0:
+            .dc.w   0   // load allowed when there are active enemies?
 
-                    /* Nemesis data to load */
-                    .dc.w   0                                   // Terminate
+            /* Palette list */
+            .dc.l   demo_map_entity_load_group_descriptor_0_0_pal0
+            .dc.l   demo_map_entity_load_group_descriptor_0_0_pal1
+            .dc.l   0  // Terminate
 
-                    /*
-                     * Keep this for documentation purposes on how to set this up. (Remove terminator above to enable)
-                     *
-                     * It's more efficient to load the graphics through the map definition as that loads with display off and before any gameplay.
-                     * Loading data into VRAM during active display likely results in cpu stalls due to full write FIFO (depending on the decompression speed).
-                     * So loading through the map definition is prefered whenever possible.
-                     */
-/*
-                    .dc.w    TILE_ADDR(1)                       // VRAM address (this relates to the tile_id parameter of map_entity_definition)
-                    .dc.w    ENTITY_NEMESIS_OFFSET_CHICKEN_LEG  // Nemesis data id
+            /* Nemesis tile data list */
+            .dc.l   0  // Terminate
 
-                    .dc.w    TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX)
-                    .dc.w    ENTITY_NEMESIS_OFFSET_BAD_BROTHER
+            /* Entity descriptors */
+            .dc.w   5  // number of entities
 
-                    .dc.w   0                                   // Terminate
-*/
-                demo_map_entity_load_group_descriptor_0_0_pal0:
-                    entity_palette PALETTE_OFFSET(1, 1), 15, red1_4, yellow_3, skin_4, green_4
+                map_entity_definition 6, ENTITY_TYPE_CHICKEN_LEG,       180, 216, 1
+                map_entity_definition 0, ENTITY_TYPE_LONGMOAN_SILVER,   180, 216
+                map_entity_definition 1, ENTITY_TYPE_AMAZON_1,          210, 270
+                map_entity_definition 2, ENTITY_TYPE_HENINGER_SILVER,   210, 186
+                map_entity_definition 5, ENTITY_TYPE_BAD_BROTHER_GREEN, 160, 190, GAME_PLAY_VRAM_RESERVED_TILE_MAX
 
-                demo_map_entity_load_group_descriptor_0_0_pal1:
-                    .dc.b
-                    entity_palette PALETTE_OFFSET(2, 5), 6, yellow_3, purple_3
+            demo_map_entity_load_group_descriptor_0_0_pal0:
+                entity_palette PALETTE_OFFSET(1, 1), 15, red1_4, yellow_3, skin_4, green_4
+
+            demo_map_entity_load_group_descriptor_0_0_pal1:
+                entity_palette PALETTE_OFFSET(2, 5), 6, yellow_3, purple_3
