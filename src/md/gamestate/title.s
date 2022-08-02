@@ -84,7 +84,7 @@
         jsr     mars_comm_palette_subtract
 
         movea.l (%a0), %a6
-        jmp     palette_update_dynamic
+        jmp     palette_update_dynamic_commit
 
 
     /**********************************************************

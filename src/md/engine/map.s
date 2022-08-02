@@ -4,17 +4,10 @@
 
 #include "goldenaxe.h"
 #include "mars.h"
+#include "md.h"
 #include "map.h"
 #include "patch.h"
 #include "marscomm.h"
-
-    /**********************************************************
-     * Variables
-     */
-    .lcomm current_entity_load_slot_descriptor_table, 4
-    .lcomm current_entity_group_graphics_table, 4
-    .lcomm current_entity_palette_table, 4
-    .lcomm current_map_offset, 2
 
 
     /**********************************************************
@@ -41,32 +34,56 @@
 
 
     /**********************************************************
-     * Patch map load code to store the offset of the loaded map
+     * Patch entity trigger load code to load entity load slot descriptor address directly from entity load list.
+     * Instead of from a global lookup table
      */
-    patch_start 0x0014fe
-        jsr     md_load_map.l
+    patch_start 0x013914
+        .rept 6
+            nop
+        .endr
+        movea.l (%a6)+, %a2
+        move.l  %a6, (next_entity_load_trigger).w
     patch_end
-
-    md_load_map:
-        move.w  %d0, (current_map_offset)
-        lea     (map_table), %a5
-        rts
 
 
     /**********************************************************
-     * Patch entity load code to load from the address in current_* addresses
+     * Patch map entity spawn code to load the graphics in the same (more flexible) format as used by the map definition
+     * Instead of from multiple global lookup tables
      */
-    patch_start 0x01391a
-        movea.l (current_entity_load_slot_descriptor_table).l, %a2
+    patch_start 0x01396a
+        tst.w   (%a3)           // .load_allowed_with_active_enemies changed to word for alignment reasons
     patch_end
 
-    patch_start 0x013a02
-        movea.l (current_entity_group_graphics_table).l, %a4
+    patch_start 0x013982
+        jsr     map_load_entity_graphics.l
     patch_end
 
-    patch_start 0x013a5a
-        movea.l (current_entity_palette_table).l, %a6
-    patch_end
+    map_load_entity_graphics:
+        addq.l  #2, %a3
+
+        /* Load palettes */
+    1:  move.l  (%a3)+, %d7
+        beq     .no_palette
+        movea.l %d7, %a6
+        jsr     palette_update_dynamic
+        movea.l %d7, %a6
+        jsr     palette_update_base
+        bra     1b
+    .no_palette:
+        bset    #0, (vblank_update_palette_flag)
+
+        /* Load tile data */
+    1:  move.l  (%a3)+, %d7
+        beq     .no_tile_data
+
+        move.l  %d7, (VDP_CTRL)
+        movea.l (%a3)+, %a0
+        jsr     nemesis_decompress_vram
+        bra     1b
+    .no_tile_data:
+
+        moveq   #0, %d7
+        rts
 
 
     /**********************************************************
@@ -80,11 +97,6 @@
     patch_end
 
     mars_load_map:
-        /* Set default addresses */
-        move.l  #map_entity_load_slot_descriptor_table, (current_entity_load_slot_descriptor_table)
-        move.l  #map_entity_group_graphics_table, (current_entity_group_graphics_table)
-        move.l  #map_entity_palette_table, (current_entity_palette_table)
-
         mars_comm_call_start
 
         /* Setup map command load parameters */
@@ -103,25 +115,7 @@
         jsr     vdp_enable_display
         jsr     palette_interpolate_full
 
-        /* Check if there is custom map override */
-        lea     (mars_map_table), %a0
-        move.w  (current_map_offset), %d5
-        tst.l   (%a0, %d5)
-        beq     .no_map
-
-        /* Override entity data table addresses to the ones supplied by the custom map */
-        lea     (map_table), %a0
-        movea.l (%a0, %d5), %a0
-
-        /* Override table addresses are prefixed to the map definition */
-        move.l  -(%a0), (current_entity_load_slot_descriptor_table)
-        move.l  -(%a0), (current_entity_group_graphics_table)
-        move.l  -(%a0), (current_entity_palette_table)
-
-        /* Enable 32X display only if there is a map in the map table for the current level */
         mars_comm   MARS_COMM_MASTER, MARS_COMM_CMD_DISPLAY_ENABLE
-
-    .no_map:
         mars_comm_call_end
 
         andi    #0xf8ff, %sr
