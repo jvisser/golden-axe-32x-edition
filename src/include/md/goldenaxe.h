@@ -104,6 +104,8 @@
 #define vertical_scroll_max                     0xffffc226  // .w
 #define horizontal_scroll_max                   0xffffc228  // .w
 
+#define font_tile_offset                        0xffffc110  // .w
+
 
 /**********************************************************
  * Original golden axe sub routines
