@@ -71,10 +71,19 @@
     patch_end
 
     fiends_path_y_baseline:
-        .dc.w   0x0000
+        .dc.w   3
+
+        .dc.w   320
+        .dc.w   352
+
+        .dc.w   352
+        .dc.w   384
+
+        .dc.w   896
+        .dc.w   408
 
         .dc.w   map_fiends_path_pixel_width
-        .dc.w   352
+        .dc.w   392
 
 
     /**********************************************************

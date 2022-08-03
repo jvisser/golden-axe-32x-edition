@@ -71,10 +71,19 @@
     patch_end
 
     town_y_baseline:
-        .dc.w   0x0000
+        .dc.w   3
+
+        .dc.w   408
+        .dc.w   240
+
+        .dc.w   576
+        .dc.w   216
+
+        .dc.w   1248
+        .dc.w   232
 
         .dc.w   map_town_pixel_width
-        .dc.w   240
+        .dc.w   176
 
 
     /**********************************************************

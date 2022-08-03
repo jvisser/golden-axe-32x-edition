@@ -14,6 +14,9 @@
 
 #define ENTITY_TYPE_NONE                        0x00
 #define ENTITY_TYPE_THIEF                       0x1e
+#define ENTITY_TYPE_ROPE                        0x2b
+#define ENTITY_TYPE_KING                        0x2c
+#define ENTITY_TYPE_QUEEN                       0x2d
 #define ENTITY_TYPE_SKELETON_1                  0x2e
 #define ENTITY_TYPE_SKELETON_2_FROM_HOLE        0x2f
 #define ENTITY_TYPE_SKELETON_3                  0x30

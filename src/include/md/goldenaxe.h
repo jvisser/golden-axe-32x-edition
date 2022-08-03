@@ -123,7 +123,6 @@
 #define screen_transition_to_dark               0x000036d8
 
 #define map_load_entity_data                    0x000138fe
-#define init_players                            0x000013fe
 #define update_active_entities                  0x0000b954
 
 

@@ -17,8 +17,7 @@
         lea     (entity_player_1), %a0
         bsr     init_player_auto_walk
         lea     (entity_player_2), %a0
-        bsr     init_player_auto_walk
-        rts
+        jmp     init_player_auto_walk
 
     init_player_auto_walk:
         /* Check if the current player state is auto walk */
