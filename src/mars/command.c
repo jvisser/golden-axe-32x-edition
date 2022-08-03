@@ -31,6 +31,9 @@ void command_main(volatile u16* comm_base)
 
     while (1)
     {
+        // Clear status
+        *comm1 = 0;
+
         // Wait for command from the MD
         u16 command_id;
         while (!(command_id = *comm0));

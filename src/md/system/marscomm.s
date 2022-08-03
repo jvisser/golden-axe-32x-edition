@@ -173,6 +173,16 @@
         tst.w   %d5
         beq     .exit
 
+        lea     (MARS_REG_BASE), %a6
+
+        /* Wait for 32X ready */
+    1:  tst.w   2(%a6, %d6.w)
+        bne     1b
+
+        /* Give the 32X access to ROM? */
+        bclr    #15, %d5
+        beq     .no_rom_access_requested
+
     .ifne __Z80_SAFE
         /* Halt Z80 if not halted already */
         btst    #0, (Z80_BUS_REQUEST)
@@ -184,11 +194,9 @@
     .z80_halted:
     .endif
 
-        move.l  %a6, -(%sp)
-        lea     (MARS_REG_BASE), %a6
-
-        /* Give the 32X access to ROM (RV = 0) */
+        /* RV = 0 */
         bclr    #0, MARS_DMAC + 1(%a6)
+    .no_rom_access_requested:
 
         /* Clear response register */
         clr.w   2(%a6, %d6.w)
@@ -205,8 +213,6 @@
 
         /* Give MD access to ROM (RV = 1) */
         bset    #0, MARS_DMAC + 1(%a6)
-
-        move.l  (%sp)+, %a6
     .exit:
         rts
     .z80_resume:
