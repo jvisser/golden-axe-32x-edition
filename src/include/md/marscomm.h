@@ -33,17 +33,19 @@
  * Commands
  */
 
+#define MARS_ROM_ACCESS                     0x8000
+
 #define MARS_COMM_CMD_DISPLAY_ENABLE        0x0100
 #define MARS_COMM_CMD_DISPLAY_DISABLE       0x0101
 #define MARS_COMM_CMD_DISPLAY_SWAP          0x0102
 
-#define MARS_COMM_CMD_IMAGE_PAL0            0x0200
-#define MARS_COMM_CMD_IMAGE_PAL1            0x0201
+#define MARS_COMM_CMD_IMAGE_PAL0            0x0200|MARS_ROM_ACCESS
+#define MARS_COMM_CMD_IMAGE_PAL1            0x0201|MARS_ROM_ACCESS
 
 #define MARS_COMM_CMD_PALETTE_FILL_PAL0     0x0300
 #define MARS_COMM_CMD_PALETTE_FILL_PAL1     0x0301
-#define MARS_COMM_CMD_PALETTE_LOAD_PAL0     0x0302
-#define MARS_COMM_CMD_PALETTE_LOAD_PAL1     0x0303
+#define MARS_COMM_CMD_PALETTE_LOAD_PAL0     0x0302|MARS_ROM_ACCESS
+#define MARS_COMM_CMD_PALETTE_LOAD_PAL1     0x0303|MARS_ROM_ACCESS
 #define MARS_COMM_CMD_PALETTE_COMMIT        0x0304
 #define MARS_COMM_CMD_PALETTE_TRANSITION    0x0306
 #define MARS_COMM_CMD_PALETTE_SUBTRACT      0x0308
@@ -52,7 +54,7 @@
 
 #define MARS_COMM_CMD_VERTICAL_SCROLL       0x0400
 
-#define MARS_COMM_CMD_MAP_LOAD              0x0500
+#define MARS_COMM_CMD_MAP_LOAD              0x0500|MARS_ROM_ACCESS
 #define MARS_COMM_CMD_MAP_SCROLL            0x0501
 #define MARS_COMM_CMD_MAP_PALETTE           0x0502
 
@@ -69,6 +71,7 @@
 .macro mars_comm_call_start
     move.w  %d5, -(%sp)
     move.w  %d6, -(%sp)
+    move.l  %a6, -(%sp)
 .endm
 
 
@@ -76,6 +79,7 @@
  * Restore registers
  */
 .macro mars_comm_call_end
+    move.l  (%sp)+, %a6
     move.w  (%sp)+, %d6
     move.w  (%sp)+, %d5
 .endm
