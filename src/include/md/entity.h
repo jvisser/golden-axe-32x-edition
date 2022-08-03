@@ -52,6 +52,8 @@
 #define ENTITY_TYPE_VILLAGER_2                  0x57
 #define ENTITY_TYPE_SKELETON_4                  0x60
 
+#define ENTITY_TYPE_THIEF_BLUE(item_count)      (item_count)
+#define ENTITY_TYPE_THIEF_GREEN(item_count)     (0x0080 | item_count)
 
 #ifdef __ASSEMBLER__
 

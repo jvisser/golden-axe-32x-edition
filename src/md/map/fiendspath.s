@@ -110,3 +110,18 @@
 
     fiends_path_entity_load_list:
         .dc.w   -1  // Terminate
+
+    /**********************************************************
+     * Camp site entity load group descriptor (thiefs)
+     */
+    patch_start 0x002b28
+        .dc.l   fiends_path_camp_map_entity_load_group_descriptor   // Patch table entry
+    patch_end
+
+    fiends_path_camp_map_entity_load_group_descriptor:
+        .dc.w   0   // Load allowed when there are active enemies?
+        .dc.l   0   // Palette list
+        .dc.l   0   // Nemesis tile data list
+        .dc.w   2   // Number of entities
+            map_entity_definition 0, ENTITY_TYPE_THIEF, 352, 32, 0x3A3, ENTITY_TYPE_THIEF_GREEN(1)
+            map_entity_definition 1, ENTITY_TYPE_THIEF, 352, 96, 0x3A3, ENTITY_TYPE_THIEF_BLUE(3) | 0x8000
