@@ -71,10 +71,34 @@
     patch_end
 
     turtle_village_y_baseline:
-        .dc.w   0x0000
+        .dc.w   8
+
+        .dc.w   408
+        .dc.w   128
+
+        .dc.w   448
+        .dc.w   156
+
+        .dc.w   504
+        .dc.w   184
+
+        .dc.w   560
+        .dc.w   224
+
+        .dc.w   632
+        .dc.w   244
+
+        .dc.w   912
+        .dc.w   260
+
+        .dc.w   1192
+        .dc.w   232
+
+        .dc.w   1224
+        .dc.w   208
 
         .dc.w   map_turtle_village_pixel_width
-        .dc.w   128
+        .dc.w   184
 
 
     /**********************************************************

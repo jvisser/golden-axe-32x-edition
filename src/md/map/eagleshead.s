@@ -71,7 +71,13 @@
     patch_end
 
     eagles_head_y_baseline:
-        .dc.w   0x0000
+        .dc.w   2
+
+        .dc.w   504
+        .dc.w   208
+
+        .dc.w   1184
+        .dc.w   248
 
         .dc.w   map_eagles_head_pixel_width
         .dc.w   208
