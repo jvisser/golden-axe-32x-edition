@@ -17,7 +17,7 @@
 
     game_state_handler_camp_init:
 
-        // TODO: Reset v scroll
+        // TODO: Repaint map on new scroll position on the 32X side
 
         /* Request night palette on the 32X */
         mars_comm_call_start

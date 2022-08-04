@@ -114,8 +114,8 @@
         .dc.b   0x02
 
         .dc.w   1000
-        .dc.b   MAP_EVENT_START_BOSS_MUSIC
-        .dc.b   0x00
+        .dc.b   MAP_EVENT_CHANGE_MUSIC
+        .dc.b   SONG_BOSS
 
         .dc.w   1216
         .dc.b   MAP_EVENT_CAMPSITE_ON_ENEMY_DEFEAT
@@ -137,8 +137,15 @@
 
 
     /**********************************************************
-     * Camp site entity load group descriptor (thiefs)
+     * Camp site
      */
+
+    /* Camp site vertical scroll */
+    patch_start 0x002a88
+        .dc.w   184 + (6 * 8) - (224 / 2)
+    patch_end
+
+    /* Camp site entity load group descriptor (thiefs) */
     patch_start 0x002b20
         .dc.l   turtle_village_camp_map_entity_load_group_descriptor   // Patch table entry
     patch_end

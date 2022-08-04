@@ -39,12 +39,15 @@
 #define SONG_TURTLE_VILLAGE                     0x82
 #define SONG_TOWN                               0x84
 #define SONG_FIENDS_PATH                        0x83
-#define SONG_EAGLES_HEAD                        0x86        // Also boss
-#define SONG_DEATH_ADDER                        0x85        // Also used for dungeon
+#define SONG_EAGLES_HEAD                        0x86
+#define SONG_DUNGEON                            0x85
+#define SONG_BOSS                               0x86
+#define SONG_DEATH_ADDER                        0x85
 #define SONG_DEATH_BRINGER                      0x87
 #define SONG_ENDING                             0x8d
 #define SONG_GAME_OVER                          0x88
-#define SONG_TITLE                              0x89        // Also for player select
+#define SONG_TITLE                              0x89
+#define SONG_PLAYER_SELECT                      0x89
 #define SONG_CAMP                               0x8b
 #define SONG_INTERMISSION                       0x8c
 #define SONG_CREDITS                            0x8e
@@ -106,6 +109,7 @@
 
 #define font_tile_offset                        0xffffc110  // .w
 
+#define last_sound_command                      0xffffc12c  // .b
 
 /**********************************************************
  * Original golden axe sub routines
