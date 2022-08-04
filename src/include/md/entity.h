@@ -9,6 +9,25 @@
 
 
 /**********************************************************
+ * Entity struct offsets
+ */
+
+#define ENTITY_STATE                                    0x42
+#define ENTITY_TILE_ID                                  0x08
+#define ENTITY_SPRITE_ATTR                              0x17
+#define ENTITY_X                                        0x1c
+
+
+/**********************************************************
+ * Memory addresses and macros
+ */
+
+#define entity_slot_base                                0xffffd100
+
+#define ENTITY_SLOT_ADDR(slot)      (entity_slot_base + (slot) * 0x80)
+
+
+/**********************************************************
  * Entity types
  */
 
@@ -91,6 +110,9 @@
 
 #define nem_death_adder_special_explosion               0x00032c8e
 #define NEM_DEATH_ADDER_SPECIAL_EXPLOSION_TILE_COUNT    81
+
+#define nem_king_and_queen                              0x0007ec7a
+#define NEM_KING_AND_QUEEN_TILE_COUNT                   81
 
 #ifdef __ASSEMBLER__
 

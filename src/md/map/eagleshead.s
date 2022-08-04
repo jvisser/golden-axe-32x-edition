@@ -104,7 +104,7 @@
         .dc.b   SONG_DEATH_ADDER
 
         .dc.w   1216
-        .dc.b   MAP_EVENT_END_GAME_ON_ENEMY_DEFEAT
+        .dc.b   MAP_EVENT_NEXT_LEVEL_ON_ENEMY_DEFEAT
         .dc.b   0x00
 
         .dc.w   1280
