@@ -12,8 +12,8 @@
 #define VBLANK_UPDATE_SPRITE_ATTR               0x01
 #define VBLANK_UPDATE_CONTROLLER                0x02
 
-#define VDP_ADDR_SET_NAME_TBL_A                 0x40000003  // VRAM address 0xC000
-#define VDP_ADDR_SET_NAME_TBL_B                 0x60000003  // VRAM address 0xE000
+#define VDP_NAME_TBL_A                          0xc000
+#define VDP_NAME_TBL_B                          0xe000
 
 // Game states
 #define GAME_STATE_SEGA                         0x00
@@ -51,10 +51,6 @@
 #define SONG_CAMP                               0x8b
 #define SONG_INTERMISSION                       0x8c
 #define SONG_CREDITS                            0x8e
-
-// Entity struct offsets
-#define ENTITY_STATE                            0x42
-#define ENTITY_X                                0x1c
 
 
 /**********************************************************
@@ -122,6 +118,8 @@
 #define vdp_disable_display                     0x00002dca
 #define vdp_enable_display                      0x00002dc2
 #define vdp_clear_palette                       0x00002eec
+#define vdp_set_mode_h40                        0x00002dda
+#define vdp_set_mode_h32                        0x00002de8
 
 #define screen_transition_from_dark             0x00003690
 #define screen_transition_to_dark               0x000036d8

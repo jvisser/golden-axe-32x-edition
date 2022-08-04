@@ -14,7 +14,7 @@
      * Wait n frames or until the player presses an action button
      *
      * Parameters:
-     * - d0.w: frametime - 1 (0 = 1)
+     * - d1.w: frametime - 1 (0 = 1)
      *
      * Return
      * - ccr.c: if player exited
