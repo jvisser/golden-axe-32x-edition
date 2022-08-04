@@ -99,8 +99,8 @@
         .dc.b   0x02
 
         .dc.w   1008
-        .dc.b   MAP_EVENT_START_BOSS_MUSIC
-        .dc.b   0x00
+        .dc.b   MAP_EVENT_CHANGE_MUSIC
+        .dc.b   SONG_BOSS
 
         .dc.w   1216
         .dc.b   MAP_EVENT_CAMPSITE_ON_ENEMY_DEFEAT
@@ -120,9 +120,17 @@
     fiends_path_entity_load_list:
         .dc.w   -1  // Terminate
 
+
     /**********************************************************
-     * Camp site entity load group descriptor (thiefs)
+     * Camp site
      */
+
+    /* Camp site vertical scroll */
+    patch_start 0x002a8c
+        .dc.w   392 + (-24 * 8) - 224/2
+    patch_end
+
+    /* Camp site entity load group descriptor (thiefs) */
     patch_start 0x002b28
         .dc.l   fiends_path_camp_map_entity_load_group_descriptor   // Patch table entry
     patch_end

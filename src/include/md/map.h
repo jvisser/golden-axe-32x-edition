@@ -23,7 +23,7 @@
 #define MAP_EVENT_END_GAME_ON_ENEMY_DEFEAT              0x20
 #define MAP_EVENT_START_WATER_ANIMATION                 0x24
 #define MAP_EVENT_START_FEATHER_ANIMATION               0x28
-#define MAP_EVENT_START_BOSS_MUSIC                      0x2c
+#define MAP_EVENT_CHANGE_MUSIC                          0x2c    // Repurposed MAP_EVENT_START_BOSS_MUSIC
 
 // Event structure
 #define MAP_EVENT_ID                                    0x00

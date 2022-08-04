@@ -96,8 +96,8 @@
         .dc.b   0x02
 
         .dc.w   960
-        .dc.b   MAP_EVENT_START_BOSS_MUSIC
-        .dc.b   0x00
+        .dc.b   MAP_EVENT_CHANGE_MUSIC
+        .dc.b   SONG_DEATH_ADDER
 
         .dc.w   1216
         .dc.b   MAP_EVENT_END_GAME_ON_ENEMY_DEFEAT
