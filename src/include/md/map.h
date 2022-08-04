@@ -40,24 +40,5 @@
 #define next_event_trigger                              0xffffc22a
 #define next_entity_load_trigger                        0xffffc26e
 
-#define entity_nemesis_data_table                       0x00013a74
-
-// Nemesis data table offsets
-#define ENTITY_NEMESIS_OFFSET_THIEF                     0x00
-#define ENTITY_NEMESIS_OFFSET_BAD_BROTHER               0x04
-#define ENTITY_NEMESIS_OFFSET_DEATH ADDER               0x08
-#define ENTITY_NEMESIS_OFFSET_BITTER                    0x0c
-#define ENTITY_NEMESIS_OFFSET_CHICKEN_LEG               0x10
-#define ENTITY_NEMESIS_OFFSET_DRAGON                    0x14
-#define ENTITY_NEMESIS_OFFSET_VILLAGERS                 0x18
-#define ENTITY_NEMESIS_OFFSET_KING_AND_QUEEN            0x1c
-#define ENTITY_NEMESIS_OFFSET_DEATH_ADDER_SPECIAL       0x20
-
-// Absolute nemesis data addresses
-#define nem_pat_chicken_leg                             0x00040e8a
-#define chicken_leg_tile_count                          176
-
-#define nem_pat_bad_brother                             0x0007532a
-#define bad_brother_tile_count                          531
 
 #endif

@@ -28,6 +28,10 @@
         /* Nemesis tile data list */
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(0))
         .dc.l   nem_pat_empty
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX))
+        .dc.l   nem_pat_bad_brother
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT))
+        .dc.l   nem_death_adder
         .dc.l   0
 
         /* Tile map data */
@@ -115,4 +119,32 @@
      */
 
     eagles_head_entity_load_list:
-        .dc.w   -1  // Terminate
+        .dc.w   1216
+        .dc.l   eagles_head_map_entity_load_slot_descriptor_0
+
+        .dc.w   -1
+
+    eagles_head_map_entity_load_slot_descriptor_0:
+        .dc.w   0
+        .dc.l   eagles_head_map_entity_load_group_descriptor_0_0
+
+        eagles_head_map_entity_load_group_descriptor_0_0:
+            .dc.w   0   // load allowed when there are active enemies?
+
+            .dc.l   eagles_head_map_entity_load_group_descriptor_0_0_pal0
+            .dc.l   0
+
+            // Death adder special attacks graphics
+            .dc.l   VRAM_ADDR_SET(0x1900)                                   // Fixed address
+            .dc.l   nem_death_adder_special
+            .dc.l   VRAM_ADDR_SET(GAME_PLAY_VRAM_RESERVED_MIN)              // Fixed address
+            .dc.l   nem_death_adder_special_explosion
+            .dc.l   0
+
+            .dc.w   3  // number of entities
+                map_entity_definition 0, ENTITY_TYPE_SKELETON_3,  168, -32
+                map_entity_definition 1, ENTITY_TYPE_SKELETON_3,  246, -16
+                map_entity_definition 2, ENTITY_TYPE_DEATH_BRINGER, 176, 320 / 2, GAME_PLAY_VRAM_RESERVED_TILE_MAX
+
+            eagles_head_map_entity_load_group_descriptor_0_0_pal0:
+                entity_palette PALETTE_OFFSET(1, 1), 15, red1_4, yellow_3, skin_4, red2_4
