@@ -37,6 +37,17 @@
 
 
     /**********************************************************
+     * Patch map background tile data graphics table to point to empty tile data for each entry (for now)
+     * Maybe we wil repurpose the background layer at some point through
+     */
+    patch_start 0x00913c
+        .rept 8
+            .dc.l nem_pat_empty
+        .endr
+    patch_end
+
+
+    /**********************************************************
      * Patch map load code to store extended event data table address
      */
     patch_start 0x001560

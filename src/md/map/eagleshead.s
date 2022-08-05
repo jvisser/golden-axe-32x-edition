@@ -13,6 +13,28 @@
 
     .balign 2
 
+
+    /**********************************************************
+     * Map specific code patches due to the change in map order (map 5 = map 4)
+     */
+
+    /* Restore death adder/bringer special attack graphics after he has used a player magic attack */
+
+    /* Ground sentry */
+    patch_start 0x008034
+        .dc.w   0x0004
+    patch_end
+
+    patch_start 0x008dd6
+        .dc.w   0x0004
+    patch_end
+
+    /* Explosion */
+    patch_start 0x008e34
+        .dc.w   0x0004
+    patch_end
+
+
     /**********************************************************
      * Map definition
      */
