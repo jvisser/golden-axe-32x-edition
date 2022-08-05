@@ -21,10 +21,6 @@
     /* Restore death adder/bringer special attack graphics after he has used a player magic attack */
 
     /* Ground sentry */
-    patch_start 0x008034
-        .dc.w   0x0004
-    patch_end
-
     patch_start 0x008dd6
         .dc.w   0x0004
     patch_end
