@@ -40,7 +40,7 @@
     limit_level_select:
         cmp.w   #5, (%a0)
         bne     .high_ok
-        subq    #5, (%a0)
+        subq.w  #5, (%a0)
     .high_ok:
         cmp.w   #7, (%a0)
         bne     .low_ok

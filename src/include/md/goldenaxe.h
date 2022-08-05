@@ -124,9 +124,6 @@
 #define screen_transition_from_dark             0x00003690
 #define screen_transition_to_dark               0x000036d8
 
-#define map_load_entity_data                    0x000138fe
-#define update_active_entities                  0x0000b954
-
 
 /*
  * Decompresses directly to the VDP data port so the target address must be set before calling.

@@ -9,22 +9,33 @@
 
 
 /**********************************************************
+ * Sub routines
+ */
+
+#define update_active_entities                          0x0000b954
+#define find_free_entity_slot                           0x00008a8a
+
+
+/**********************************************************
+ * Memory addresses/variables
+ */
+
+#define entity_slot_base                                0xffffd100
+
+#define ENTITY_SLOT_ADDR(slot)      (entity_slot_base + (slot) * 0x80)
+
+
+/**********************************************************
  * Entity struct offsets
  */
 
 #define ENTITY_STATE                                    0x42
 #define ENTITY_TILE_ID                                  0x08
 #define ENTITY_SPRITE_ATTR                              0x17
+#define ENTITY_Y                                        0x18
 #define ENTITY_X                                        0x1c
-
-
-/**********************************************************
- * Memory addresses and macros
- */
-
-#define entity_slot_base                                0xffffd100
-
-#define ENTITY_SLOT_ADDR(slot)      (entity_slot_base + (slot) * 0x80)
+#define ENTITY_BASE_Y                                   0x20
+#define ENTITY_HEIGHT                                   0x24
 
 
 /**********************************************************
