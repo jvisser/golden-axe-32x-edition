@@ -19,4 +19,6 @@
         ori     #0x0700, %sr
         jsr     vdp_disable_display
         jsr     vdp_set_mode_h40    // Game relied in display mode set by previous mode (cast in original game code)
-        rts
+
+        moveq   #SONG_CREDITS, %d7  // Sound from cast would be reused before, now we need to explicitly start it
+        jmp     sound_command

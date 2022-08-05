@@ -54,6 +54,14 @@
 #define CTRL_START              0x80
 #define CTRL_ABCS               0xf0
 
+#define B_CTRL_UP               0
+#define B_CTRL_DOWN             1
+#define B_CTRL_LEFT             2
+#define B_CTRL_RIGHT            3
+#define B_CTRL_B                4
+#define B_CTRL_C                5
+#define B_CTRL_A                6
+#define B_CTRL_START            7
 
 
 /**********************************************************
