@@ -3,6 +3,7 @@
  */
 
 #include "goldenaxe.h"
+#include "entity.h"
 #include "patch.h"
 
 
