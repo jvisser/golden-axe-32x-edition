@@ -100,3 +100,19 @@
 
         lea     (title_palette_dark).l, %a6     // Prepare palette_update_dynamic call
         rts
+
+
+    /**********************************************************
+     * Change duel mode to go to cast screen
+     */
+    patch_start 0x0392be        // Change menu text to "cast"
+        .dc.b   0x0d, 0x0b, 0x1d, 0x1e, 0x00, 0x00, 0x00, 0x00 // Characters (0x00 = ' ' 0x0b = 'A', 0xff = EOT, 0xfe = \n)
+    patch_end
+
+    patch_start 0x003bdc
+        jmp     game_state_handler_title_goto_cast.l
+    patch_end
+
+    game_state_handler_title_goto_cast:
+        move.w  #GAME_STATE_CAST, requested_game_state
+        jmp     palette_fade_out

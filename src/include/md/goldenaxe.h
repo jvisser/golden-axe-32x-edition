@@ -35,22 +35,23 @@
 #define GAME_STATE_GAME_OVER                    0x40
 
 // Song id's
-#define SONG_WILDERNESS                         0x81
-#define SONG_TURTLE_VILLAGE                     0x82
-#define SONG_TOWN                               0x84
-#define SONG_FIENDS_PATH                        0x83
-#define SONG_EAGLES_HEAD                        0x86
-#define SONG_DUNGEON                            0x85
-#define SONG_BOSS                               0x86
-#define SONG_DEATH_ADDER                        0x85
-#define SONG_DEATH_BRINGER                      0x87
-#define SONG_ENDING                             0x8d
-#define SONG_GAME_OVER                          0x88
-#define SONG_TITLE                              0x89
-#define SONG_PLAYER_SELECT                      0x89
-#define SONG_CAMP                               0x8b
-#define SONG_INTERMISSION                       0x8c
-#define SONG_CREDITS                            0x8e
+#define SONG_WILDERNESS                         -127
+#define SONG_TURTLE_VILLAGE                     -126
+#define SONG_TOWN                               -124
+#define SONG_FIENDS_PATH                        -125
+#define SONG_EAGLES_HEAD                        -122
+#define SONG_DUNGEON                            -123
+#define SONG_BOSS                               -122
+#define SONG_DEATH_ADDER                        -123
+#define SONG_DEATH_BRINGER                      -121
+#define SONG_ENDING                             -115
+#define SONG_GAME_OVER                          -120
+#define SONG_TITLE                              -119
+#define SONG_PLAYER_SELECT                      -119
+#define SONG_CAMP                               -117
+#define SONG_INTERMISSION                       -116
+#define SONG_CREDITS                            -114
+#define SOUND_STOP                              -118
 
 
 /**********************************************************
