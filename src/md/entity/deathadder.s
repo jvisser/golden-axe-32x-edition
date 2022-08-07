@@ -3,7 +3,36 @@
  */
 
 #include "goldenaxe.h"
+#include "md.h"
+#include "entity.h"
 #include "patch.h"
+
+
+    /**********************************************************
+     * Remap tile id of death adder projectile so it doesn't clash with the dragon loaded at tile number 1 in the eagles head map
+     */
+
+    // Special attack
+    patch_start 0x008de4    // VRAM address
+        move.l  #VRAM_ADDR_SET(TILE_ADDR(DEATH_ADDER_SPECIAL_TILE_ID)), (VDP_CTRL)
+    patch_end
+
+    patch_start 0x012024    // VRAM address
+        move.l  #VRAM_ADDR_SET(TILE_ADDR(DEATH_ADDER_SPECIAL_TILE_ID)), (VDP_CTRL)
+    patch_end
+
+    patch_start 0x0131e8    // Remap tile id
+        move.w  #DEATH_ADDER_SPECIAL_TILE_ID, ENTITY_TILE_ID(%a0)
+    patch_end
+
+    patch_start 0x01378C    // Remap tile id
+        move.w  #DEATH_ADDER_SPECIAL_TILE_ID, ENTITY_TILE_ID(%a0)
+    patch_end
+
+    patch_start 0x01230e    // Remap tile id
+        move.w  #DEATH_ADDER_SPECIAL_TILE_ID, ENTITY_TILE_ID(%a5)
+        nop
+    patch_end
 
 
     /**********************************************************

@@ -38,8 +38,11 @@ Runtime entity data structure.
         $1c: dc.l entityX                       ; As 16:16 fixed point.
         $20: dc.l baseY                         ; As 16:16 fixed point.
         $24: dc.l height                        ; As 16:16 fixed point.
-        $34: dc.l heightAcceleration            ; As 16:16 fixed point.
-        $38: dc.l interactingEntityAddress      ; Set by collision detection code and riding things etc
+        $2c .dc.l entityXIncrement              ; As 16:16 fixed point.
+        $30 .dc.l baseYIncrement                ; As 16:16 fixed point.
+        $34: dc.l heightIncrement               ; As 16:16 fixed point.
+        $38: dc.l interactingEntityAddress      ; Set by collision detection code
+        $3c: dc.l mountEntityAddress
         $44: dc.b flags2
         $6c: dc.l boundsTableAddress            ; Contains bounds for entity collision detection
         $70: dc.w currentDMAIndex
@@ -50,14 +53,17 @@ Runtime entity data structure.
 ```
 
 ### Flags
-- `.flags1`: [???? ??A?]
+- `.flags1`: [H??? ??A?]
+  - H: Hide sprite
   - A: Animation marker frame hit?
 - `.flags2`: [???? ??UL]
   - L: Moving left
   - U: Moving up
-- `.flags3`: [HD?? ????]
+- `.flags3`: [HD?? ?MK?]
   - H: Damage dealt to interacting entity
   - D: Damage received from interacting entity
+  - M: Mounted
+  - K: Knockdown (does not unmount if set)
 
 ### Position
 - `.entityY`: The y position in the VDP sprite coordinate system. This position is `.height` adjusted. Bottom position.

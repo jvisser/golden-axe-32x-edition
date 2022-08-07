@@ -61,9 +61,11 @@
 // Reserved for magic effects etc... not going to remap those...
 #define GAME_PLAY_VRAM_RESERVED_MIN             0x27c0
 #define GAME_PLAY_VRAM_RESERVED_MAX             0x3200
-#define GAME_PLAY_VRAM_RESERVED_TILE_MIN        0x13e
-#define GAME_PLAY_VRAM_RESERVED_TILE_MAX        0x190
+#define GAME_PLAY_VRAM_RESERVED_TILE_MIN        (GAME_PLAY_VRAM_RESERVED_MIN/32)
+#define GAME_PLAY_VRAM_RESERVED_TILE_MAX        (GAME_PLAY_VRAM_RESERVED_MAX/32)
 
+#define GAME_PLAY_VRAM_DYNAMIC_TOP              0x9800
+#define GAME_PLAY_VRAM_DYNAMIC_TOP_TILE         (GAME_PLAY_VRAM_DYNAMIC_TOP/32)
 
 /**********************************************************
  * Variables
@@ -124,6 +126,24 @@
 
 #define screen_transition_from_dark             0x00003690
 #define screen_transition_to_dark               0x000036d8
+
+
+/*
+ * Animation sequencer (one of many implementations though)
+ *
+ * Parameters:
+ * - d0: animation id
+ */
+#define update_animation                        0x00008814
+
+
+/*
+ * Sets the animation properties to frame one of the specified animation (ready to be started)
+ *
+ * Parameters:
+ * - d0: animation id
+ */
+#define setup_animation                         0x00008894
 
 
 /*
