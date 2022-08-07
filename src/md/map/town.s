@@ -21,45 +21,45 @@
     patch_end
 
     town_map_definition:
-        /* Palette list */
+        // Palette list
         .dc.l   hud_player_palette
         .dc.l   0
 
-        /* Nemesis tile data list */
+        // Nemesis tile data list
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(0))
         .dc.l   nem_pat_empty
         .dc.l   0
 
-        /* Tile map data */
+        // Tile map data
         .dc.l   map_town_foreground_blocks
         .dc.l   map_town_foreground_map
 
-        /* Map dimensions */
+        // Map dimensions
         .dc.w   map_town_block_height
         .dc.w   map_town_block_width
 
-        /* Initial scroll positions in blocks */
+        // Initial scroll positions in blocks
         .dc.w   6       // Vertical
         .dc.w   0       // Horizontal
 
-        /* Event list */
+        // Event list
         .dc.l   town_event_list
         .dc.l   town_extended_event_data_table
 
-        /* Height map data */
+        // Height map data
         .dc.l   map_town_height_map
         .dc.l   map_town_height_blocks
 
-        /* Entity load list */
+        // Entity load list
         .dc.l   town_entity_load_list
 
-        /* Player starting positions */
+        // Player starting positions
         .dc.w   0       // Player 1 Y (Baseline relative offset)
         .dc.w   256     // Player 1 X
         .dc.w   0       // Player 2 Y (Baseline relative offset)
         .dc.w   296     // Player 2 X
 
-        /* Music id */
+        // Music id
         .dc.w   SONG_TOWN
 
 
@@ -130,7 +130,6 @@
     /**********************************************************
      * Entity load list
      */
-
     town_entity_load_list:
         .dc.w   -1  // Terminate
 
@@ -139,12 +138,12 @@
      * Camp site
      */
 
-    /* Camp site vertical scroll */
+    // Camp site vertical scroll
     patch_start 0x002a8a
         .dc.w   176 - 224/2
     patch_end
 
-    /* Camp site entity load group descriptor (thiefs) */
+    // Camp site entity load group descriptor (thiefs)
     patch_start 0x002b24
         .dc.l   town_camp_map_entity_load_group_descriptor   // Patch table entry
     patch_end

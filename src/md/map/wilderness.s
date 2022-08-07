@@ -21,45 +21,45 @@
     patch_end
 
     wilderness_map_definition:
-        /* Palette list */
+        // Palette list
         .dc.l   hud_player_palette
         .dc.l   0
 
-        /* Nemesis tile data list */
+        // Nemesis tile data list
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(0))
         .dc.l   nem_pat_empty
         .dc.l   0
 
-        /* Tile map data */
+        // Tile map data
         .dc.l   map_wilderness_foreground_blocks
         .dc.l   map_wilderness_foreground_map
 
-        /* Map dimensions */
+        // Map dimensions
         .dc.w   map_wilderness_block_height
         .dc.w   map_wilderness_block_width
 
-        /* Initial scroll positions in blocks */
+        // Initial scroll positions in blocks
         .dc.w   0       // Vertical
         .dc.w   4       // Horizontal
 
-        /* Event list */
+        // Event list
         .dc.l   wilderness_event_list
         .dc.l   wilderness_extended_event_data_table
 
-        /* Height map data */
+        // Height map data
         .dc.l   map_wilderness_height_map
         .dc.l   map_wilderness_height_blocks
 
-        /* Entity load list */
+        // Entity load list
         .dc.l   wilderness_entity_load_list
 
-        /* Player starting positions */
+        // Player starting positions
         .dc.w   0       // Player 1 Y (Baseline relative offset)
         .dc.w   112     // Player 1 X
         .dc.w   16      // Player 2 Y (Baseline relative offset)
         .dc.w   80      // Player 2 X
 
-        /* Music id */
+        // Music id
         .dc.w   SONG_WILDERNESS
 
 
@@ -121,7 +121,6 @@
     /**********************************************************
      * Entity load list
      */
-
     wilderness_entity_load_list:
         .dc.w   -1  // Terminate
 
@@ -130,12 +129,12 @@
      * Camp site
      */
 
-    /* Camp site vertical scroll */
+    // Camp site vertical scroll
     patch_start 0x002a86
         .dc.w   0
     patch_end
 
-    /* Camp site entity load group descriptor (thiefs) */
+    // Camp site entity load group descriptor (thiefs)
     patch_start 0x002b1c
         .dc.l   wilderness_camp_map_entity_load_group_descriptor   // Patch table entry
     patch_end

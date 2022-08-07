@@ -80,7 +80,7 @@
      */
     patch_start 0x000800
         user_entry_point:
-            /* Carry set means an error occured in the initial program */
+            // Carry set means an error occured in the initial program
             bcc     mars_ok
             bra     .
 
@@ -89,7 +89,7 @@
 
             bsr     mars_ready_wait
 
-            /* Copy bootstrap program to RAM and run */
+            // Copy bootstrap program to RAM and run
             lea     (MARS_ROM_BANK0 + init_boot_strap_end), %a0
             move.w  #((init_boot_strap_end - init_boot_strap) / 2) - 1, %d0
         1:  move.w  -(%a0), -(%sp)
@@ -117,14 +117,12 @@
          * Restore MD mode and jump to the initialization code in ROM
          */
         init_boot_strap:
-            /*
-             * Switch RV to 1 to restore the Mega Drive 68k memory map.
-             * The vector table is still mapped to the 32X vector ROM making the vectors point to undefined memory locations.
-             * As such the program can not depend on any interrupts or exceptions.
-             */
+            // Switch RV to 1 to restore the Mega Drive 68k memory map.
+            // The vector table is still mapped to the 32X vector ROM making the vectors point to undefined memory locations.
+            // As such the program can not depend on any interrupts or exceptions.
             bset    #0, MARS_DMAC + 1(%a6)
 
-            /* Jump to init code in ROM */
+            // Jump to init code in ROM
             jmp     init.w                      // Need to force abs short or else it gets optimized to a relative branch
         init_boot_strap_end:
 
@@ -133,24 +131,24 @@
          * Program specific initialization code
          */
         init:
-            /* 32X sub program handshake */
+            // 32X sub program handshake
             jsr     __mars_comm_init
 
-            /* Clear RAM */
+            // Clear RAM
             lea     (RAM_START), %a0
             move.w  #(RAM_SIZE / 4) - 1, %d0
             moveq   #0, %d1
         1:  move.l  %d1, (%a0)+
             dbf     %d0, 1b
 
-            /* Copy initialized data to RAM */
+            // Copy initialized data to RAM
             lea     (_data_source), %a0
             lea     (_data), %a1
             move.w  #_data_size_w - 1, %d0
         1:  move.w  (%a0)+, (%a1)+
             dbf     %d0, 1b
 
-            /* Jump to the original reset vector */
+            // Jump to the original reset vector
             lea     (0xfffd00), %sp
             jmp     0x000abe
 

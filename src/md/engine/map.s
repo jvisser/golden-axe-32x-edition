@@ -50,7 +50,7 @@
      * Uses: d0,d1,d7,a0,a1,a3,a6
      */
     map_load_graphics:
-        /* Load palettes */
+        // Load palettes
     1:  move.l  (%a3)+, %d7
         beq     .no_palette
         movea.l %d7, %a6
@@ -74,7 +74,7 @@
      * Uses: d0,d1,d7,a0,a1,a3,a6
      */
     map_load_tiles:
-        /* Load tile data */
+        // Load tile data
     1:  move.l  (%a3)+, %d7
         beq     .no_tile_data
 
@@ -157,7 +157,7 @@
     mars_load_map:
         mars_comm_call_start
 
-        /* Setup map command load parameters */
+        // Setup map command load parameters
         lea     (MARS_REG_BASE), %a0
         move.w  (vertical_scroll), %d5
         lsr.w   #4, %d5
@@ -167,7 +167,7 @@
         move.b  %d5, MARS_COMM_MASTER + MARS_COMM_P1_L(%a0)             // horizontal scroll in 16px units
         move.w  (current_level), MARS_COMM_MASTER + MARS_COMM_P2(%a0)   // current map index
 
-        /* Send map load command */
+        // Send map load command
         mars_comm MARS_COMM_MASTER, MARS_COMM_CMD_MAP_LOAD
 
         jsr     vdp_enable_display

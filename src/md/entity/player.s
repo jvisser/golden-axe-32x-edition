@@ -21,15 +21,15 @@
         jmp     init_player_auto_walk
 
     init_player_auto_walk:
-        /* Check if the current player state is auto walk */
+        // Check if the current player state is auto walk
         cmp.b   #0x68, ENTITY_STATE(%a0)
         bne     .exit
 
-        /* Auto walk if outside of the left horizontal screen boundary */
+        // Auto walk if outside of the left horizontal screen boundary
         cmp.w   #0x80, ENTITY_X(%a0)
         bcs     .exit
 
-        /* Skip auto walk */
+        // Skip auto walk
         clr.b   ENTITY_STATE(%a0)
 
     .exit:

@@ -21,45 +21,45 @@
     patch_end
 
     turtle_village_map_definition:
-        /* Palette list */
+        // Palette list
         .dc.l   hud_player_palette
         .dc.l   0
 
-        /* Nemesis tile data list */
+        // Nemesis tile data list
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(0))
         .dc.l   nem_pat_empty
         .dc.l   0
 
-        /* Tile map data */
+        // Tile map data
         .dc.l   map_turtle_village_foreground_blocks
         .dc.l   map_turtle_village_foreground_map
 
-        /* Map dimensions */
+        // Map dimensions
         .dc.w   map_turtle_village_block_height
         .dc.w   map_turtle_village_block_width
 
-        /* Initial scroll positions in blocks */
+        // Initial scroll positions in blocks
         .dc.w   0       // Vertical
         .dc.w   0       // Horizontal
 
-        /* Event list */
+        // Event list
         .dc.l   turtle_village_event_list
         .dc.l   turtle_village_extended_event_data_table
 
-        /* Height map data */
+        // Height map data
         .dc.l   map_turtle_village_height_map
         .dc.l   map_turtle_village_height_blocks
 
-        /* Entity load list */
+        // Entity load list
         .dc.l   turtle_village_entity_load_list
 
-        /* Player starting positions */
+        // Player starting positions
         .dc.w   0       // Player 1 Y (Baseline relative offset)
         .dc.w   248     // Player 1 X
         .dc.w   0       // Player 2 Y (Baseline relative offset)
         .dc.w   288     // Player 2 X
 
-        /* Music id */
+        // Music id
         .dc.w   SONG_TURTLE_VILLAGE
 
 
@@ -145,7 +145,6 @@
     /**********************************************************
      * Entity load list
      */
-
     turtle_village_entity_load_list:
         .dc.w   -1  // Terminate
 
@@ -154,12 +153,12 @@
      * Camp site
      */
 
-    /* Camp site vertical scroll */
+    // Camp site vertical scroll
     patch_start 0x002a88
         .dc.w   184 + (6 * 8) - (224 / 2)
     patch_end
 
-    /* Camp site entity load group descriptor (thiefs) */
+    // Camp site entity load group descriptor (thiefs)
     patch_start 0x002b20
         .dc.l   turtle_village_camp_map_entity_load_group_descriptor   // Patch table entry
     patch_end

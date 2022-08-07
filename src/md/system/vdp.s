@@ -35,17 +35,17 @@
      *   when in the vertical blank period calls the original vblank_int_handler which is now a subroutine.
      */
 
-    /* Change vblank_int_handler into a subroutine */
+    // Change vblank_int_handler into a subroutine
     patch_start 0x000d60
         rts // rte = rts
     patch_end
 
-    /* Reconfigure the VDP mode 2 register to disable vertical interrupts */
+    // Reconfigure the VDP mode 2 register to disable vertical interrupts
     patch_start 0x000e50
         .dc.w   0x8114
     patch_end
 
-    /* Change the vint_wait subroutine into a vsync_wait subroutine */
+    // Change the vint_wait subroutine into a vsync_wait subroutine
     patch_start 0x000da8
         jmp     vdp_vsync_wait
     patch_end

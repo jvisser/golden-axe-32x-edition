@@ -19,7 +19,7 @@
 
         // TODO: Repaint map on new scroll position on the 32X side
 
-        /* Request night palette on the 32X */
+        // Request night palette on the 32X
         mars_comm_call_start
         mars_comm_p1 MARS_COMM_SLAVE, MARS_COMM_CMD_MAP_PALETTE, #0x0003
         mars_comm_call_end

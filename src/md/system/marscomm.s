@@ -147,10 +147,10 @@
     __mars_comm_init:
         lea     (MARS_REG_BASE), %a6
 
-        /* Set HW/VDP access to the 32X side */
+        // Set HW/VDP access to the 32X side
         bset    #7, MARS_ADP_CTL(%a6)
 
-        /* Wait for the 32X to accept HW control */
+        // Wait for the 32X to accept HW control
     1:  tst.l   MARS_COMM0(%a6)
         bne     1b
     1:  tst.l   MARS_COMM2(%a6)
@@ -175,16 +175,16 @@
 
         lea     (MARS_REG_BASE), %a6
 
-        /* Wait for 32X ready */
+        // Wait for 32X ready
     1:  tst.w   2(%a6, %d6.w)
         bne     1b
 
-        /* Give the 32X access to ROM? */
+        // Give the 32X access to ROM?
         bclr    #15, %d5
         beq     .no_rom_access_requested
 
     .ifne __Z80_SAFE
-        /* Halt Z80 if not halted already */
+        // Halt Z80 if not halted already
         btst    #0, (Z80_BUS_REQUEST)
         beq     .z80_halted
         move.w  #0x0100, (Z80_BUS_REQUEST)
@@ -194,24 +194,24 @@
     .z80_halted:
     .endif
 
-        /* RV = 0 */
+        // RV = 0
         bclr    #0, MARS_DMAC + 1(%a6)
     .no_rom_access_requested:
 
-        /* Clear response register */
+        // Clear response register
         clr.w   2(%a6, %d6.w)
 
-        /* Send command */
+        // Send command
         move.w  %d5, (%a6, %d6.w)
 
-        /* Wait for command ready */
+        // Wait for command ready
     1:  cmp.w   2(%a6, %d6.w), %d5
         bne     1b
 
-        /* Send ACK */
+        // Send ACK
         clr.w   (%a6, %d6.w)
 
-        /* Give MD access to ROM (RV = 1) */
+        // Give MD access to ROM (RV = 1)
         bset    #0, MARS_DMAC + 1(%a6)
     .exit:
         rts
