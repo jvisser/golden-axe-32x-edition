@@ -36,13 +36,66 @@
     .text
 
 
-    /**********************************************************
-     * Patch map background tile data graphics table to point to empty tile data for each entry (for now)
-     * Maybe we wil repurpose the background layer at some point through
+    /*
+     * Load graphics data in the following format (same as used by the map definition):
+     * repeat:
+     * - palette_address.l          (0=EOL)
+     * repeat:
+     * - vram_addr_set_command.l    (0=EOL)
+     * - nemesis_data_address.l
+     *
+     * Parameters:
+     * - a3: address of graphics lists
+     *
+     * Uses: d0,d1,d7,a0,a1,a3,a6
      */
-    patch_start 0x00913c
-        .rept 8
-            .dc.l nem_pat_empty
+    map_load_graphics:
+        /* Load palettes */
+    1:  move.l  (%a3)+, %d7
+        beq     .no_palette
+        movea.l %d7, %a6
+        jsr     palette_update_dynamic
+        movea.l %d7, %a6
+        jsr     palette_update_base
+        bra     1b
+    .no_palette:
+        bset    #0, (vblank_update_palette_flag)
+
+
+    /*
+     * Load graphics data in the following format (same as used by the map definition):
+     * repeat:
+     * - vram_addr_set_command.l    (0=EOL)
+     * - nemesis_data_address.l
+     *
+     * Parameters:
+     * - a3: address nemesis data list
+     *
+     * Uses: d0,d1,d7,a0,a1,a3,a6
+     */
+    map_load_tiles:
+        /* Load tile data */
+    1:  move.l  (%a3)+, %d7
+        beq     .no_tile_data
+
+        move.l  %d7, (VDP_CTRL)
+        movea.l (%a3)+, %a0
+        jsr     nemesis_decompress_vram
+        bra     1b
+    .no_tile_data:
+
+        moveq   #0, %d7
+        rts
+
+
+    /**********************************************************
+     * Patch background tile restore code after magic to use the same format as used by the map definition
+     */
+    patch_start 0x008d6a
+        movea.l %a0, %a3
+        jsr     map_load_tiles.l
+        .rept 4
+            nop
         .endr
     patch_end
 
@@ -88,30 +141,7 @@
 
     map_load_entity_graphics:
         addq.l  #2, %a3
-
-        /* Load palettes */
-    1:  move.l  (%a3)+, %d7
-        beq     .no_palette
-        movea.l %d7, %a6
-        jsr     palette_update_dynamic
-        movea.l %d7, %a6
-        jsr     palette_update_base
-        bra     1b
-    .no_palette:
-        bset    #0, (vblank_update_palette_flag)
-
-        /* Load tile data */
-    1:  move.l  (%a3)+, %d7
-        beq     .no_tile_data
-
-        move.l  %d7, (VDP_CTRL)
-        movea.l (%a3)+, %a0
-        jsr     nemesis_decompress_vram
-        bra     1b
-    .no_tile_data:
-
-        moveq   #0, %d7
-        rts
+        jmp     map_load_graphics
 
 
     /**********************************************************

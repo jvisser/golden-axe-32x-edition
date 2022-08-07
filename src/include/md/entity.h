@@ -21,21 +21,57 @@
  */
 
 #define entity_slot_base                                0xffffd100
+#define entity_slot_magic                               0xffffd500  // Magic special attacks use this
+#define entity_slot_alloc_base                          0xffffd580  // Free allocatable. See find_free_entity_slot (51 entries)
+
+#define ENTITY_SLOT_ALLOC_COUNT                         51
 
 #define ENTITY_SLOT_ADDR(slot)      (entity_slot_base + (slot) * 0x80)
 
 
 /**********************************************************
- * Entity struct offsets
+ * Entity struct
  */
 
-#define ENTITY_STATE                                    0x42
+#define ENTITY_SIZE                                     0x80
+
+#define ENTITY_FLAGS1                                   0x02
+#define ENTITY_FLAGS3                                   0x03
 #define ENTITY_TILE_ID                                  0x08
 #define ENTITY_SPRITE_ATTR                              0x17
 #define ENTITY_Y                                        0x18
 #define ENTITY_X                                        0x1c
 #define ENTITY_BASE_Y                                   0x20
 #define ENTITY_HEIGHT                                   0x24
+#define ENTITY_INTERACTING_ENTITY                       0x38
+#define ENTITY_MOUNT                                    0x3c
+#define ENTITY_STATE                                    0x42
+#define ENTITY_FLAGS2                                   0x44
+#define ENTITY_DMA_SOURCE_BASE                          0x74
+
+
+#define ENTITY_FLAGS1_ANIMATION_MARKER_HIT              0x02
+#define ENTITY_FLAGS1_HIDE_SPRITE                       0x80
+
+#define B_ENTITY_FLAGS1_ANIMATION_MARKER_HIT            1
+#define B_ENTITY_FLAGS1_HIDE_SPRITE                     7
+
+#define ENTITY_FLAGS2_MOVE_LEFT                         0x01
+#define ENTITY_FLAGS2_MOVE_UP                           0x02
+
+#define B_ENTITY_FLAGS2_MOVE_LEFT                       0
+#define B_ENTITY_FLAGS2_MOVE_UP                         1
+
+
+#define ENTITY_FLAGS3_KNOCKDOWN                         0x02
+#define ENTITY_FLAGS3_MOUNTED                           0x04
+#define ENTITY_FLAGS3_DAMAGE_RECEIVED                   0x40
+#define ENTITY_FLAGS3_DAMAGE_DEALT                      0x80
+
+#define B_ENTITY_FLAGS3_KNOCKDOWN                       1
+#define B_ENTITY_FLAGS3_MOUNTED                         2
+#define B_ENTITY_FLAGS3_DAMAGE_RECEIVED                 6
+#define B_ENTITY_FLAGS3_DAMAGE_DEALT                    7
 
 
 /**********************************************************
@@ -81,6 +117,8 @@
 #define ENTITY_TYPE_BLUE_DRAGON                         0x4d
 #define ENTITY_TYPE_RED_DRAGON                          0x4e
 #define ENTITY_TYPE_CHICKEN_LEG                         0x4f
+#define ENTITY_DRAGON_FLAME                             0x50
+#define ENTITY_DRAGON_FIRE_BALL                         0x51
 #define ENTITY_TYPE_VILLAGER_1                          0x56
 #define ENTITY_TYPE_VILLAGER_2                          0x57
 #define ENTITY_TYPE_SKELETON_4                          0x60
@@ -92,6 +130,9 @@
 /**********************************************************
  * Entity graphics data
  */
+
+// Remapped tile id for death adder special
+#define DEATH_ADDER_SPECIAL_TILE_ID (GAME_PLAY_VRAM_DYNAMIC_TOP_TILE - NEM_DEATH_ADDER_SPECIAL_TILE_COUNT)
 
 #define entity_nemesis_data_table                       0x00013a74
 
@@ -122,8 +163,14 @@
 #define nem_death_adder_special_explosion               0x00032c8e
 #define NEM_DEATH_ADDER_SPECIAL_EXPLOSION_TILE_COUNT    81
 
+#define nem_death_adder_axe                             0x00075150
+#define NEM_DEATH_ADDER_AXE_TILE_COUNT                  26
+
 #define nem_king_and_queen                              0x0007ec7a
 #define NEM_KING_AND_QUEEN_TILE_COUNT                   81
+
+#define nem_pat_dragon                                  0x000420FE
+#define NEM_PAT_DRAGON_TILE_COUNT                       273
 
 #ifdef __ASSEMBLER__
 

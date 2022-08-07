@@ -15,23 +15,6 @@
 
 
     /**********************************************************
-     * Map specific code patches due to the change in map order (map 5 = map 4)
-     */
-
-    /* Restore death adder/bringer special attack graphics after he has used a player magic attack */
-
-    /* Ground sentry */
-    patch_start 0x008dd6
-        .dc.w   0x0004
-    patch_end
-
-    /* Explosion */
-    patch_start 0x008e34
-        .dc.w   0x0004
-    patch_end
-
-
-    /**********************************************************
      * Map definition
      */
     patch_start 0x0015bc
@@ -46,6 +29,8 @@
         /* Nemesis tile data list */
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(0))
         .dc.l   nem_pat_empty
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(1))
+        .dc.l   nem_pat_dragon
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX))
         .dc.l   nem_pat_bad_brother
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT))
@@ -83,6 +68,22 @@
 
         /* Music id */
         .dc.w   SONG_EAGLES_HEAD
+
+
+    /**********************************************************
+     * Patch map background tile data graphics table entry to point to empty tile data for each entry
+     * This is used to reload the relevant background tiles when magic attacks that use the background plane are finished.
+     */
+    patch_start 0x00914c
+        .dc.l   eagles_head_tile_restore_list
+    patch_end
+
+    eagles_head_tile_restore_list:
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(0))
+        .dc.l   nem_pat_empty
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(1))
+        .dc.l   nem_pat_dragon
+        .dc.l   0
 
 
     /**********************************************************
@@ -137,8 +138,11 @@
      */
 
     eagles_head_entity_load_list:
-        .dc.w   1216
+        .dc.w   800
         .dc.l   eagles_head_map_entity_load_slot_descriptor_0
+
+        .dc.w   1216
+        .dc.l   eagles_head_map_entity_load_slot_descriptor_1
 
         .dc.w   -1
 
@@ -151,9 +155,27 @@
 
             .dc.l   eagles_head_map_entity_load_group_descriptor_0_0_pal0
             .dc.l   0
+            .dc.l   0
+
+            .dc.w   1  // number of entities
+                map_entity_definition 6, ENTITY_TYPE_BLUE_DRAGON, 248, 320, 1
+
+            eagles_head_map_entity_load_group_descriptor_0_0_pal0:
+                entity_palette PALETTE_OFFSET(3, 1), 7, blue1_4, yellow_3
+
+
+    eagles_head_map_entity_load_slot_descriptor_1:
+        .dc.w   0
+        .dc.l   eagles_head_map_entity_load_group_descriptor_1_0
+
+        eagles_head_map_entity_load_group_descriptor_1_0:
+            .dc.w   0   // load allowed when there are active enemies?
+
+            .dc.l   eagles_head_map_entity_load_group_descriptor_1_0_pal0
+            .dc.l   0
 
             // Death adder special attacks graphics
-            .dc.l   VRAM_ADDR_SET(0x1900)                                   // Fixed address
+            .dc.l   VRAM_ADDR_SET(TILE_ADDR(DEATH_ADDER_SPECIAL_TILE_ID))
             .dc.l   nem_death_adder_special
             .dc.l   VRAM_ADDR_SET(GAME_PLAY_VRAM_RESERVED_MIN)              // Fixed address
             .dc.l   nem_death_adder_special_explosion
@@ -164,5 +186,5 @@
                 map_entity_definition 1, ENTITY_TYPE_SKELETON_3,  246, -16
                 map_entity_definition 2, ENTITY_TYPE_DEATH_BRINGER, 176, 320 / 2, GAME_PLAY_VRAM_RESERVED_TILE_MAX
 
-            eagles_head_map_entity_load_group_descriptor_0_0_pal0:
+            eagles_head_map_entity_load_group_descriptor_1_0_pal0:
                 entity_palette PALETTE_OFFSET(1, 1), 15, red1_4, yellow_3, skin_4, red2_4

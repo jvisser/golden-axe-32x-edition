@@ -64,6 +64,20 @@
 
 
     /**********************************************************
+     * Patch map background tile data graphics table entry to point to empty tile data for each entry
+     * This is used to reload the relevant background tiles when magic attacks that use the background plane are finished.
+     */
+    patch_start 0x009144
+        .dc.l   town_tile_restore_list
+    patch_end
+
+    town_tile_restore_list:
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(0))
+        .dc.l   nem_pat_empty
+        .dc.l   0
+
+
+    /**********************************************************
      * Y base line list
      */
     patch_start 0x008786

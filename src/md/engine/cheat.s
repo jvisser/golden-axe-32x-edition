@@ -5,9 +5,9 @@
 #include "patch.h"
 
 
-#define CHEAT_ENEMY_HP
+#define CHEAT_ENEMY_HP                  1
 #define CHEAT_NO_MAGIC_CONSUMPTION
-//#define CHEAT_MAGIC_START_COUNT         9
+#define CHEAT_MAGIC_START_COUNT         9
 #define CHEAT_GOD_MODE
 
 
@@ -17,7 +17,7 @@
      * Give all enemies 1 hp
      */
     patch_start 0x00d3d2
-        move.b  #1, 0x64(%a0)
+        move.b  #CHEAT_ENEMY_HP, 0x64(%a0)
         rts
     patch_end
 
