@@ -22,11 +22,11 @@
     patch_end
 
     eagles_head_map_definition:
-        /* Palette list */
+        // Palette list
         .dc.l   hud_player_palette
         .dc.l   0
 
-        /* Nemesis tile data list */
+        // Nemesis tile data list
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(0))
         .dc.l   nem_pat_empty
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(1))
@@ -37,36 +37,36 @@
         .dc.l   nem_death_adder
         .dc.l   0
 
-        /* Tile map data */
+        // Tile map data
         .dc.l   map_eagles_head_foreground_blocks
         .dc.l   map_eagles_head_foreground_map
 
-        /* Map dimensions */
+        // Map dimensions
         .dc.w   map_eagles_head_block_height
         .dc.w   map_eagles_head_block_width
 
-        /* Initial scroll positions in blocks */
+        // Initial scroll positions in blocks
         .dc.w   4       // Vertical
         .dc.w   0       // Horizontal
 
-        /* Event list */
+        // Event list
         .dc.l   eagles_head_event_list
         .dc.l   eagles_head_extended_event_data_table
 
-        /* Height map data */
+        // Height map data
         .dc.l   map_eagles_head_height_map
         .dc.l   map_eagles_head_height_blocks
 
-        /* Entity load list */
+        // Entity load list
         .dc.l   eagles_head_entity_load_list
 
-        /* Player starting positions */
+        // Player starting positions
         .dc.w   0       // Player 1 Y (Baseline relative offset)
         .dc.w   256     // Player 1 X
         .dc.w   0       // Player 2 Y (Baseline relative offset)
         .dc.w   296     // Player 2 X
 
-        /* Music id */
+        // Music id
         .dc.w   SONG_EAGLES_HEAD
 
 
@@ -136,7 +136,6 @@
     /**********************************************************
      * Entity load list
      */
-
     eagles_head_entity_load_list:
         .dc.w   800
         .dc.l   eagles_head_map_entity_load_slot_descriptor_0

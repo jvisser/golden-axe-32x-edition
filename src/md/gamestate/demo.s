@@ -56,33 +56,33 @@
      *  - controller_input.b
      */
 
-    /* Patch controller input pointers. It seems they prepared for 2 player inputs but never implemented it? */
+    // Patch controller input pointers. It seems they prepared for 2 player inputs but never implemented it?
     patch_start 0x001a86
-        /* Demo 1: Ax */
+        // Demo 1: Ax
         .dc.l   demo_controller_data
         .dc.l   demo_controller_data
-        /* Demo 2: Tyris */
+        // Demo 2: Tyris
         .dc.l   demo_controller_data
         .dc.l   demo_controller_data
-        /* Demo 3: Gilius */
+        // Demo 3: Gilius
         .dc.l   demo_controller_data
         .dc.l   demo_controller_data
     patch_end
 
     demo_controller_data:
-        /* Walk right */
+        // Walk right
         .dc.b   72
         .dc.b   CTRL_RIGHT
 
-        /* Use magic */
+        // Use magic
         .dc.b   1
         .dc.b   CTRL_A
 
-        /* Wait until magic done */
+        // Wait until magic done
         .dc.b   255
         .dc.b   0
         .dc.b   48
         .dc.b   0
 
-        /* End of input/demo */
+        // End of input/demo
         .dc.b   0

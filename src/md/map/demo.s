@@ -22,11 +22,11 @@
     patch_end
 
     demo_map_definition:
-        /* Palette list */
+        // Palette list
         .dc.l   hud_player_palette
         .dc.l   0
 
-        /* Nemesis tile data list */
+        // Nemesis tile data list
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(0))
         .dc.l   nem_pat_empty
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(1))             // Pre load entity tile data
@@ -35,36 +35,36 @@
         .dc.l   nem_pat_bad_brother
         .dc.l   0
 
-        /* Tile map data */
+        // Tile map data
         .dc.l   map_wilderness_foreground_blocks
         .dc.l   map_wilderness_foreground_map
 
-        /* Map dimensions */
+        // Map dimensions
         .dc.w   map_wilderness_block_height
         .dc.w   map_wilderness_block_width
 
-        /* Initial scroll positions in blocks */
+        // Initial scroll positions in blocks
         .dc.w   0       // Vertical
         .dc.w   0       // Horizontal
 
-        /* Event list */
+        // Event list
         .dc.l   demo_event_list
         .dc.l   0
 
-        /* Height map data */
+        // Height map data
         .dc.l   map_wilderness_height_map
         .dc.l   map_wilderness_height_blocks
 
-        /* Entity load list */
+        // Entity load list
         .dc.l   demo_entity_load_list
 
-        /* Player starting positions */
+        // Player starting positions
         .dc.w   -20     // Player 1 Y (Baseline relative offset)
         .dc.w   256     // Player 1 X
         .dc.w   0       // Player 2 Y (Baseline relative offset)
         .dc.w   0       // Player 2 X
 
-        /* Music id */
+        // Music id
         .dc.w   SONG_WILDERNESS
 
 
@@ -94,15 +94,15 @@
         demo_map_entity_load_group_descriptor_0_0:
             .dc.w   0   // load allowed when there are active enemies?
 
-            /* Palette list */
+            // Palette list
             .dc.l   demo_map_entity_load_group_descriptor_0_0_pal0
             .dc.l   demo_map_entity_load_group_descriptor_0_0_pal1
             .dc.l   0  // Terminate
 
-            /* Nemesis tile data list */
+            // Nemesis tile data list
             .dc.l   0  // Terminate
 
-            /* Entity descriptors */
+            // Entity descriptors
             .dc.w   5  // number of entities
 
                 map_entity_definition 6, ENTITY_TYPE_CHICKEN_LEG,       180, 216, 1

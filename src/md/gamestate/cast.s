@@ -75,7 +75,7 @@
         jmp     cast_transition
 /*
 
-        /* Player pressed right? */
+        // Player pressed right?
     .check_right:
         btst.b  #B_CTRL_RIGHT, %d0
         beq     .check_action
@@ -86,7 +86,7 @@
     .left_ok:
         jmp     cast_transition
 
-        /* Player pressed any action button? */
+        // Player pressed any action button?
     .check_action:
         andi.b  #CTRL_ABCS, %d0
         beq     .continue

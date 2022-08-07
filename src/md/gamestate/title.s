@@ -69,10 +69,8 @@
     patch_end
 
     game_state_handler_title_fade_palette_step:
-        /*
-         * Create subtract color (same value for each color component)
-         * d0 is fade down palette index at this point
-         */
+        // Create subtract color (same value for each color component)
+        // d0 is fade down palette index at this point
         lsr.w   #1, %d0
         addq.w  #2, %d0
         move.w  %d0, %d1

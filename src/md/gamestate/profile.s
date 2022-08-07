@@ -42,7 +42,7 @@
         jsr     mars_comm_image
         jsr     screen_transition_from_dark
 
-        /* Show death adder profile for 5 seconds or until the player presses an action button */
+        // Show death adder profile for 5 seconds or until the player presses an action button
         move.w  #5*60, %d1
         jsr     wait_n_frames
         bcs     .player_exit        // skip transition if player requested a return to the title screen
