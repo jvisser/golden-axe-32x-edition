@@ -7,7 +7,7 @@
 
 #define CHEAT_ENEMY_HP                  1
 #define CHEAT_NO_MAGIC_CONSUMPTION
-#define CHEAT_MAGIC_START_COUNT         9
+//#define CHEAT_MAGIC_START_COUNT         9
 #define CHEAT_GOD_MODE
 
 

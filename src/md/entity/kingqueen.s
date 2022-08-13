@@ -1,5 +1,5 @@
 /*
- * King and queen patches (ending sequence)
+ * King and queen (...princess) patches (ending sequence)
  */
 
 #include "goldenaxe.h"

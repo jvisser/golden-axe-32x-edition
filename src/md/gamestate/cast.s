@@ -73,7 +73,7 @@
         move.w  #0x48, cast_screen_id
     .right_ok:
         jmp     cast_transition
-/*
+*/
 
         // Player pressed right?
     .check_right:
