@@ -38,7 +38,7 @@ void vdp_swap_frame_buffer(void)
 
 void vdp_update_palette(u16* colors, u32 offset, u32 count)
 {
-    while ((MARS_VDP_FBCTL & MARS_VDP_FBCTL_PEN) == 0);
+    //while ((MARS_VDP_FBCTL & MARS_VDP_FBCTL_PEN) == 0);
 
     u16 *cram_entry = MARS_CRAM + offset;
     for (u32 i = 0; i < count; i++)

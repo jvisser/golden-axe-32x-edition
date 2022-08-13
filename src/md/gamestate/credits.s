@@ -22,3 +22,23 @@
 
         moveq   #SONG_CREDITS, %d7  // Sound from cast would be reused before, now we need to explicitly start it
         jmp     sound_command
+
+
+    /**********************************************************
+     * Allow skipping to the results by pressing an action button
+     */
+    #define credits_cycle 0xffffc334    // Seems to be shared by screen transition code...
+
+    patch_start 0x0065f2
+        jsr     game_state_handler_credits.l
+    patch_end
+
+    game_state_handler_credits:
+        move.b  ctrl_player_1_changed, %d0
+        or.b    ctrl_player_2_changed, %d0
+        andi.b  #CTRL_ABCS, %d0
+        beq     .exit
+
+        move.w  #1, (credits_cycle) // Skip to the next mode (results)
+    .exit:
+        rts

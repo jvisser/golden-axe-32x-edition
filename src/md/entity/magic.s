@@ -1,5 +1,5 @@
 /*
- * Tyris level 6 magic patches
+ * Magic effect patches
  */
 
 #include "entity.h"
@@ -27,6 +27,8 @@
 
 
     /**********************************************************
+     * Tyris level 6 magic patches
+     *
      * Skip palette fades
      */
 
