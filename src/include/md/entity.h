@@ -309,6 +309,13 @@
     .endr
 .endm
 
+// Palette 3:12: Skeleton hole
+.macro entity_palette_brown_4
+    .irp color, 0x0466 0x0244, 0x0022, 0x0000
+        .dc.w \color
+    .endr
+.endm
+
 #endif
 
 #endif

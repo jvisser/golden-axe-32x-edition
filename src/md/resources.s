@@ -33,5 +33,8 @@
 
     resource nem_pat_empty,             "empty.pat.nem"
 
+    resource nem_pat_hole,              "pattern/hole.pat.nem"
+    resource tmap_hole,                 "pattern/hole.tmap"
+
 
     .noaltmacro

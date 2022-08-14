@@ -28,6 +28,8 @@
         // Nemesis tile data list
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(0))
         .dc.l   nem_pat_empty
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(1))
+        .dc.l   nem_pat_hole
         .dc.l   0
 
         // Tile map data
@@ -131,7 +133,27 @@
      * Entity load list
      */
     fiends_path_entity_load_list:
+        .dc.w   640
+        .dc.l   fiends_path_map_entity_load_slot_descriptor_0
+
         .dc.w   -1  // Terminate
+
+    fiends_path_map_entity_load_slot_descriptor_0:
+        .dc.w   0
+        .dc.l   fiends_path_map_entity_load_group_descriptor_0_0
+
+        fiends_path_map_entity_load_group_descriptor_0_0:
+            .dc.w   0   // load allowed when there are active enemies?
+
+            .dc.l   fiends_path_map_entity_load_group_descriptor_0_0_pal0
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   1  // number of entities
+                map_entity_definition 0, ENTITY_TYPE_SKELETON_2_FROM_HOLE, 408, 56
+
+            fiends_path_map_entity_load_group_descriptor_0_0_pal0:
+                entity_palette PALETTE_OFFSET(3, 12), 4, brown_4
 
 
     /**********************************************************
