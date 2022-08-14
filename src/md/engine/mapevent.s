@@ -5,6 +5,7 @@
 #include "patch.h"
 #include "marscomm.h"
 #include "goldenaxe.h"
+#include "entity.h"
 #include "map.h"
 
 
@@ -45,4 +46,20 @@
         move.b  MAP_EVENT_DATA(%a0), %d7    // Get song id from event
         clr.b   MAP_EVENT_ID(%a0)           // Unregister event
         clr.b   (fade_count_down)
+        rts
+
+
+    /**********************************************************
+     * Event: MAP_EVENT_SPAWN_ENTITY
+     *
+     * Turn original event MAP_EVENT_START_WATER_ANIMATION into a generic entity spawner
+     */
+    patch_start 0x001ec0
+        jmp     map_event_spawn_entity.l
+    patch_end
+
+    map_event_spawn_entity:
+        jsr     find_free_entity_slot
+        move.b  MAP_EVENT_DATA(%a0), (%a5)  // Set entity id
+        clr.b   MAP_EVENT_ID(%a0)           // Unregister event
         rts

@@ -80,6 +80,7 @@
 
 #define ENTITY_TYPE_NONE                                0x00
 #define ENTITY_TYPE_THIEF                               0x1e
+#define ENTITY_TYPE_WATER                               0x2a
 #define ENTITY_TYPE_ROPE                                0x2b
 #define ENTITY_TYPE_KING                                0x2c
 #define ENTITY_TYPE_QUEEN                               0x2d
@@ -171,6 +172,9 @@
 
 #define nem_pat_dragon                                  0x000420FE
 #define NEM_PAT_DRAGON_TILE_COUNT                       273
+
+#define nem_pat_water                                   0x00022e88
+#define NEM_PAT_WATER_TILE_COUNT                        72
 
 #ifdef __ASSEMBLER__
 
@@ -310,8 +314,15 @@
 .endm
 
 // Palette 3:12: Skeleton hole
-.macro entity_palette_brown_4
+.macro entity_palette_hole_4
     .irp color, 0x0466 0x0244, 0x0022, 0x0000
+        .dc.w \color
+    .endr
+.endm
+
+// Palette 3:8: Flowing water
+.macro entity_palette_water_5
+    .irp color, 0x0200, 0x0024, 0x0664, 0x0440, 0x0220
         .dc.w \color
     .endr
 .endm
