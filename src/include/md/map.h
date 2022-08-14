@@ -28,7 +28,7 @@
 #define MAP_EVENT_CAMPSITE_ON_ENEMY_DEFEAT              0x18
 #define MAP_EVENT_NEXT_LEVEL_ON_ENEMY_DEFEAT            0x1c
 #define MAP_EVENT_END_GAME_ON_ENEMY_DEFEAT              0x20
-#define MAP_EVENT_START_WATER_ANIMATION                 0x24
+#define MAP_EVENT_SPAWN_ENTITY                          0x24    // Repurposed MAP_EVENT_START_WATER_ANIMATION
 #define MAP_EVENT_START_FEATHER_ANIMATION               0x28
 #define MAP_EVENT_CHANGE_MUSIC                          0x2c    // Repurposed MAP_EVENT_START_BOSS_MUSIC
 

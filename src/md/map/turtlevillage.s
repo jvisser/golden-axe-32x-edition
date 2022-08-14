@@ -23,11 +23,14 @@
     turtle_village_map_definition:
         // Palette list
         .dc.l   hud_player_palette
+        .dc.l   water_palette
         .dc.l   0
 
         // Nemesis tile data list
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(0))
         .dc.l   nem_pat_empty
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX))
+        .dc.l   nem_pat_water_transparent
         .dc.l   0
 
         // Tile map data
@@ -61,6 +64,10 @@
 
         // Music id
         .dc.w   SONG_TURTLE_VILLAGE
+
+
+    water_palette:
+        entity_palette PALETTE_OFFSET(3, 8), 5, water_5
 
 
     /**********************************************************
@@ -122,6 +129,10 @@
         .dc.w   304
         .dc.b   MAP_EVENT_PALETTE_TRANSITION
         .dc.b   0x01
+
+        .dc.w   816
+        .dc.b   MAP_EVENT_SPAWN_ENTITY
+        .dc.b   ENTITY_TYPE_WATER
 
         .dc.w   992
         .dc.b   MAP_EVENT_PALETTE_TRANSITION
