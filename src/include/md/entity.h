@@ -35,8 +35,9 @@
 
 #define ENTITY_SIZE                                     0x80
 
-#define ENTITY_FLAGS1                                   0x02
-#define ENTITY_FLAGS3                                   0x03
+#define ENTITY_ID                                       0x00
+#define ENTITY_FLAGS_02                                 0x02
+#define ENTITY_FLAGS_03                                 0x03
 #define ENTITY_TILE_ID                                  0x08
 #define ENTITY_SPRITE_ATTR                              0x17
 #define ENTITY_Y                                        0x18
@@ -46,32 +47,33 @@
 #define ENTITY_INTERACTING_ENTITY                       0x38
 #define ENTITY_MOUNT                                    0x3c
 #define ENTITY_STATE                                    0x42    // TODO: 0x4c seems be be main state and 0x42 sub state (in most cases)
-#define ENTITY_FLAGS2                                   0x44
+#define ENTITY_FLAGS_44                                 0x44
 #define ENTITY_DMA_SOURCE_BASE                          0x74
 
 
-#define ENTITY_FLAGS1_ANIMATION_MARKER_HIT              0x02
-#define ENTITY_FLAGS1_HIDE_SPRITE                       0x80
+#define ENTITY_FLAGS_02_ANIMATION_MARKER_HIT            0x02
+#define ENTITY_FLAGS_02_HIDE_SPRITE                     0x80
 
-#define B_ENTITY_FLAGS1_ANIMATION_MARKER_HIT            1
-#define B_ENTITY_FLAGS1_HIDE_SPRITE                     7
-
-#define ENTITY_FLAGS2_MOVE_LEFT                         0x01
-#define ENTITY_FLAGS2_MOVE_UP                           0x02
-
-#define B_ENTITY_FLAGS2_MOVE_LEFT                       0
-#define B_ENTITY_FLAGS2_MOVE_UP                         1
+#define B_ENTITY_FLAGS_02_ANIMATION_MARKER_HIT          1
+#define B_ENTITY_FLAGS_02_HIDE_SPRITE                   7
 
 
-#define ENTITY_FLAGS3_KNOCKDOWN                         0x02
-#define ENTITY_FLAGS3_MOUNTED                           0x04
-#define ENTITY_FLAGS3_DAMAGE_RECEIVED                   0x40
-#define ENTITY_FLAGS3_DAMAGE_DEALT                      0x80
+#define ENTITY_FLAGS_03_KNOCKDOWN                       0x02
+#define ENTITY_FLAGS_03_MOUNTED                         0x04
+#define ENTITY_FLAGS_03_DAMAGE_RECEIVED                 0x40
+#define ENTITY_FLAGS_03_DAMAGE_DEALT                    0x80
 
-#define B_ENTITY_FLAGS3_KNOCKDOWN                       1
-#define B_ENTITY_FLAGS3_MOUNTED                         2
-#define B_ENTITY_FLAGS3_DAMAGE_RECEIVED                 6
-#define B_ENTITY_FLAGS3_DAMAGE_DEALT                    7
+#define B_ENTITY_FLAGS_03_KNOCKDOWN                     1
+#define B_ENTITY_FLAGS_03_MOUNTED                       2
+#define B_ENTITY_FLAGS_03_DAMAGE_RECEIVED               6
+#define B_ENTITY_FLAGS_03_DAMAGE_DEALT                  7
+
+
+#define ENTITY_FLAGS_44_MOVE_LEFT                       0x01
+#define ENTITY_FLAGS_44_MOVE_UP                         0x02
+
+#define B_ENTITY_FLAGS_44_MOVE_LEFT                     0
+#define B_ENTITY_FLAGS_44_MOVE_UP                       1
 
 
 /**********************************************************

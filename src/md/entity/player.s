@@ -76,7 +76,7 @@
         jmp     setup_animation
 
     select_mounted_animation:
-        btst    #B_ENTITY_FLAGS3_MOUNTED, ENTITY_FLAGS3(%a0)
+        btst    #B_ENTITY_FLAGS_03_MOUNTED, ENTITY_FLAGS_03(%a0)
         beq.s   1f
         move.w  #23*4, %d0      // Select animation offset 23
     1:  rts
@@ -91,12 +91,12 @@
     patch_end
 
     player_unmount_on_knowdown:
-        btst    #B_ENTITY_FLAGS3_MOUNTED, ENTITY_FLAGS3(%a0)        // Mounted check
+        btst    #B_ENTITY_FLAGS_03_MOUNTED, ENTITY_FLAGS_03(%a0)    // Mounted check
         beq.s   1f
 
         movea.l ENTITY_MOUNT(%a0), %a3                              // Load mount address
-        bclr    #B_ENTITY_FLAGS3_MOUNTED, ENTITY_FLAGS3(%a0)        // Flag as unmounted
+        bclr    #B_ENTITY_FLAGS_03_MOUNTED, ENTITY_FLAGS_03(%a0)    // Flag as unmounted
         bset    #7, 0x49(%a3)                                       // Flag mount as unmounted
 
-    1:  bset    #2, ENTITY_FLAGS1(%a0)
+    1:  bset    #2, ENTITY_FLAGS_02(%a0)
         rts

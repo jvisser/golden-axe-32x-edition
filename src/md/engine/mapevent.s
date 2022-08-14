@@ -60,6 +60,6 @@
 
     map_event_spawn_entity:
         jsr     find_free_entity_slot
-        move.b  MAP_EVENT_DATA(%a0), (%a5)  // Set entity id
+        move.b  MAP_EVENT_DATA(%a0), ENTITY_ID(%a5)
         clr.b   MAP_EVENT_ID(%a0)           // Unregister event
         rts
