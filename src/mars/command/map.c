@@ -57,6 +57,88 @@ static u32 vertical_scroll;
 static u32 horizontal_scroll;
 
 
+static void test_render(void)
+{
+    u16 offset = 512 + ((horizontal_scroll & 0x7) / 2) + (vertical_scroll & 0x7) * 160;
+    for (u32 i = 0; i < 224; i++)
+    {
+        MARS_FRAMEBUFFER[i] = offset;
+        offset += 160;
+    }
+
+    u16* fb = (MARS_FRAMEBUFFER + 512);
+    u32 stride_dif = map.width - (320 / 8);
+    u16 const *tmd = &map.tile_map[((vertical_scroll / 8) * map.width) + (horizontal_scroll / 8)];
+    for (u32 y = 0; y < 224; y += 8)
+    {
+        for (u32 x = 0; x < 160; x += 4)
+        {
+            u16 const* bl = map.blocks[*tmd++];
+
+            u16* fbb = fb + y * 160 + x;
+
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            fbb += 160 - 4;
+
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            fbb += 160 - 4;
+
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            fbb += 160 - 4;
+
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            fbb += 160 - 4;
+
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            fbb += 160 - 4;
+
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            fbb += 160 - 4;
+
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            fbb += 160 - 4;
+
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            fbb += 160 - 4;
+
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            *fbb++ = *bl++;
+            fbb += 160 - 4;
+        }
+        tmd += stride_dif;
+    }
+
+    vdp_swap_frame_buffer();
+    vdp_vsync_wait(1);
+    MARS_VDP_SHIFTREG = horizontal_scroll;
+}
+
 static void process(u32 command_id, u16* param_base)
 {
     u32 action_id = command_id & 0xff;
@@ -94,7 +176,7 @@ static void process(u32 command_id, u16* param_base)
             pal_commit();
 
             // Render initial frame
-            // TODO...
+            test_render();
         }
     }
 }
@@ -117,6 +199,8 @@ static void post_process(u32 command_id, u16* param_base)
 
                 vertical_scroll = scroll_parameters->vertical_scroll;
                 horizontal_scroll = scroll_parameters->horizontal_scroll;
+
+                test_render();
             }
             break;
 
