@@ -3,6 +3,7 @@
  */
 
 #include "goldenaxe.h"
+#include "md.h"
 #include "entity.h"
 #include "patch.h"
 
@@ -21,6 +22,7 @@
      * Also change to use palette 2 which is free at this point
      */
     #define KING_QUEEN_TILE_ID (GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT + NEM_DEATH_ADDER_TILE_COUNT)
+    #define KING_QUEEN_PALETTE HIGH_BYTE(VDP_ATTR_PAL2)
 
     patch_start 0x0025fa
         move.l  #VRAM_ADDR_SET(TILE_ADDR(KING_QUEEN_TILE_ID)), (VDP_CTRL).l
@@ -28,23 +30,23 @@
 
     // Use palette 2
     patch_start 0x038584
-        .dc.b   0x40
+        .dc.b   KING_QUEEN_PALETTE
     patch_end
 
     // Chain sprite
     patch_start 0x00b1fe
-        move.b  #0x40, ENTITY_SPRITE_ATTR(%a0)
+        move.b  #KING_QUEEN_PALETTE, ENTITY_SPRITE_ATTR(%a0)
         move.w  #KING_QUEEN_TILE_ID, ENTITY_TILE_ID(%a0)
     patch_end
 
     // King sprite
     patch_start 0x00b244
-        move.b  #0x40, ENTITY_SPRITE_ATTR(%a0)
+        move.b  #KING_QUEEN_PALETTE, ENTITY_SPRITE_ATTR(%a0)
         move.w  #KING_QUEEN_TILE_ID, ENTITY_TILE_ID(%a0)
     patch_end
 
     // Queen sprite
     patch_start 0x00b2f0
-        move.b  #0x40, ENTITY_SPRITE_ATTR(%a0)
+        move.b  #KING_QUEEN_PALETTE, ENTITY_SPRITE_ATTR(%a0)
         move.w  #KING_QUEEN_TILE_ID, ENTITY_TILE_ID(%a0)
     patch_end
