@@ -69,8 +69,11 @@ SHCOBJS    += $(patsubst $(SHSRC)/%.c, $(SHBUILD)/obj/%.o, $(SHCS))
 SHOBJS      = $(SHSOBJS) $(SHCOBJS)
 
 # Generate asset target lists
-MDPNGSRC    = $(wildcard $(ASSETSRC)/img/*.png)
-MDIMGS      = $(patsubst $(ASSETSRC)/img/%.png, $(MDASSETS)/img/%.img, $(MDPNGSRC))
+MDIMGSRC    = $(wildcard $(ASSETSRC)/img/*.png)
+MDIMGS      = $(patsubst $(ASSETSRC)/img/%.png, $(MDASSETS)/img/%.img, $(MDIMGSRC))
+MDPATSRC    = $(wildcard $(ASSETSRC)/pattern/*.png)
+MDPATS      = $(patsubst $(ASSETSRC)/pattern/%.png, $(MDASSETS)/pattern/%.pat, $(MDPATSRC))
+MDPATNEMS   = $(patsubst $(ASSETSRC)/pattern/%.png, $(MDASSETS)/pattern/%.pat.nem, $(MDPATSRC))
 MDMAPSRC    = $(wildcard $(ASSETSRC)/map/**/*.tmx)
 MDMAPOBJS   = $(patsubst $(ASSETSRC)/map/%.tmx, $(MDASSETS)/map/%.o, $(MDMAPSRC))
 
@@ -122,7 +125,7 @@ $(SHBUILD)/mars.bin: $(SHBUILD)/mars.elf
 
 # Extract amazon tile data
 $(MDASSETS)/amazon.pat: $(ROM)
-	@echo "NEMCMP $@: $<"
+	@echo "NEMCMP -x $@: $<"
 	@$(TOOLSBIN)/nemcmp -x0x7A25A $< $@
 
 # Transform images
@@ -130,13 +133,24 @@ $(MDIMGS): $(MDASSETS)/img/%.img : $(ASSETSRC)/img/%.png
 	@echo "IMGCONV $@: $<"
 	@java -jar $(JAVATOOLS)/ImgConv/target/ImgConv.jar $< $@
 
-# Transform maps
+# Transform md tilemaps
+$(MDPATS): $(MDASSETS)/pattern/%.pat : $(ASSETSRC)/pattern/%.png
+	@echo "MDDTILER $@: $<"
+	@mkdir -p $(dir $@)
+	@$(TOOLSBIN)/mdtiler -b $<.mdtiler
+
+# Compress md tilemap tiles
+$(MDPATNEMS): $(MDASSETS)/pattern/%.pat.nem : $(MDASSETS)/pattern/%.pat
+	@echo "NEMCMP $@: $<"
+	@$(TOOLSBIN)/nemcmp $< $@
+
+# Transform 32X tilemaps
 $(MDMAPOBJS): $(MDASSETS)/map/%.o : $(ASSETSRC)/map/%.tmx
 	@echo "MAPCONV $@: $<"
 	@mkdir -p $(dir $@)
 	@java -jar $(JAVATOOLS)/MapConv/target/MapConv.jar $< | $(MDAS) $(MDASFLAGS) -o $@ --
 
-$(MDBUILD)/obj/resources.o: $(MDIMGS) $(MDASSETS)/amazon.pat $(SHBUILD)/mars.bin
+$(MDBUILD)/obj/resources.o: $(MDIMGS) $(MDPATNEMS) $(MDASSETS)/amazon.pat $(SHBUILD)/mars.bin
 
 # Assemble MD m68k modules
 # Run preprocessor as a separate pass as gcc will not pass the include paths to AS needed for the .incbin directive :/
