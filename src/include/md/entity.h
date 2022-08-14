@@ -45,7 +45,7 @@
 #define ENTITY_HEIGHT                                   0x24
 #define ENTITY_INTERACTING_ENTITY                       0x38
 #define ENTITY_MOUNT                                    0x3c
-#define ENTITY_STATE                                    0x42
+#define ENTITY_STATE                                    0x42    // TODO: 0x4c seems be be main state and 0x42 sub state (in most cases)
 #define ENTITY_FLAGS2                                   0x44
 #define ENTITY_DMA_SOURCE_BASE                          0x74
 

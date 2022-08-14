@@ -64,7 +64,7 @@
 
 
     /**********************************************************
-     * Patch map background tile data graphics table entry to point to empty tile data for each entry
+     * Patch map background tile data graphics table entry
      * This is used to reload the relevant background tiles when magic attacks that use the background plane are finished.
      */
     patch_start 0x009140

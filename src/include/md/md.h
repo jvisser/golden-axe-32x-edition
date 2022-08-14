@@ -8,6 +8,7 @@
 /**********************************************************
  * Memory map
  */
+
 #define VDP_DATA                0xc00000
 #define VDP_CTRL                0xc00004
 
@@ -65,12 +66,28 @@
 
 
 /**********************************************************
- * Macros
+ * VDP
  */
+
+#define  VDP_ATTR_TILE_ID(tile_id)      ((tile_id) & 0x7ff)
+#define  VDP_ATTR_HFLIP                 0x0800
+#define  VDP_ATTR_VFLIP                 0x1000
+#define  VDP_ATTR_PAL0                  0x0000
+#define  VDP_ATTR_PAL1                  0x2000
+#define  VDP_ATTR_PAL2                  0x4000
+#define  VDP_ATTR_PAL3                  0x6000
+#define  VDP_ATTR_PRIO                  0x8000
 
 #define TILE_ADDR(tile_id)              ((tile_id) * 0x20)
 #define VRAM_ADDR_SET(vram_addr)        (0x40000000 | (((vram_addr) & 0x3fff) << 16) | (((vram_addr) & 0xc000) >> 14))
 
 #define PALETTE_OFFSET(palette, color)  ((palette) * 0x20 + (color) * 2)
+
+/**********************************************************
+ * General macros
+ */
+
+#define LOW_BYTE(value)                 ((value) & 0xff)
+#define HIGH_BYTE(value)                (((value) >> 8) & 0xff)
 
 #endif
