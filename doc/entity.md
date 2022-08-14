@@ -21,8 +21,8 @@ Runtime entity data structure.
     ; Struct EntityInstance  ; Total 128 bytes
         ; offset, size, name
         $00: dc.b entityId
-        $02: dc.b flags1
-        $03: dc.b flags3
+        $02: dc.b flags02
+        $03: dc.b flags03
         $04: dc.b hurtBoundsIndex
         $05: dc.b damageBoundsIndex
         $06: dc.w initValue                     ; Loaded from map
@@ -42,28 +42,36 @@ Runtime entity data structure.
         $30 .dc.l baseYIncrement                ; As 16:16 fixed point.
         $34: dc.l heightIncrement               ; As 16:16 fixed point.
         $38: dc.l interactingEntityAddress      ; Set by collision detection code
-        $3c: dc.l mountEntityAddress
-        $44: dc.b flags2
+        $44: dc.b flags44
         $6c: dc.l boundsTableAddress            ; Contains bounds for entity collision detection
         $70: dc.w currentDMAIndex
         $72: dc.w lastDMAIndex
         $74: dc.w dmaSourceBaseAddress
         $78: dc.w dmaFrameTableAddress
         $7c: dc.w mirrorAnimationTableOffset
+
+    ; Struct PlayerEntity extends EntityInstance
+        ; offset, size, name
+        $3c: dc.l mountEntityAddress
 ```
 
 ### Flags
-- `.flags1`: [H??? ??A?]
-  - H: Hide sprite
-  - A: Animation marker frame hit?
-- `.flags2`: [???? ??UL]
-  - L: Moving left
-  - U: Moving up
-- `.flags3`: [HD?? ?MK?]
-  - H: Damage dealt to interacting entity
-  - D: Damage received from interacting entity
-  - M: Mounted
-  - K: Knockdown (does not unmount if set)
+General:
+- `.flags02`: [H??? ????]
+  - `H`: Hide sprite
+- `.flags44`: [???? ??UL]
+  - `L`: Moving left
+  - `U`: Moving up
+- `.flags03`: [HD?? ????]
+  - `H`: Damage dealt to interacting entity
+  - `D`: Damage received from interacting entity
+
+Player specific:
+- `.flags02`: [???? ??A?]
+  - `A`: Animation marker frame hit? (Seems generic but markers are only used by player animations)
+- `.flags03`: [???? ?MK?]
+  - `M`: Mounted
+  - `K`: Knockdown
 
 ### Position
 - `.entityY`: The y position in the VDP sprite coordinate system. This position is `.height` adjusted. Bottom position.
