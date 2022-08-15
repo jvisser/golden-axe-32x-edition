@@ -20,9 +20,9 @@
 
     map_event_palette_transition:
         move.w  #0x0100, %d0                // Request transition
-        move.b  MAP_EVENT_DATA(%a0), %d0    // Set target palette index
+        move.b  map_event_data(%a0), %d0    // Set target palette index
 
-        clr.b   MAP_EVENT_ID(%a0)           // Unregister event immediately
+        clr.b   map_event_id(%a0)           // Unregister event immediately
 
         mars_comm_call_start
         mars_comm_p1 MARS_COMM_SLAVE, MARS_COMM_CMD_MAP_PALETTE, %d0
@@ -43,8 +43,8 @@
     #define fade_count_down 0xffffc24b      // Used here only
 
     map_event_change_music:
-        move.b  MAP_EVENT_DATA(%a0), %d7    // Get song id from event
-        clr.b   MAP_EVENT_ID(%a0)           // Unregister event
+        move.b  map_event_data(%a0), %d7    // Get song id from event
+        clr.b   map_event_id(%a0)           // Unregister event
         clr.b   (fade_count_down)
         rts
 
@@ -60,6 +60,6 @@
 
     map_event_spawn_entity:
         jsr     find_free_entity_slot
-        move.b  MAP_EVENT_DATA(%a0), ENTITY_ID(%a5)
-        clr.b   MAP_EVENT_ID(%a0)           // Unregister event
+        move.b  map_event_data(%a0), entity_id(%a5)
+        clr.b   map_event_id(%a0)           // Unregister event
         rts

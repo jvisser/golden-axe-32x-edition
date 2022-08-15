@@ -93,11 +93,13 @@
     // Credits data
     .section .rodata
 
-        extended_credits_role_table:
-            .dc.l   role
+    .balign 2
 
-        extended_credits_name_table:
-            .dc.l   name
+    extended_credits_role_table:
+        .dc.l   role
+
+    extended_credits_name_table:
+        .dc.l   name
 
     role:
         // "32x conversion"

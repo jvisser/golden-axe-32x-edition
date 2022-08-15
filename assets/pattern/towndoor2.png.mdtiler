@@ -1,0 +1,6 @@
+input "assets/pattern/towndoor2.png"
+output "out/md/assets/pattern/towndoor2.pat"
+output2 "out/md/assets/pattern/towndoor2.tmap"
+offset 99
+remappal 0 -> 3
+map 0 0 12 13

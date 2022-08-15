@@ -1,0 +1,4 @@
+input "assets/pattern/towndoor0.png"
+output "out/md/assets/pattern/towndoor0.pat"
+output2 "out/md/assets/pattern/towndoor0.tmap"
+map 0 0 12 13

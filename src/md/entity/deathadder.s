@@ -22,15 +22,15 @@
     patch_end
 
     patch_start 0x0131e8    // Remap tile id
-        move.w  #DEATH_ADDER_SPECIAL_TILE_ID, ENTITY_TILE_ID(%a0)
+        move.w  #DEATH_ADDER_SPECIAL_TILE_ID, entity_tile_id(%a0)
     patch_end
 
     patch_start 0x01378C    // Remap tile id
-        move.w  #DEATH_ADDER_SPECIAL_TILE_ID, ENTITY_TILE_ID(%a0)
+        move.w  #DEATH_ADDER_SPECIAL_TILE_ID, entity_tile_id(%a0)
     patch_end
 
     patch_start 0x01230e    // Remap tile id
-        move.w  #DEATH_ADDER_SPECIAL_TILE_ID, ENTITY_TILE_ID(%a5)
+        move.w  #DEATH_ADDER_SPECIAL_TILE_ID, entity_tile_id(%a5)
         nop
     patch_end
 

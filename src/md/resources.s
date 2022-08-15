@@ -32,10 +32,16 @@
     resource pat_amazon,                "amazon.pat"                // Decompressed amazon tiledata
 
     resource nem_pat_empty,             "empty.pat.nem"
-    resource nem_pat_water_transparent, "water.pat.nem"             // Replacement for turtle village water
+    resource nem_pat_water_transparent, "water.pat.nem"             // Replacement for turtle village water (exactly the same but with some transparency added)
 
     resource nem_pat_hole,              "pattern/hole.pat.nem"
     resource tmap_hole,                 "pattern/hole.tmap"
+
+    resource tmap_towndoor_0,           "pattern/towndoor0.tmap"
+    resource nem_pat_towndoor_1,        "pattern/towndoor1.pat.nem"
+    resource tmap_towndoor_1,           "pattern/towndoor1.tmap"
+    resource nem_pat_towndoor_2,        "pattern/towndoor2.pat.nem"
+    resource tmap_towndoor_2,           "pattern/towndoor2.tmap"
 
 
     .noaltmacro

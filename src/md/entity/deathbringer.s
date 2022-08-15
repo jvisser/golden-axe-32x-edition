@@ -16,7 +16,7 @@
     patch_end
 
     patch_start 0x0137e2    // Remap tile id
-        move.w  #GAME_PLAY_VRAM_RESERVED_TILE_MIN, ENTITY_TILE_ID(%a0)
+        move.w  #GAME_PLAY_VRAM_RESERVED_TILE_MIN, entity_tile_id(%a0)
     patch_end
 
 
