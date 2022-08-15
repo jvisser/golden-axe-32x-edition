@@ -23,11 +23,20 @@
     town_map_definition:
         // Palette list
         .dc.l   hud_player_palette
+        .dc.l   town_palette
         .dc.l   0
 
         // Nemesis tile data list
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(0))
         .dc.l   nem_pat_empty
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(1))
+        .dc.l   nem_pat_towndoor_1
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(1 + TOWNDOOR1_TILE_COUNT))
+        .dc.l   nem_pat_towndoor_2
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX))
+        .dc.l   nem_pat_dragon
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX + DRAGON_TILE_COUNT))
+        .dc.l   nem_pat_bad_brother
         .dc.l   0
 
         // Tile map data
@@ -61,6 +70,9 @@
 
         // Music id
         .dc.w   SONG_TOWN
+
+    town_palette:
+        entity_palette PALETTE_OFFSET(3, 1), 15, blue1_4, yellow_3, towndoor_8
 
 
     /**********************************************************
@@ -131,7 +143,74 @@
      * Entity load list
      */
     town_entity_load_list:
-        .dc.w   -1  // Terminate
+        .dc.w   0
+        .dc.l   town_map_entity_load_slot_descriptor_0
+
+        .dc.w   800
+        .dc.l   town_map_entity_load_slot_descriptor_1
+
+        .dc.w   1216
+        .dc.l   town_map_entity_load_slot_descriptor_2
+
+        .dc.w   -1
+
+    town_map_entity_load_slot_descriptor_0:
+        .dc.w   0
+        .dc.l   town_map_entity_load_group_descriptor_0_0
+
+        town_map_entity_load_group_descriptor_0_0:
+            .dc.w   1   // load allowed when there are active enemies?
+
+            .dc.l   town_map_entity_load_group_descriptor_0_0_pal0
+            .dc.l   town_map_entity_load_group_descriptor_0_0_pal1
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   2  // number of entities
+                map_entity_definition 6, ENTITY_TYPE_BLUE_DRAGON, 216, 190, GAME_PLAY_VRAM_RESERVED_TILE_MAX
+                map_entity_definition 7, ENTITY_TYPE_RED_DRAGON, 216, 90, GAME_PLAY_VRAM_RESERVED_TILE_MAX
+
+        town_map_entity_load_group_descriptor_0_0_pal0:
+            entity_palette PALETTE_OFFSET(1, 1), 7, red1_4, yellow_3
+        town_map_entity_load_group_descriptor_0_0_pal1:
+            entity_palette PALETTE_OFFSET(2, 11), 5, flame_5
+
+    town_map_entity_load_slot_descriptor_1:
+        .dc.w   0
+        .dc.l   town_map_entity_load_group_descriptor_1_0
+
+        town_map_entity_load_group_descriptor_1_0:
+            .dc.w   0   // load allowed when there are active enemies?
+
+            .dc.l   town_map_entity_load_group_descriptor_1_0_pal0
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   1  // number of entities
+                map_entity_definition 0, ENTITY_TYPE_BAD_BROTHER_BLUE, 208, 240, GAME_PLAY_VRAM_RESERVED_TILE_MAX + DRAGON_TILE_COUNT
+
+            town_map_entity_load_group_descriptor_1_0_pal0:
+                entity_palette PALETTE_OFFSET(1, 8), 8, skin_4, red2_4
+
+
+    town_map_entity_load_slot_descriptor_2:
+        .dc.w   0
+        .dc.l   town_map_entity_load_group_descriptor_2_0
+
+        town_map_entity_load_group_descriptor_2_0:
+            .dc.w   0   // load allowed when there are active enemies?
+
+            .dc.l   town_map_entity_load_group_descriptor_2_0_pal0
+            .dc.l   0
+            .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX + DRAGON_TILE_COUNT))
+            .dc.l   nem_pat_bitter
+            .dc.l   0
+
+            .dc.w   1  // number of entities
+                map_entity_definition 0, ENTITY_TYPE_BITTER_SILVER, 112, 160, GAME_PLAY_VRAM_RESERVED_TILE_MAX + DRAGON_TILE_COUNT
+
+            town_map_entity_load_group_descriptor_2_0_pal0:
+                entity_palette PALETTE_OFFSET(1, 8), 8, skin_4, silver_4
 
 
     /**********************************************************

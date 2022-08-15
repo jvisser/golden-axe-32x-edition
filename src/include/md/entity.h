@@ -14,6 +14,7 @@
 
 #define update_active_entities                          0x0000b954
 #define find_free_entity_slot                           0x00008a8a
+#define remove_entity                                   0x0000b70e
 
 
 /**********************************************************
@@ -35,20 +36,24 @@
 
 #define ENTITY_SIZE                                     0x80
 
-#define ENTITY_ID                                       0x00
-#define ENTITY_FLAGS_02                                 0x02
-#define ENTITY_FLAGS_03                                 0x03
-#define ENTITY_TILE_ID                                  0x08
-#define ENTITY_SPRITE_ATTR                              0x17
-#define ENTITY_Y                                        0x18
-#define ENTITY_X                                        0x1c
-#define ENTITY_BASE_Y                                   0x20
-#define ENTITY_HEIGHT                                   0x24
-#define ENTITY_INTERACTING_ENTITY                       0x38
-#define ENTITY_MOUNT                                    0x3c
-#define ENTITY_STATE                                    0x42    // TODO: 0x4c seems be be main state and 0x42 sub state (in most cases)
-#define ENTITY_FLAGS_44                                 0x44
-#define ENTITY_DMA_SOURCE_BASE                          0x74
+#define entity_id                                       0x00
+#define entity_data                                     0x01
+#define entity_flags_02                                 0x02
+#define entity_flags_03                                 0x03
+#define entity_tile_id                                  0x08
+#define entity_animation_frame_index                    0x14
+#define entity_animation_frame_time                     0x15
+#define entity_animation_frame_time_left                0x16
+#define entity_sprite_attr                              0x17
+#define entity_y                                        0x18
+#define entity_x                                        0x1c
+#define entity_base_y                                   0x20
+#define entity_height                                   0x24
+#define entity_interacting_entity                       0x38
+#define entity_mount                                    0x3c
+#define entity_state                                    0x42    // TODO: 0x4c seems be be main state and 0x42 sub state (in most cases)
+#define entity_flags_44                                 0x44
+#define entity_dma_source_base                          0x74
 
 
 #define ENTITY_FLAGS_02_ANIMATION_MARKER_HIT            0x02
@@ -135,7 +140,7 @@
  */
 
 // Remapped tile id for death adder special
-#define DEATH_ADDER_SPECIAL_TILE_ID (GAME_PLAY_VRAM_DYNAMIC_TOP_TILE - NEM_DEATH_ADDER_SPECIAL_TILE_COUNT)
+#define DEATH_ADDER_SPECIAL_TILE_ID (GAME_PLAY_VRAM_DYNAMIC_TOP_TILE - DEATH_ADDER_SPECIAL_TILE_COUNT)
 
 #define entity_nemesis_data_table                       0x00013a74
 
@@ -157,26 +162,36 @@
 #define nem_pat_bad_brother                             0x0007532a
 #define BAD_BROTHER_TILE_COUNT                          531
 
-#define nem_death_adder                                 0x00077d6e
-#define NEM_DEATH_ADDER_TILE_COUNT                      232
+#define nem_pat_death_adder                             0x00077d6e
+#define DEATH_ADDER_TILE_COUNT                          232
 
-#define nem_death_adder_special                         0x0005fc2a
-#define NEM_DEATH_ADDER_SPECIAL_TILE_COUNT              45
+#define nem_pat_bitter                                  0x0007d088
+#define BITTER_TILE_COUNT                               376
 
-#define nem_death_adder_special_explosion               0x00032c8e
-#define NEM_DEATH_ADDER_SPECIAL_EXPLOSION_TILE_COUNT    81
+#define nem_pat_death_adder_special                     0x0005fc2a
+#define DEATH_ADDER_SPECIAL_TILE_COUNT                  45
 
-#define nem_death_adder_axe                             0x00075150
-#define NEM_DEATH_ADDER_AXE_TILE_COUNT                  26
+#define nem_pat_death_adder_special_explosion           0x00032c8e
+#define DEATH_ADDER_SPECIAL_EXPLOSION_TILE_COUNT        81
 
-#define nem_king_and_queen                              0x0007ec7a
-#define NEM_KING_AND_QUEEN_TILE_COUNT                   81
+#define nem_pat_death_adder_axe                         0x00075150
+#define DEATH_ADDER_AXE_TILE_COUNT                      26
+
+#define nem_pat_king_and_queen                          0x0007ec7a
+#define KING_AND_QUEEN_TILE_COUNT                       81
 
 #define nem_pat_dragon                                  0x000420FE
-#define NEM_PAT_DRAGON_TILE_COUNT                       273
+#define DRAGON_TILE_COUNT                               273
 
 #define nem_pat_water                                   0x00022e88
-#define NEM_PAT_WATER_TILE_COUNT                        72
+#define WATER_TILE_COUNT                                72
+
+
+// Tile counts for new nemesis data included via resources.s
+#define HOLE_TILE_COUNT                                 16
+#define TOWNDOOR1_TILE_COUNT                            98
+#define TOWNDOOR2_TILE_COUNT                            83
+
 
 #ifdef __ASSEMBLER__
 
@@ -322,9 +337,16 @@
     .endr
 .endm
 
-// Palette 3:8: Flowing water
+// Palette 3:8: Flowing water (turtle village)
 .macro entity_palette_water_5
     .irp color, 0x0200, 0x0024, 0x0664, 0x0440, 0x0220
+        .dc.w \color
+    .endr
+.endm
+
+// Town door (main land coast/town)
+.macro entity_palette_towndoor_8
+    .irp color, 0x0000, 0x0246, 0x0466, 0x0244, 0x06aa, 0x068a, 0x0468, 0x08cc
         .dc.w \color
     .endr
 .endm

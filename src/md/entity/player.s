@@ -22,15 +22,15 @@
 
     init_player_auto_walk:
         // Check if the current player state is auto walk
-        cmp.b   #0x68, ENTITY_STATE(%a0)
+        cmp.b   #0x68, entity_state(%a0)
         bne     .exit
 
         // Auto walk if outside of the left horizontal screen boundary
-        cmp.w   #0x80, ENTITY_X(%a0)
+        cmp.w   #0x80, entity_x(%a0)
         bcs     .exit
 
         // Skip auto walk
-        clr.b   ENTITY_STATE(%a0)
+        clr.b   entity_state(%a0)
 
     .exit:
         rts
@@ -76,7 +76,7 @@
         jmp     setup_animation
 
     select_mounted_animation:
-        btst    #B_ENTITY_FLAGS_03_MOUNTED, ENTITY_FLAGS_03(%a0)
+        btst    #B_ENTITY_FLAGS_03_MOUNTED, entity_flags_03(%a0)
         beq.s   1f
         move.w  #23*4, %d0      // Select animation offset 23
     1:  rts
@@ -91,12 +91,12 @@
     patch_end
 
     player_unmount_on_knowdown:
-        btst    #B_ENTITY_FLAGS_03_MOUNTED, ENTITY_FLAGS_03(%a0)    // Mounted check
+        btst    #B_ENTITY_FLAGS_03_MOUNTED, entity_flags_03(%a0)    // Mounted check
         beq.s   1f
 
-        movea.l ENTITY_MOUNT(%a0), %a3                              // Load mount address
-        bclr    #B_ENTITY_FLAGS_03_MOUNTED, ENTITY_FLAGS_03(%a0)    // Flag as unmounted
+        movea.l entity_mount(%a0), %a3                              // Load mount address
+        bclr    #B_ENTITY_FLAGS_03_MOUNTED, entity_flags_03(%a0)    // Flag as unmounted
         bset    #7, 0x49(%a3)                                       // Flag mount as unmounted
 
-    1:  bset    #2, ENTITY_FLAGS_02(%a0)
+    1:  bset    #2, entity_flags_02(%a0)
         rts

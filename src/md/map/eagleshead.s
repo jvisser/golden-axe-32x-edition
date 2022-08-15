@@ -34,7 +34,7 @@
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX))
         .dc.l   nem_pat_bad_brother
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT))
-        .dc.l   nem_death_adder
+        .dc.l   nem_pat_death_adder
         .dc.l   0
 
         // Tile map data
@@ -162,7 +162,6 @@
             eagles_head_map_entity_load_group_descriptor_0_0_pal0:
                 entity_palette PALETTE_OFFSET(3, 1), 7, blue1_4, yellow_3
 
-
     eagles_head_map_entity_load_slot_descriptor_1:
         .dc.w   0
         .dc.l   eagles_head_map_entity_load_group_descriptor_1_0
@@ -175,9 +174,9 @@
 
             // Death adder special attacks graphics
             .dc.l   VRAM_ADDR_SET(TILE_ADDR(DEATH_ADDER_SPECIAL_TILE_ID))
-            .dc.l   nem_death_adder_special
+            .dc.l   nem_pat_death_adder_special
             .dc.l   VRAM_ADDR_SET(GAME_PLAY_VRAM_RESERVED_MIN)              // Fixed address
-            .dc.l   nem_death_adder_special_explosion
+            .dc.l   nem_pat_death_adder_special_explosion
             .dc.l   0
 
             .dc.w   3  // number of entities

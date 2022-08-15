@@ -33,8 +33,8 @@
 #define MAP_EVENT_CHANGE_MUSIC                          0x2c    // Repurposed MAP_EVENT_START_BOSS_MUSIC
 
 // Event structure
-#define MAP_EVENT_ID                                    0x00
-#define MAP_EVENT_DATA                                  0x01
+#define map_event_id                                    0x00
+#define map_event_data                                  0x01
 
 
 /**********************************************************

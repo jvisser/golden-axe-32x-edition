@@ -58,7 +58,7 @@
  * VRAM allocation
  */
 
-// Reserved for magic effects etc... not going to remap those...
+// Reserved for magic effects and continue signs etc
 #define GAME_PLAY_VRAM_RESERVED_MIN             0x27c0
 #define GAME_PLAY_VRAM_RESERVED_MAX             0x3200
 #define GAME_PLAY_VRAM_RESERVED_TILE_MIN        (GAME_PLAY_VRAM_RESERVED_MIN/32)
@@ -208,6 +208,12 @@
  * - d7.l: VDP target address set command
  */
 #define name_table_update_rect                  0x00002d2c
+
+
+/*
+ * Same as name_table_update_rect but supports crossing the horizontal plane boundary
+ */
+#define name_table_update_rect_safe             0x00002d72
 
 
 /*
