@@ -1,0 +1,6 @@
+input "assets/pattern/turtleeye.png"
+output "out/md/assets/pattern/turtleeye.pat"
+layout sprite
+tiles 0, 0, 2, 2
+tiles 0, 2, 2, 2
+tiles 0, 4, 2, 2

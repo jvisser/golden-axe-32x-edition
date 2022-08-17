@@ -37,6 +37,8 @@
         .dc.l   nem_pat_dragon
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX + DRAGON_TILE_COUNT))
         .dc.l   nem_pat_bad_brother
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_DYNAMIC_TOP_TILE - TURTLE_EYE_TILE_COUNT))
+        .dc.l   nem_pat_turtle_eye
         .dc.l   0
 
         // Tile map data
@@ -72,7 +74,7 @@
         .dc.w   SONG_TOWN
 
     town_palette:
-        entity_palette PALETTE_OFFSET(3, 1), 15, blue1_4, yellow_3, towndoor_8
+        entity_palette PALETTE_OFFSET(3, 1), 13, blue1_4, yellow_3, turtle_eye_6
 
 
     /**********************************************************
@@ -119,6 +121,10 @@
         .dc.w   320
         .dc.b   MAP_EVENT_PALETTE_TRANSITION
         .dc.b   0x01
+
+        .dc.w   354 // TURTLE_EYE_X(674) - 320
+        .dc.b   MAP_EVENT_SPAWN_ENTITY
+        .dc.b   ENTITY_TYPE_EYE_BALL
 
         .dc.w   1040
         .dc.b   MAP_EVENT_PALETTE_TRANSITION
@@ -183,6 +189,7 @@
             .dc.w   0   // load allowed when there are active enemies?
 
             .dc.l   town_map_entity_load_group_descriptor_1_0_pal0
+            .dc.l   town_map_entity_load_group_descriptor_1_0_pal1
             .dc.l   0
             .dc.l   0
 
@@ -191,6 +198,8 @@
 
             town_map_entity_load_group_descriptor_1_0_pal0:
                 entity_palette PALETTE_OFFSET(1, 8), 8, skin_4, red2_4
+            town_map_entity_load_group_descriptor_1_0_pal1:
+                entity_palette PALETTE_OFFSET(3, 8), 8, towndoor_8
 
 
     town_map_entity_load_slot_descriptor_2:

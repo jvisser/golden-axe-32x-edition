@@ -2,5 +2,5 @@ input "assets/pattern/hole.png"
 output "out/md/assets/pattern/hole.pat"
 output2 "out/md/assets/pattern/hole.tmap"
 offset 1
-remappal 0 -> 3
+remappal 0 -> 2
 map 0 0 6 4

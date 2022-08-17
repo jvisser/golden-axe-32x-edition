@@ -43,5 +43,8 @@
     resource nem_pat_towndoor_2,        "pattern/towndoor2.pat.nem"
     resource tmap_towndoor_2,           "pattern/towndoor2.tmap"
 
+    resource nem_pat_eagle_eye,         "pattern/eagleeye.pat.nem"
+    resource nem_pat_turtle_eye,        "pattern/turtleeye.pat.nem"
+
 
     .noaltmacro

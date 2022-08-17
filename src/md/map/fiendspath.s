@@ -153,7 +153,7 @@
                 map_entity_definition 0, ENTITY_TYPE_SKELETON_2_FROM_HOLE, 408, 56
 
             fiends_path_map_entity_load_group_descriptor_0_0_pal0:
-                entity_palette PALETTE_OFFSET(3, 12), 4, hole_4
+                entity_palette PALETTE_OFFSET(2, 1), 4, hole_4
 
 
     /**********************************************************
