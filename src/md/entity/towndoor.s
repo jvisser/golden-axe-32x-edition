@@ -15,6 +15,13 @@
     patch_end
 
     entity_logic_town_door:
+        bset    #7, entity_id(%a0)
+        bne     .run_logic
+
+        moveq   #SOUND_EFFECT_DOOR, %d7
+        jsr     play_sound_effect
+
+    .run_logic:
         subq.b  #1, entity_animation_frame_time_left(%a0)
         bcc     .exit
 

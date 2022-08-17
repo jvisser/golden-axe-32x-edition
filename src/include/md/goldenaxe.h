@@ -53,6 +53,7 @@
 #define SONG_CREDITS                            -114
 #define SOUND_STOP                              -118
 
+#define SOUND_EFFECT_DOOR                       -85
 
 /**********************************************************
  * VRAM allocation
@@ -108,7 +109,7 @@
 
 #define font_tile_offset                        0xffffc110  // .w
 
-#define last_sound_command                      0xffffc12c  // .b
+#define last_song_id                            0xffffc12c  // .b
 
 /**********************************************************
  * Original golden axe sub routines
@@ -169,9 +170,16 @@
 
 /*
  * Parameters:
- * - d7.b: sound command
+ * - d7.b: song id
  */
-#define sound_command                           0x000035e8
+#define play_music                              0x000035e8
+
+
+/*
+ * Parameters:
+ * - d7.b: sound effect id
+ */
+#define play_sound_effect                       0x0000361c
 
 
 /*

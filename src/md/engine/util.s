@@ -54,4 +54,4 @@
         move.w  (%sp)+, %d7
 
         /* Start sound after fade in */
-        jmp     sound_command
+        jmp     play_music
