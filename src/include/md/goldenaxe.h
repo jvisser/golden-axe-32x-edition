@@ -147,6 +147,18 @@
 
 
 /*
+ * Loads the specified animation frame properties (again one of many implementations)
+ */
+#define load_pre_load_animation_frame           0x0000b7da
+
+
+/*
+ * Advance the animation one tick
+ */
+#define update_pre_load_animation                0x0000b794
+
+
+/*
  * Decompresses directly to the VDP data port so the target address must be set before calling.
  *
  * Parameters:

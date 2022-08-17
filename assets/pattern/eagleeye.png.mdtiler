@@ -1,0 +1,6 @@
+input "assets/pattern/eagleeye.png"
+output "out/md/assets/pattern/eagleeye.pat"
+layout sprite
+tiles 0, 0, 4, 4
+tiles 0, 4, 4, 4
+tiles 0, 8, 4, 4

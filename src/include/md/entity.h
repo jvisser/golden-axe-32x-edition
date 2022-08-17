@@ -40,7 +40,10 @@
 #define entity_data                                     0x01
 #define entity_flags_02                                 0x02
 #define entity_flags_03                                 0x03
+#define entity_map_init_data                            0x06
 #define entity_tile_id                                  0x08
+#define entity_animation_table                          0x0e
+#define entity_animation_offset                         0x12
 #define entity_animation_frame_index                    0x14
 #define entity_animation_frame_time                     0x15
 #define entity_animation_frame_time_left                0x16
@@ -87,6 +90,7 @@
 
 #define ENTITY_TYPE_NONE                                0x00
 #define ENTITY_TYPE_THIEF                               0x1e
+#define ENTITY_TYPE_EYE_BALL                            0x27
 #define ENTITY_TYPE_WATER                               0x2a
 #define ENTITY_TYPE_ROPE                                0x2b
 #define ENTITY_TYPE_KING                                0x2c
@@ -191,6 +195,18 @@
 #define HOLE_TILE_COUNT                                 16
 #define TOWNDOOR1_TILE_COUNT                            98
 #define TOWNDOOR2_TILE_COUNT                            83
+
+#define TURTLE_EYE_TILE_COUNT                           12
+#define TURTLE_EYE_X                                    674
+#define TURTLE_EYE_Y                                    293
+#define TURTLE_EYE_WIDTH                                16
+#define TURTLE_EYE_HEIGHT                               16
+
+#define EAGLE_EYE_TILE_COUNT                            48
+#define EAGLE_EYE_X                                     573
+#define EAGLE_EYE_Y                                     312
+#define EAGLE_EYE_WIDTH                                 32
+#define EAGLE_EYE_HEIGHT                                32
 
 
 #ifdef __ASSEMBLER__
@@ -330,7 +346,7 @@
     .endr
 .endm
 
-// Palette 3:12: Skeleton hole
+// Palette 2:1: Skeleton hole
 .macro entity_palette_hole_4
     .irp color, 0x0466 0x0244, 0x0022, 0x0000
         .dc.w \color
@@ -344,9 +360,23 @@
     .endr
 .endm
 
-// Town door (main land coast/town)
+// Palette 3:8
 .macro entity_palette_towndoor_8
     .irp color, 0x0000, 0x0246, 0x0466, 0x0244, 0x06aa, 0x068a, 0x0468, 0x08cc
+        .dc.w \color
+    .endr
+.endm
+
+// Palette 2:8
+.macro entity_palette_eagle_eye_7
+    .irp color, 0x0222, 0x0644, 0x0866, 0x0a86, 0x0aa8, 0x0cca, 0x0eee
+        .dc.w \color
+    .endr
+.endm
+
+// Palette 3:8
+.macro entity_palette_turtle_eye_6
+    .irp color, 0x0000, 0x0246, 0x0246, 0x0268, 0x048a, 0x0ccc
         .dc.w \color
     .endr
 .endm

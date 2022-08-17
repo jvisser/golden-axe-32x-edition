@@ -24,6 +24,7 @@
     eagles_head_map_definition:
         // Palette list
         .dc.l   hud_player_palette
+        .dc.l   eagles_head_map_palette
         .dc.l   0
 
         // Nemesis tile data list
@@ -35,6 +36,8 @@
         .dc.l   nem_pat_bad_brother
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT))
         .dc.l   nem_pat_death_adder
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_DYNAMIC_TOP_TILE - EAGLE_EYE_TILE_COUNT))
+        .dc.l   nem_pat_eagle_eye
         .dc.l   0
 
         // Tile map data
@@ -68,6 +71,9 @@
 
         // Music id
         .dc.w   SONG_EAGLES_HEAD
+
+    eagles_head_map_palette:
+        entity_palette PALETTE_OFFSET(3, 8), 7, eagle_eye_7
 
 
     /**********************************************************
@@ -110,6 +116,10 @@
      * Event list
      */
     eagles_head_event_list:
+        .dc.w   253 // EAGLE_EYE_X(573) - 320
+        .dc.b   MAP_EVENT_SPAWN_ENTITY
+        .dc.b   ENTITY_TYPE_EYE_BALL
+
         .dc.w   320
         .dc.b   MAP_EVENT_PALETTE_TRANSITION
         .dc.b   0x01

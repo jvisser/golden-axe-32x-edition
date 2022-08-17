@@ -11,10 +11,10 @@
      * Replace logic
      */
     patch_start 0x00b0aa
-        jmp     logic_entity_town_door
+        jmp     entity_logic_town_door
     patch_end
 
-    logic_entity_town_door:
+    entity_logic_town_door:
         subq.b  #1, entity_animation_frame_time_left(%a0)
         bcc     .exit
 

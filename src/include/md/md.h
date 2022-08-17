@@ -69,14 +69,33 @@
  * VDP
  */
 
-#define  VDP_ATTR_TILE_ID(tile_id)      ((tile_id) & 0x7ff)
-#define  VDP_ATTR_HFLIP                 0x0800
-#define  VDP_ATTR_VFLIP                 0x1000
-#define  VDP_ATTR_PAL0                  0x0000
-#define  VDP_ATTR_PAL1                  0x2000
-#define  VDP_ATTR_PAL2                  0x4000
-#define  VDP_ATTR_PAL3                  0x6000
-#define  VDP_ATTR_PRIO                  0x8000
+#define VDP_SPRITE_SIZE
+
+#define VDP_SPRITE_SIZE_H1_V1           0x00
+#define VDP_SPRITE_SIZE_H2_V1           0x04
+#define VDP_SPRITE_SIZE_H3_V1           0x08
+#define VDP_SPRITE_SIZE_H4_V1           0x0c
+#define VDP_SPRITE_SIZE_H1_V2           0x01
+#define VDP_SPRITE_SIZE_H2_V2           0x05
+#define VDP_SPRITE_SIZE_H3_V2           0x09
+#define VDP_SPRITE_SIZE_H4_V2           0x0d
+#define VDP_SPRITE_SIZE_H1_V3           0x02
+#define VDP_SPRITE_SIZE_H2_V3           0x06
+#define VDP_SPRITE_SIZE_H3_V3           0x0a
+#define VDP_SPRITE_SIZE_H4_V3           0x0e
+#define VDP_SPRITE_SIZE_H1_V4           0x03
+#define VDP_SPRITE_SIZE_H2_V4           0x07
+#define VDP_SPRITE_SIZE_H3_V4           0x0b
+#define VDP_SPRITE_SIZE_H4_V4           0x0f
+
+#define VDP_ATTR_TILE_ID(tile_id)       ((tile_id) & 0x7ff)
+#define VDP_ATTR_HFLIP                  0x0800
+#define VDP_ATTR_VFLIP                  0x1000
+#define VDP_ATTR_PAL0                   0x0000
+#define VDP_ATTR_PAL1                   0x2000
+#define VDP_ATTR_PAL2                   0x4000
+#define VDP_ATTR_PAL3                   0x6000
+#define VDP_ATTR_PRIO                   0x8000
 
 #define TILE_ADDR(tile_id)              ((tile_id) * 0x20)
 #define VRAM_ADDR_SET(vram_addr)        (0x40000000 | (((vram_addr) & 0x3fff) << 16) | (((vram_addr) & 0xc000) >> 14))
