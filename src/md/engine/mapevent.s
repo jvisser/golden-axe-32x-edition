@@ -63,3 +63,41 @@
         move.b  map_event_data(%a0), entity_id(%a5)
         clr.w   map_event_id(%a0)           // Unregister event
         rts
+
+
+    /**********************************************************
+     * Event: MAP_EVENT_SCROLL_LOCK
+     *
+     * Load parameter address from the current map's extended event data table
+     */
+    patch_start 0x001e9c
+        movea.l (map_extended_event_data_table).l, %a1
+        adda.w  %d0, %a1
+        movea.l (%a1), %a1
+    patch_end
+
+
+    /**********************************************************
+     * Event: MAP_EVENT_VERTICAL_SCROLL_LIMITS
+     *
+     * Load parameter address from the current map's extended event data table
+     */
+    patch_start 0x001d90
+        movea.l (map_extended_event_data_table).l, %a1
+        adda.w  %d0, %a1
+        movea.l (%a1), %a1
+        nop
+    patch_end
+
+
+    /**********************************************************
+     * Event: MAP_EVENT_CAMERA_TRANSITION
+     *
+     * Load parameter address from the current map's extended event data table
+     */
+    patch_start 0x001e08
+        movea.l (map_extended_event_data_table).l, %a1
+        adda.w  %d0, %a1
+        movea.l (%a1), %a1
+        nop
+    patch_end

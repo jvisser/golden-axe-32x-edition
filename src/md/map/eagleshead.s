@@ -116,6 +116,10 @@
      * Event list
      */
     eagles_head_event_list:
+        .dc.w   0
+        .dc.b   MAP_EVENT_VERTICAL_SCROLL_LIMITS
+        .dc.b   eagles_head_village_scroll_limits_0 - eagles_head_extended_event_data_table
+
         .dc.w   253 // EAGLE_EYE_X(573) - 320
         .dc.b   MAP_EVENT_SPAWN_ENTITY
         .dc.b   ENTITY_TYPE_EYE_BALL
@@ -124,6 +128,10 @@
         .dc.b   MAP_EVENT_PALETTE_TRANSITION
         .dc.b   0x01
 
+        .dc.w   736
+        .dc.b   MAP_EVENT_CAMERA_TRANSITION
+        .dc.b   eagles_head_camera_transition_1 - eagles_head_extended_event_data_table
+
         .dc.w   952
         .dc.b   MAP_EVENT_PALETTE_TRANSITION
         .dc.b   0x02
@@ -131,6 +139,10 @@
         .dc.w   960
         .dc.b   MAP_EVENT_CHANGE_MUSIC
         .dc.b   SONG_DEATH_ADDER
+
+        .dc.w   976
+        .dc.b   MAP_EVENT_VERTICAL_SCROLL_LIMITS
+        .dc.b   eagles_head_village_scroll_limits_2 - eagles_head_extended_event_data_table
 
         .dc.w   1216
         .dc.b   MAP_EVENT_NEXT_LEVEL_ON_ENEMY_DEFEAT
@@ -141,6 +153,23 @@
         .dc.b   0x00
 
     eagles_head_extended_event_data_table:
+        eagles_head_village_scroll_limits_0:    .dc.l   eagles_head_scroll_limits_0_param
+        eagles_head_camera_transition_1:        .dc.l   eagles_head_camera_transition_1_param
+        eagles_head_village_scroll_limits_2:    .dc.l   eagles_head_scroll_limits_2_param
+
+    eagles_head_scroll_limits_0_param:
+        .dc.w   40                  // Min y scroll
+        .dc.w   424 - 224           // Max y scroll
+
+    eagles_head_camera_transition_1_param:
+        .dc.w   392 - 224           // Min y scroll
+        .dc.w   392 - 224           // Max y scroll
+        .dc.l   0x00010000          // Camera y decrement (16.16)
+        .dc.l   0x00000000          // Camera x increment (16.16)
+
+    eagles_head_scroll_limits_2_param:
+        .dc.w   96                  // Min y scroll
+        .dc.w   392 - 224           // Max y scroll
 
 
     /**********************************************************

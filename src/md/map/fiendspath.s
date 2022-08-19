@@ -106,9 +106,17 @@
      * Event list
      */
     fiends_path_event_list:
+        .dc.w   0
+        .dc.b   MAP_EVENT_VERTICAL_SCROLL_LIMITS
+        .dc.b   fiends_path_village_scroll_limits_0 - fiends_path_extended_event_data_table
+
         .dc.w   384
         .dc.b   MAP_EVENT_PALETTE_TRANSITION
         .dc.b   0x01
+
+        .dc.w   656
+        .dc.b   MAP_EVENT_VERTICAL_SCROLL_LIMITS
+        .dc.b   fiends_path_village_scroll_limits_1 - fiends_path_extended_event_data_table
 
         .dc.w   944
         .dc.b   MAP_EVENT_PALETTE_TRANSITION
@@ -127,7 +135,16 @@
         .dc.b   0x00
 
     fiends_path_extended_event_data_table:
+        fiends_path_village_scroll_limits_0:    .dc.l   fiends_path_scroll_limits_0_param
+        fiends_path_village_scroll_limits_1:    .dc.l   fiends_path_scroll_limits_1_param
 
+    fiends_path_scroll_limits_0_param:
+        .dc.w   176                 // Min y scroll
+        .dc.w   432 - 224           // Max y scroll
+
+    fiends_path_scroll_limits_1_param:
+        .dc.w   0                   // Min y scroll
+        .dc.w   512 - 224           // Max y scroll
 
     /**********************************************************
      * Entity load list
@@ -162,7 +179,7 @@
 
     // Camp site vertical scroll
     patch_start 0x002a8c
-        .dc.w   392 + (-24 * 8) - 224/2
+        .dc.w   392 - (24 * 8) - 224/2
     patch_end
 
     // Camp site entity load group descriptor (thiefs)

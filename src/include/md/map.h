@@ -21,7 +21,7 @@
 
 #define MAP_EVENT_NOTHING                               0x00
 #define MAP_EVENT_PALETTE_TRANSITION                    0x04
-#define MAP_EVENT_CAMERA_UP_ON_HORIZONTAL_MOVEMENT      0x08
+#define MAP_EVENT_SCROLL_LOCK                           0x08    // Move camera up on horizontal scroll
 #define MAP_EVENT_VERTICAL_SCROLL_LIMITS                0x0c
 #define MAP_EVENT_WAIT_FOR_ENEMY_DEFEAT                 0x10
 #define MAP_EVENT_CAMERA_TRANSITION                     0x14
