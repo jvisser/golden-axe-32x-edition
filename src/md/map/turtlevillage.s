@@ -126,13 +126,33 @@
      * Event list
      */
     turtle_village_event_list:
+        .dc.w   0
+        .dc.b   MAP_EVENT_VERTICAL_SCROLL_LIMITS
+        .dc.b   turtle_village_scroll_limits_0 - turtle_village_extended_event_data_table
+
         .dc.w   304
         .dc.b   MAP_EVENT_PALETTE_TRANSITION
         .dc.b   0x01
 
+        .dc.w   440
+        .dc.b   MAP_EVENT_VERTICAL_SCROLL_LIMITS
+        .dc.b   turtle_village_scroll_limits_1 - turtle_village_extended_event_data_table
+
+        .dc.w   592
+        .dc.b   MAP_EVENT_SCROLL_LOCK
+        .dc.b   turtle_village_scroll_lock_2 - turtle_village_extended_event_data_table
+
         .dc.w   816
         .dc.b   MAP_EVENT_SPAWN_ENTITY
         .dc.b   ENTITY_TYPE_WATER
+
+        .dc.w   896
+        .dc.b   MAP_EVENT_CAMERA_TRANSITION
+        .dc.b   turtle_village_camera_transition_3 - turtle_village_extended_event_data_table
+
+        .dc.w   990
+        .dc.b   MAP_EVENT_VERTICAL_SCROLL_LIMITS
+        .dc.b   turtle_village_scroll_limits_4 - turtle_village_extended_event_data_table
 
         .dc.w   992
         .dc.b   MAP_EVENT_PALETTE_TRANSITION
@@ -151,6 +171,34 @@
         .dc.b   0x00
 
     turtle_village_extended_event_data_table:
+        turtle_village_scroll_limits_0:     .dc.l   turtle_village_scroll_limits_0_param
+        turtle_village_scroll_limits_1:     .dc.l   turtle_village_scroll_limits_1_param
+        turtle_village_scroll_lock_2:       .dc.l   turtle_village_scroll_lock_2_param
+        turtle_village_camera_transition_3: .dc.l   turtle_village_camera_transition_3_param
+        turtle_village_scroll_limits_4:     .dc.l   turtle_village_scroll_limits_4_param
+
+    turtle_village_scroll_limits_0_param:
+        .dc.w   0                   // Min y scroll
+        .dc.w   360 - 224           // Max y scroll
+
+    turtle_village_scroll_limits_1_param:
+        .dc.w   172                 // Min y scroll
+        .dc.w   172                 // Max y scroll
+
+    turtle_village_scroll_lock_2_param:
+        .dc.w   0                   // Min y scroll
+        .dc.w   360 - 224           // Max y scroll
+        .dc.l   0x00003fff          // Camera y decrement on h scroll (16.16)
+
+    turtle_village_camera_transition_3_param:
+        .dc.w   336 - 224           // Min y scroll
+        .dc.w   336 - 224           // Max y scroll
+        .dc.l   0x00007fff          // Camera y decrement (16.16)
+        .dc.l   0x00000000          // Camera x increment (16.16)
+
+    turtle_village_scroll_limits_4_param:
+        .dc.w   0                   // Min y scroll
+        .dc.w   336 - 224           // Max y scroll
 
 
     /**********************************************************
@@ -166,7 +214,7 @@
 
     // Camp site vertical scroll
     patch_start 0x002a88
-        .dc.w   184 + (6 * 8) - (224 / 2)
+        .dc.w   336 - 224
     patch_end
 
     // Camp site entity load group descriptor (thiefs)

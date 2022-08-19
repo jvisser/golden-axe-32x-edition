@@ -126,6 +126,10 @@
         .dc.b   MAP_EVENT_SPAWN_ENTITY
         .dc.b   ENTITY_TYPE_EYE_BALL
 
+        .dc.w   672
+        .dc.b   MAP_EVENT_SCROLL_LOCK
+        .dc.b   town_scroll_lock_0 - town_extended_event_data_table
+
         .dc.w   1040
         .dc.b   MAP_EVENT_PALETTE_TRANSITION
         .dc.b   0x02
@@ -143,6 +147,12 @@
         .dc.b   0x00
 
     town_extended_event_data_table:
+        town_scroll_lock_0:     .dc.l   town_scroll_lock_0_param
+
+    town_scroll_lock_0_param:
+        .dc.w   0                   // Min y scroll
+        .dc.w   256 - 224           // Max y scroll
+        .dc.l   0x0000b333          // Camera y decrement on h scroll (16.16)
 
 
     /**********************************************************
@@ -228,7 +238,7 @@
 
     // Camp site vertical scroll
     patch_start 0x002a8a
-        .dc.w   176 - 224/2
+        .dc.w   32
     patch_end
 
     // Camp site entity load group descriptor (thiefs)
