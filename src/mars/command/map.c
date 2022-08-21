@@ -62,7 +62,7 @@ static u32 render_buffer_slope;
 static u32 h_diff_accumulated;
 
 
-static void recalculate_line_table()
+static void recalculate_line_table(void)
 {
     u32 fb_line_base = vertical_scroll + (horizontal_scroll / 328);
     u32 fb_x_offset = (horizontal_scroll % 328) >> 1;
@@ -163,7 +163,7 @@ static u16* copy_line(u16 *src, u16* dest)
 }
 
 
-static void copy_line_table()
+static void copy_line_table(void)
 {
     u16* line_table = MARS_FRAMEBUFFER;
     u16* line_table_src = line_table_buffer;
