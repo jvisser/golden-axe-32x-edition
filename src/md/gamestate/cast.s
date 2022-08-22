@@ -50,6 +50,12 @@
         rts                             // Create cast_transition subroutine
     patch_end
 
+    patch_start 0x0048b6                // Transition palette to black instead of white
+        moveq   #0, %d1
+        nop
+        nop
+    patch_end
+
     patch_start 0x004920                // Speed up palette transition
         moveq   #1, %d2
     patch_end
@@ -75,10 +81,15 @@
         jmp     cast_transition
 */
 
-        // Player pressed right?
+        /* Player pressed right?
+           TODO: Implement when left is implemented. For now use a/b/c to go right as that does not imply left can be used also */
+/*
     .check_right:
-        btst.b  #B_CTRL_RIGHT, %d0
-        beq     .check_action
+        //btst.b  #B_CTRL_RIGHT, %d0
+*/
+        move.b  %d0, %d1
+        andi.b  #CTRL_ABC, %d1
+        beq     .check_start
         addq.w  #4, cast_screen_id
         cmpi.w  #0x4c, cast_screen_id
         bne     .left_ok
@@ -86,9 +97,9 @@
     .left_ok:
         jmp     cast_transition
 
-        // Player pressed any action button?
-    .check_action:
-        andi.b  #CTRL_ABCS, %d0
+        // Player pressed start?
+    .check_start:
+        andi.b  #CTRL_START, %d0
         beq     .continue
 
         /* Exit to title */

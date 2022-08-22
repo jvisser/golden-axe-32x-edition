@@ -53,6 +53,7 @@
 #define CTRL_C                  0x20
 #define CTRL_A                  0x40
 #define CTRL_START              0x80
+#define CTRL_ABC                0x70
 #define CTRL_ABCS               0xf0
 
 #define B_CTRL_UP               0
