@@ -29,9 +29,9 @@
         // Nemesis tile data list
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(0))
         .dc.l   nem_pat_empty
-        .dc.l   VRAM_ADDR_SET(TILE_ADDR(1))
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(TOWNDOOR_TILE_ID))
         .dc.l   nem_pat_towndoor_1
-        .dc.l   VRAM_ADDR_SET(TILE_ADDR(1 + TOWNDOOR1_TILE_COUNT))
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT))
         .dc.l   nem_pat_towndoor_2
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX))
         .dc.l   nem_pat_dragon

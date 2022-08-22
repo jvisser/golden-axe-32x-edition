@@ -28,7 +28,7 @@
         // Nemesis tile data list
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(0))
         .dc.l   nem_pat_empty
-        .dc.l   VRAM_ADDR_SET(TILE_ADDR(1))
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(HOLE_TILE_ID))
         .dc.l   nem_pat_hole
         .dc.l   0
 
