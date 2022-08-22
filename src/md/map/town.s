@@ -37,7 +37,7 @@
         .dc.l   nem_pat_dragon
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX + DRAGON_TILE_COUNT))
         .dc.l   nem_pat_bad_brother
-        .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_DYNAMIC_TOP_TILE - TURTLE_EYE_TILE_COUNT))
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(TURTLE_EYE_TILE_ID))
         .dc.l   nem_pat_turtle_eye
         .dc.l   0
 

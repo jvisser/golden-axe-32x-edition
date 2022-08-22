@@ -191,6 +191,9 @@
 #define nem_pat_water                                   0x00022e88
 #define WATER_TILE_COUNT                                72
 
+#define nem_pat_thief                                   0x000733ea
+#define THIEF_TILE_COUNT                                49
+
 
 // Tile counts for new nemesis data included via resources.s
 #define TOWNDOOR_TILE_ID                                1
@@ -198,12 +201,14 @@
 #define TOWNDOOR2_TILE_COUNT                            83
 
 #define TURTLE_EYE_TILE_COUNT                           12
+#define TURTLE_EYE_TILE_ID                              (GAME_PLAY_VRAM_DYNAMIC_TOP_TILE - TURTLE_EYE_TILE_COUNT)
 #define TURTLE_EYE_X                                    674
 #define TURTLE_EYE_Y                                    293
 #define TURTLE_EYE_WIDTH                                16
 #define TURTLE_EYE_HEIGHT                               16
 
 #define EAGLE_EYE_TILE_COUNT                            48
+#define EAGLE_EYE_TILE_ID                               (GAME_PLAY_VRAM_DYNAMIC_TOP_TILE - EAGLE_EYE_TILE_COUNT)
 #define EAGLE_EYE_X                                     573
 #define EAGLE_EYE_Y                                     312
 #define EAGLE_EYE_WIDTH                                 32
@@ -309,6 +314,13 @@
 // Palette 1:12: Heninger, Longmoan, Bad brother, Death adder
 .macro entity_palette_red2_4
     .irp color, 0x066e, 0x022c, 0x0008, 0x0004
+        .dc.w \color
+    .endr
+.endm
+
+// Palette 1:12: Bitter
+.macro entity_palette_red3_4
+    .irp color, 0x088e, 0x044a, 0x0228, 0x0206
         .dc.w \color
     .endr
 .endm
