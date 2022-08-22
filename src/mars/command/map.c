@@ -298,51 +298,69 @@ static void scroll(s32 new_horizontal_scroll, s32 new_vertical_scroll)
 }
 
 
+static void load_map(map_load_parameters* load_parameters)
+{
+    map_definition = HINT_ALIGN(md_map_table[load_parameters->map_index], 4);
+
+    if (map_definition)
+    {
+        u32* map_base = (u32*) UNCACHED(&_free_ram_start);
+
+        u32* target = map_base;
+        u32 const* source = map_definition->data;
+        for (u32 i = 0; i < map_definition->data_size; i++)
+        {
+            *target++ = *source++;
+        }
+
+        line_table_buffer = (u16*) target;
+        render_buffer = (u16*) (target + 128);
+
+        map.width    = map_definition->width;
+        map.height   = map_definition->height;
+        map.tile_map = (u16*) (map_base + map_definition->tile_map_offset);
+        map.blocks   = (block*) (map_base + map_definition->blocks_offset);
+        for (u32 i = 0; i < 4; i++)
+        {
+            map.palettes[i] = (map_palette*) (map_base + map_definition->palette_offsets[i]);
+        }
+
+        vertical_scroll = load_parameters->vertical_scroll << 4;
+        horizontal_scroll = load_parameters->horizontal_scroll << 4;
+
+        render_buffer_slope = 328 - horizontal_scroll;
+        h_diff_accumulated = 0;
+
+        // Set initial palette
+        pal_replace(PAL_CURRENT, 0, map.palettes[0]->color_count, map.palettes[0]->colors);
+        pal_commit();
+
+        // Render initial frame
+        render_full();
+    }
+}
+
+
 static void process(u32 command_id, u16* param_base)
 {
     u32 action_id = command_id & 0xff;
 
-    if (action_id == CMD_MAP_LOAD)
+    switch (action_id)
     {
-        map_load_parameters* load_parameters = (map_load_parameters*) param_base;
+        case CMD_MAP_LOAD:
+            load_map((map_load_parameters*) param_base);
+            break;
 
-        map_definition = HINT_ALIGN(md_map_table[load_parameters->map_index], 4);
-        if (map_definition)
-        {
-            u32* map_base = (u32*) UNCACHED(&_free_ram_start);
-
-            u32* target = map_base;
-            u32 const* source = map_definition->data;
-            for (u32 i = 0; i < map_definition->data_size; i++)
+        case CMD_MAP_RESET:
             {
-                *target++ = *source++;
+                map_reset_parameters* reset_parameters = (map_reset_parameters*) param_base;
+
+                horizontal_scroll = reset_parameters->horizontal_scroll;
+                vertical_scroll = reset_parameters->vertical_scroll;
+
+                render_full();
             }
-
-            line_table_buffer = (u16*) target;
-            render_buffer = (u16*) (target + 128);
-
-            map.width    = map_definition->width;
-            map.height   = map_definition->height;
-            map.tile_map = (u16*) (map_base + map_definition->tile_map_offset);
-            map.blocks   = (block*) (map_base + map_definition->blocks_offset);
-            for (u32 i = 0; i < 4; i++)
-            {
-                map.palettes[i] = (map_palette*) (map_base + map_definition->palette_offsets[i]);
-            }
-
-            vertical_scroll = load_parameters->vertical_scroll << 4;
-            horizontal_scroll = load_parameters->horizontal_scroll << 4;
-
-            render_buffer_slope = 328 - horizontal_scroll;
-            h_diff_accumulated = 0;
-
-            // Set initial palette
-            pal_replace(PAL_CURRENT, 0, map.palettes[0]->color_count, map.palettes[0]->colors);
-            pal_commit();
-
-            // Render initial frame
-            render_full();
-        }
+            break;
     }
 }
 

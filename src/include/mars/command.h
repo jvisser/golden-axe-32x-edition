@@ -59,6 +59,7 @@ typedef struct
 #define CMD_MAP_LOAD                0x00
 #define CMD_MAP_SCROLL              0x01
 #define CMD_MAP_PALETTE             0x02
+#define CMD_MAP_RESET               0x03
 
 typedef struct
 {
@@ -79,5 +80,10 @@ typedef struct
     u8  palette_index;
 } map_palette_parameters;
 
+typedef struct
+{
+    u16  vertical_scroll;
+    u16  horizontal_scroll;
+} map_reset_parameters;
 
 #endif

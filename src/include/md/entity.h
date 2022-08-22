@@ -385,6 +385,13 @@
     .endr
 .endm
 
+// Palette 2:8
+.macro entity_palette_explosion_8
+    .irp color, 0x008e, 0x00ee, 0x0eee, 0x0068, 0x008a, 0x00ac, 0x00ee, 0x0eee
+        .dc.w \color
+    .endr
+.endm
+
 #endif
 
 #endif
