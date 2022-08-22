@@ -57,6 +57,7 @@
 #define MARS_COMM_CMD_MAP_LOAD              0x0500|MARS_ROM_ACCESS
 #define MARS_COMM_CMD_MAP_SCROLL            0x0501
 #define MARS_COMM_CMD_MAP_PALETTE           0x0502
+#define MARS_COMM_CMD_MAP_RESET             0x0503
 
 
 #ifdef __ASSEMBLER__
