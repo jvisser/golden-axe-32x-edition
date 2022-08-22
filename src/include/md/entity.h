@@ -6,6 +6,7 @@
 #define __ENTITY_H__
 
 #include "md.h"
+#include "goldenaxe.h"
 
 
 /**********************************************************
@@ -192,7 +193,7 @@
 
 
 // Tile counts for new nemesis data included via resources.s
-#define HOLE_TILE_COUNT                                 16
+#define TOWNDOOR_TILE_ID                                1
 #define TOWNDOOR1_TILE_COUNT                            98
 #define TOWNDOOR2_TILE_COUNT                            83
 
@@ -207,6 +208,9 @@
 #define EAGLE_EYE_Y                                     312
 #define EAGLE_EYE_WIDTH                                 32
 #define EAGLE_EYE_HEIGHT                                32
+
+#define HOLE_TILE_COUNT                                 16
+#define HOLE_TILE_ID                                    (GAME_PLAY_VRAM_DYNAMIC_TOP_TILE - EAGLE_EYE_TILE_COUNT - HOLE_TILE_COUNT)
 
 
 #ifdef __ASSEMBLER__
