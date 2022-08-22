@@ -24,7 +24,8 @@
     eagles_head_map_definition:
         // Palette list
         .dc.l   hud_player_palette
-        .dc.l   eagles_head_map_palette
+        .dc.l   eagles_head_map_palette_0
+        .dc.l   eagles_head_map_palette_1
         .dc.l   0
 
         // Nemesis tile data list
@@ -33,10 +34,10 @@
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(1))
         .dc.l   nem_pat_dragon
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX))
-        .dc.l   nem_pat_bad_brother
-        .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT))
-        .dc.l   nem_pat_death_adder
-        .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_DYNAMIC_TOP_TILE - EAGLE_EYE_TILE_COUNT))
+        .dc.l   nem_pat_bitter
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(HOLE_TILE_ID))
+        .dc.l   nem_pat_hole
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(EAGLE_EYE_TILE_ID))
         .dc.l   nem_pat_eagle_eye
         .dc.l   0
 
@@ -72,7 +73,9 @@
         // Music id
         .dc.w   SONG_EAGLES_HEAD
 
-    eagles_head_map_palette:
+    eagles_head_map_palette_0:
+        entity_palette PALETTE_OFFSET(2, 1), 4, hole_4
+    eagles_head_map_palette_1:
         entity_palette PALETTE_OFFSET(3, 8), 7, eagle_eye_7
 
 
@@ -124,13 +127,25 @@
         .dc.b   MAP_EVENT_SPAWN_ENTITY
         .dc.b   ENTITY_TYPE_EYE_BALL
 
+        .dc.w   304
+        .dc.b   MAP_EVENT_WAIT_FOR_ENEMY_DEFEAT
+        .dc.b   0
+
         .dc.w   320
         .dc.b   MAP_EVENT_PALETTE_TRANSITION
         .dc.b   0x01
 
+        .dc.w   704
+        .dc.b   MAP_EVENT_WAIT_FOR_ENEMY_DEFEAT
+        .dc.b   0
+
         .dc.w   736
         .dc.b   MAP_EVENT_CAMERA_TRANSITION
         .dc.b   eagles_head_camera_transition_1 - eagles_head_extended_event_data_table
+
+        .dc.w   804
+        .dc.b   MAP_EVENT_WAIT_FOR_ENEMY_DEFEAT
+        .dc.b   0
 
         .dc.w   952
         .dc.b   MAP_EVENT_PALETTE_TRANSITION
@@ -176,11 +191,26 @@
      * Entity load list
      */
     eagles_head_entity_load_list:
-        .dc.w   800
+        .dc.w   48
         .dc.l   eagles_head_map_entity_load_slot_descriptor_0
 
-        .dc.w   1216
+        .dc.w   200
         .dc.l   eagles_head_map_entity_load_slot_descriptor_1
+
+        .dc.w   472
+        .dc.l   eagles_head_map_entity_load_slot_descriptor_2
+
+        .dc.w   704
+        .dc.l   eagles_head_map_entity_load_slot_descriptor_3
+
+        .dc.w   804
+        .dc.l   eagles_head_map_entity_load_slot_descriptor_4
+
+        .dc.w   976
+        .dc.l   eagles_head_map_entity_load_slot_descriptor_5
+
+        .dc.w   1104
+        .dc.l   eagles_head_map_entity_load_slot_descriptor_6
 
         .dc.w   -1
 
@@ -190,28 +220,146 @@
 
         eagles_head_map_entity_load_group_descriptor_0_0:
             .dc.w   0   // load allowed when there are active enemies?
-
-            .dc.l   eagles_head_map_entity_load_group_descriptor_0_0_pal0
             .dc.l   0
             .dc.l   0
 
-            .dc.w   1  // number of entities
-                map_entity_definition 6, ENTITY_TYPE_BLUE_DRAGON, 248, 320, 1
-
-            eagles_head_map_entity_load_group_descriptor_0_0_pal0:
-                entity_palette PALETTE_OFFSET(3, 1), 7, blue1_4, yellow_3
+            .dc.w   2  // number of entities
+                map_entity_definition 0, ENTITY_TYPE_SKELETON_2_FROM_HOLE, 232, 184
+                map_entity_definition 1, ENTITY_TYPE_SKELETON_2_FROM_HOLE, 176, 120
 
     eagles_head_map_entity_load_slot_descriptor_1:
         .dc.w   0
         .dc.l   eagles_head_map_entity_load_group_descriptor_1_0
 
         eagles_head_map_entity_load_group_descriptor_1_0:
+            .dc.w   1   // load allowed when there are active enemies?
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   1  // number of entities
+                map_entity_definition 2, ENTITY_TYPE_SKELETON_2_FROM_HOLE, 192, 240
+
+    eagles_head_map_entity_load_slot_descriptor_2:
+        .dc.w   0
+        .dc.l   eagles_head_map_entity_load_group_descriptor_2_0
+
+        eagles_head_map_entity_load_group_descriptor_2_0:
             .dc.w   0   // load allowed when there are active enemies?
 
-            .dc.l   eagles_head_map_entity_load_group_descriptor_1_0_pal0
+            .dc.l   eagles_head_map_entity_load_group_descriptor_2_0_pal0
+            .dc.l   eagles_head_map_entity_load_group_descriptor_2_0_pal1
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   2  // number of entities
+                map_entity_definition 0, ENTITY_TYPE_AMAZON_5, 248, 320
+                map_entity_definition 6, ENTITY_TYPE_BLUE_DRAGON, 248, 320, 1
+
+            eagles_head_map_entity_load_group_descriptor_2_0_pal0:
+                entity_palette PALETTE_OFFSET(1, 1), 15, red1_4, yellow_3, skin_4
+            eagles_head_map_entity_load_group_descriptor_2_0_pal1:
+                entity_palette PALETTE_OFFSET(3, 1), 7, blue1_4, yellow_3
+
+    eagles_head_map_entity_load_slot_descriptor_3:
+        .dc.w   0
+        .dc.l   eagles_head_map_entity_load_group_descriptor_3_0
+
+        eagles_head_map_entity_load_group_descriptor_3_0:
+            .dc.w   1   // load allowed when there are active enemies?
+
+            .dc.l   eagles_head_map_entity_load_group_descriptor_3_0_pal0
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   1  // number of entities
+                map_entity_definition 1, ENTITY_TYPE_HENINGER_RED, 232, 320
+
+            eagles_head_map_entity_load_group_descriptor_3_0_pal0:
+                entity_palette PALETTE_OFFSET(1, 8), 8, skin_4, red2_4
+
+    eagles_head_map_entity_load_slot_descriptor_4:
+        .dc.w   1
+        .dc.l   eagles_head_map_entity_load_group_descriptor_4_0
+        .dc.l   eagles_head_map_entity_load_group_descriptor_4_1
+
+        eagles_head_map_entity_load_group_descriptor_4_0:
+            .dc.w   0   // load allowed when there are active enemies?
+
+            .dc.l   eagles_head_map_entity_load_group_descriptor_4_0_pal0
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   4  // number of entities
+                map_entity_definition 0, ENTITY_TYPE_LONGMOAN_RED, 240, 308
+                map_entity_definition 1, ENTITY_TYPE_LONGMOAN_RED, 216, 316
+                map_entity_definition 2, ENTITY_TYPE_HENINGER_RED, 264, 308
+                map_entity_definition 3, ENTITY_TYPE_HENINGER_RED, 200, 356
+
+            eagles_head_map_entity_load_group_descriptor_4_0_pal0:
+                    entity_palette PALETTE_OFFSET(1, 8), 8, skin_4, red2_4
+
+        eagles_head_map_entity_load_group_descriptor_4_1:
+            .dc.w   0   // load allowed when there are active enemies?
+
+            .dc.l   eagles_head_map_entity_load_group_descriptor_4_1_pal0
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   2  // number of entities
+                map_entity_definition 0, ENTITY_TYPE_BITTER_RED, 240, 332, GAME_PLAY_VRAM_RESERVED_TILE_MAX
+                map_entity_definition 1, ENTITY_TYPE_BITTER_RED, 224, 340, GAME_PLAY_VRAM_RESERVED_TILE_MAX
+
+            eagles_head_map_entity_load_group_descriptor_4_1_pal0:
+                    entity_palette PALETTE_OFFSET(1, 12), 4, red3_4
+
+    eagles_head_map_entity_load_slot_descriptor_5:
+        .dc.w   0
+        .dc.l   eagles_head_map_entity_load_group_descriptor_5_0
+
+        eagles_head_map_entity_load_group_descriptor_5_0:
+            .dc.w   0   // load allowed when there are active enemies?
+            .dc.l   0
+
+            .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT))
+            .dc.l   nem_pat_thief
+            .dc.l   0
+
+            .dc.w   3  // number of entities
+                map_entity_definition 3, ENTITY_TYPE_THIEF, 192, 360, GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(3)
+                map_entity_definition 4, ENTITY_TYPE_THIEF, 224, 334, GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(3)
+                map_entity_definition 5, ENTITY_TYPE_THIEF, 260, 320, GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(2)
+
+
+    eagles_head_map_entity_load_slot_descriptor_6:
+        .dc.w   1
+        .dc.l   eagles_head_map_entity_load_group_descriptor_6_0
+        .dc.l   eagles_head_map_entity_load_group_descriptor_6_1
+
+        eagles_head_map_entity_load_group_descriptor_6_0:
+            .dc.w   1   // load allowed when there are active enemies?
+
+            .dc.l   eagles_head_map_entity_load_group_descriptor_6_0_pal0
+            .dc.l   0
+
+            .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX))
+            .dc.l   nem_pat_bad_brother
+            .dc.l   0
+
+            .dc.w   3  // number of entities
+                map_entity_definition 0, ENTITY_TYPE_BAD_BROTHER_RED, 216, 376, GAME_PLAY_VRAM_RESERVED_TILE_MAX
+                map_entity_definition 1, ENTITY_TYPE_HENINGER_RED, 224, 376
+                map_entity_definition 2, ENTITY_TYPE_LONGMOAN_RED, 248, 368
+
+            eagles_head_map_entity_load_group_descriptor_6_0_pal0:
+                    entity_palette PALETTE_OFFSET(1, 8), 8, skin_4, red2_4
+
+        eagles_head_map_entity_load_group_descriptor_6_1:
+            .dc.w   0   // load allowed when there are active enemies?
             .dc.l   0
 
             // Death adder special attacks graphics
+            .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT))
+            .dc.l   nem_pat_death_adder
             .dc.l   VRAM_ADDR_SET(TILE_ADDR(DEATH_ADDER_SPECIAL_TILE_ID))
             .dc.l   nem_pat_death_adder_special
             .dc.l   VRAM_ADDR_SET(GAME_PLAY_VRAM_RESERVED_MIN)              // Fixed address
@@ -223,5 +371,3 @@
                 map_entity_definition 1, ENTITY_TYPE_SKELETON_3,  246, -16
                 map_entity_definition 2, ENTITY_TYPE_DEATH_BRINGER, 176, 320 / 2, GAME_PLAY_VRAM_RESERVED_TILE_MAX
 
-            eagles_head_map_entity_load_group_descriptor_1_0_pal0:
-                entity_palette PALETTE_OFFSET(1, 1), 15, red1_4, yellow_3, skin_4, red2_4
