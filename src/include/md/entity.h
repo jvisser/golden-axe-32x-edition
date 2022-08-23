@@ -56,7 +56,9 @@
 #define entity_interacting_entity                       0x38
 #define entity_mount                                    0x3c
 #define entity_state                                    0x42    // TODO: 0x4c seems be be main state and 0x42 sub state (in most cases)
+#define entity_state_main                               0x4c
 #define entity_flags_44                                 0x44
+#define entity_hp                                       0x64
 #define entity_dma_source_base                          0x74
 
 
@@ -92,6 +94,7 @@
 #define ENTITY_TYPE_NONE                                0x00
 #define ENTITY_TYPE_THIEF                               0x1e
 #define ENTITY_TYPE_EYE_BALL                            0x27
+#define ENTITY_TYPE_TOWN_DOOR                           0x28
 #define ENTITY_TYPE_WATER                               0x2a
 #define ENTITY_TYPE_ROPE                                0x2b
 #define ENTITY_TYPE_KING                                0x2c
