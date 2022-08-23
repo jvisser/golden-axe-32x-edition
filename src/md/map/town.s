@@ -203,8 +203,9 @@
             .dc.l   0
             .dc.l   0
 
-            .dc.w   1  // number of entities
+            .dc.w   2  // number of entities
                 map_entity_definition 0, ENTITY_TYPE_BAD_BROTHER_BLUE, 208, 240, GAME_PLAY_VRAM_RESERVED_TILE_MAX + DRAGON_TILE_COUNT
+                map_entity_definition 1, ENTITY_TYPE_BAD_BROTHER_BLUE, 208, 240, GAME_PLAY_VRAM_RESERVED_TILE_MAX + DRAGON_TILE_COUNT, 300
 
             town_map_entity_load_group_descriptor_1_0_pal0:
                 entity_palette PALETTE_OFFSET(1, 8), 8, skin_4, red2_4
