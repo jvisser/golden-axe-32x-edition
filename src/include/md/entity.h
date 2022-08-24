@@ -290,6 +290,13 @@
     .endr
 .endm
 
+// Palette 1:12: Bitter
+.macro entity_palette_silver2_4
+    .irp color, 0x0ccc, 0x0888, 0x0666, 0x0444
+        .dc.w \color
+    .endr
+.endm
+
 // Palette 1:1: Amazon
 // Palette 1:12: Heninger, Longmoan, Bad brother, Death adder
 .macro entity_palette_green_4

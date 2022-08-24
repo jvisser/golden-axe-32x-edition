@@ -389,7 +389,7 @@
                 map_entity_definition 2, ENTITY_TYPE_HENINGER_GOLD, 240, 330
 
             town_map_entity_load_group_descriptor_7_0_pal0:
-                entity_palette PALETTE_OFFSET(1, 8), 8, skin_4, gold_4
+                entity_palette PALETTE_OFFSET(1, 8), 8, skin_4, silver2_4
 
     town_map_entity_load_slot_descriptor_8:
         .dc.w   0
