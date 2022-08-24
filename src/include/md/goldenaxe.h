@@ -34,6 +34,9 @@
 #define GAME_STATE_NEXT_DUEL                    0x3c
 #define GAME_STATE_GAME_OVER                    0x40
 
+// Game mode flag but numbers
+#define B_GAME_MODE_BEGINNER                    2
+
 // Song id's
 #define SONG_WILDERNESS                         -127
 #define SONG_TURTLE_VILLAGE                     -126
@@ -52,6 +55,7 @@
 #define SONG_INTERMISSION                       -116
 #define SONG_CREDITS                            -114
 #define SOUND_STOP                              -118
+#define SOUND_FADE_OUT                          -32
 
 #define SOUND_EFFECT_DOOR                       -85
 
@@ -75,6 +79,7 @@
 #define entity_player_1                         0xffffd000
 #define entity_player_2                         0xffffd080
 
+#define game_mode_flags                         0xffffc104  // .b
 #define requested_game_state                    0xffffc170  // .w
 #define current_game_state                      0xffffc172  // .w
 
