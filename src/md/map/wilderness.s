@@ -20,6 +20,8 @@
         .dc.l   wilderness_map_definition   // Patch map table entry
     patch_end
 
+    #define BAD_BROTHER_TILE_ID 0x0200      // After intro text
+
     wilderness_map_definition:
         // Palette list
         .dc.l   hud_player_palette
@@ -28,6 +30,14 @@
         // Nemesis tile data list
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(0))
         .dc.l   nem_pat_empty
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(1))
+        .dc.l   nem_pat_chicken_leg
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(1 + CHICKEN_LEG_TILE_COUNT))
+        .dc.l   nem_pat_thief
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(1 + CHICKEN_LEG_TILE_COUNT + THIEF_TILE_COUNT))
+        .dc.l   nem_pat_villager
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(BAD_BROTHER_TILE_ID))
+        .dc.l   nem_pat_bad_brother
         .dc.l   0
 
         // Tile map data
@@ -95,9 +105,29 @@
      * Event list
      */
     wilderness_event_list:
+        .dc.w   224
+        .dc.b   MAP_EVENT_WAIT_FOR_ENEMY_DEFEAT
+        .dc.b   0
+
         .dc.w   320
         .dc.b   MAP_EVENT_PALETTE_TRANSITION
         .dc.b   0x01
+
+        .dc.w   356
+        .dc.b   MAP_EVENT_WAIT_FOR_ENEMY_DEFEAT
+        .dc.b   0
+
+        .dc.w   536
+        .dc.b   MAP_EVENT_WAIT_FOR_ENEMY_DEFEAT
+        .dc.b   0
+
+        .dc.w   768
+        .dc.b   MAP_EVENT_WAIT_FOR_ENEMY_DEFEAT
+        .dc.b   0
+
+        .dc.w   888
+        .dc.b   MAP_EVENT_WAIT_FOR_ENEMY_DEFEAT
+        .dc.b   0
 
         .dc.w   952
         .dc.b   MAP_EVENT_PALETTE_TRANSITION
@@ -106,6 +136,10 @@
         .dc.w   960
         .dc.b   MAP_EVENT_CHANGE_MUSIC
         .dc.b   SONG_BOSS
+
+        .dc.w   1104
+        .dc.b   MAP_EVENT_CAMERA_TRANSITION
+        .dc.b   wilderness_camera_transition_0 - wilderness_extended_event_data_table
 
         .dc.w   1216
         .dc.b   MAP_EVENT_CAMPSITE_ON_ENEMY_DEFEAT
@@ -116,13 +150,193 @@
         .dc.b   0x00
 
     wilderness_extended_event_data_table:
+        wilderness_camera_transition_0:   .dc.l   wilderness_camera_transition_0_param
 
+    wilderness_camera_transition_0_param:
+        .dc.w   0                   // Min y scroll
+        .dc.w   0                   // Max y scroll
+        .dc.l   0x00000000          // Camera y decrement (16.16)
+        .dc.l   0x00010000          // Camera x increment (16.16)
 
     /**********************************************************
      * Entity load list
      */
     wilderness_entity_load_list:
+        .dc.w   80
+        .dc.l   wilderness_map_entity_load_slot_descriptor_0
+
+        .dc.w   168
+        .dc.l   wilderness_map_entity_load_slot_descriptor_1
+
+        .dc.w   224
+        .dc.l   wilderness_map_entity_load_slot_descriptor_2
+
+        .dc.w   296
+        .dc.l   wilderness_map_entity_load_slot_descriptor_3
+
+        .dc.w   464
+        .dc.l   wilderness_map_entity_load_slot_descriptor_4
+
+        .dc.w   704
+        .dc.l   wilderness_map_entity_load_slot_descriptor_5
+
+        .dc.w   816
+        .dc.l   wilderness_map_entity_load_slot_descriptor_6
+
+        .dc.w   976
+        .dc.l   wilderness_map_entity_load_slot_descriptor_7
+
+        .dc.w   1104
+        .dc.l   wilderness_map_entity_load_slot_descriptor_8
+
         .dc.w   -1  // Terminate
+
+    wilderness_map_entity_load_slot_descriptor_0:
+        .dc.w   0
+        .dc.l   wilderness_map_entity_load_group_descriptor_0_0
+
+        wilderness_map_entity_load_group_descriptor_0_0:
+            .dc.w   0   // load allowed when there are active enemies?
+
+            .dc.l   wilderness_map_entity_load_group_descriptor_0_0_pal0
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   1  // number of entities
+                map_entity_definition 0, ENTITY_TYPE_LONGMOAN_SILVER, 152, 330
+
+            wilderness_map_entity_load_group_descriptor_0_0_pal0:
+                entity_palette PALETTE_OFFSET(1, 8), 8, skin_4, silver_4
+
+    wilderness_map_entity_load_slot_descriptor_1:
+        .dc.w   0
+        .dc.l   wilderness_map_entity_load_group_descriptor_1_0
+
+        wilderness_map_entity_load_group_descriptor_1_0:
+            .dc.w   1   // load allowed when there are active enemies?
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   1  // number of entities
+                map_entity_definition 1, ENTITY_TYPE_HENINGER_SILVER, 160, 330
+
+    wilderness_map_entity_load_slot_descriptor_2:
+        .dc.w   0
+        .dc.l   wilderness_map_entity_load_group_descriptor_2_0
+
+        wilderness_map_entity_load_group_descriptor_2_0:
+            .dc.w   0   // load allowed when there are active enemies?
+
+            .dc.l   wilderness_map_entity_load_group_descriptor_2_0_pal0
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   2  // number of entities
+                map_entity_definition 0, ENTITY_TYPE_LONGMOAN_SILVER, 152, 330
+                map_entity_definition 1, ENTITY_TYPE_HENINGER_PURPLE, 200, 330
+
+            wilderness_map_entity_load_group_descriptor_2_0_pal0:
+                entity_palette PALETTE_OFFSET(1, 12), 4, purple2_4
+
+    wilderness_map_entity_load_slot_descriptor_3:
+        .dc.w   0
+        .dc.l   wilderness_map_entity_load_group_descriptor_3_0
+
+        wilderness_map_entity_load_group_descriptor_3_0:
+            .dc.w   0   // load allowed when there are active enemies?
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   1  // number of entities
+                map_entity_definition 0, ENTITY_TYPE_THIEF, 148, 330, 1 + CHICKEN_LEG_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(2)
+
+    wilderness_map_entity_load_slot_descriptor_4:
+        .dc.w   0
+        .dc.l   wilderness_map_entity_load_group_descriptor_4_0
+
+        wilderness_map_entity_load_group_descriptor_4_0:
+            .dc.w   0   // load allowed when there are active enemies?
+
+            .dc.l   wilderness_map_entity_load_group_descriptor_4_0_pal0
+            .dc.l   wilderness_map_entity_load_group_descriptor_4_0_pal1
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   4  // number of entities
+                map_entity_definition 0, ENTITY_TYPE_LONGMOAN_SILVER, 184, 330
+                map_entity_definition 1, ENTITY_TYPE_AMAZON_5, 136, 372
+                map_entity_definition 5, ENTITY_TYPE_VILLAGER_2, 184, 330, 1 + CHICKEN_LEG_TILE_COUNT + THIEF_TILE_COUNT, 0xd000
+                map_entity_definition 6, ENTITY_TYPE_CHICKEN_LEG, 136, 372, 1
+
+            wilderness_map_entity_load_group_descriptor_4_0_pal0:
+                entity_palette PALETTE_OFFSET(1, 1), 15, green_4, yellow_3, skin_4, silver_4
+
+            wilderness_map_entity_load_group_descriptor_4_0_pal1:
+                entity_palette PALETTE_OFFSET(2, 5), 6, yellow_3, purple_3
+
+    wilderness_map_entity_load_slot_descriptor_5:
+        .dc.w   0
+        .dc.l   wilderness_map_entity_load_group_descriptor_5_0
+
+        wilderness_map_entity_load_group_descriptor_5_0:
+            .dc.w   0   // load allowed when there are active enemies?
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   2  // number of entities
+                map_entity_definition 0, ENTITY_TYPE_THIEF, 128, 340, 1 + CHICKEN_LEG_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(1)
+                map_entity_definition 1, ENTITY_TYPE_THIEF, 168, 330, 1 + CHICKEN_LEG_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(2)
+
+    wilderness_map_entity_load_slot_descriptor_6:
+        .dc.w   0
+        .dc.l   wilderness_map_entity_load_group_descriptor_6_0
+
+        wilderness_map_entity_load_group_descriptor_6_0:
+            .dc.w   0   // load allowed when there are active enemies?
+
+            .dc.l   wilderness_map_entity_load_group_descriptor_6_0_pal0
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   1  // number of entities
+                map_entity_definition 1, ENTITY_TYPE_LONGMOAN_SILVER, 152, 330
+
+            wilderness_map_entity_load_group_descriptor_6_0_pal0:
+                entity_palette PALETTE_OFFSET(1, 8), 8, skin_4, silver_4
+
+    wilderness_map_entity_load_slot_descriptor_7:
+        .dc.w   0
+        .dc.l   wilderness_map_entity_load_group_descriptor_7_0
+
+        wilderness_map_entity_load_group_descriptor_7_0:
+            .dc.w   1   // load allowed when there are active enemies?
+
+            .dc.l   wilderness_map_entity_load_group_descriptor_7_0_pal0
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   2  // number of entities
+                map_entity_definition 0, ENTITY_TYPE_VILLAGER_1, 184, 330, 1 + CHICKEN_LEG_TILE_COUNT + THIEF_TILE_COUNT, 0xd000
+                map_entity_definition 1, ENTITY_TYPE_VILLAGER_2, 208, 330, 1 + CHICKEN_LEG_TILE_COUNT + THIEF_TILE_COUNT, 0xc300
+
+            wilderness_map_entity_load_group_descriptor_7_0_pal0:
+                entity_palette PALETTE_OFFSET(1, 8), 8, skin_4, green_4
+
+    wilderness_map_entity_load_slot_descriptor_8:
+        .dc.w   0
+        .dc.l   wilderness_map_entity_load_group_descriptor_8_0
+
+        wilderness_map_entity_load_group_descriptor_8_0:
+            .dc.w   1   // load allowed when there are active enemies?
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   5  // number of entities
+                map_entity_definition 2, ENTITY_TYPE_HENINGER_RED, 140, 330
+                map_entity_definition 3, ENTITY_TYPE_LONGMOAN_GREEN, 208, 330
+                map_entity_definition 4, ENTITY_TYPE_BAD_BROTHER_GREEN, 136, 350, BAD_BROTHER_TILE_ID
+                map_entity_definition 5, ENTITY_TYPE_BAD_BROTHER_GREEN, 168, 370, BAD_BROTHER_TILE_ID
+                map_entity_definition 7, ENTITY_TYPE_CHICKEN_LEG, 208, 372, 1
 
 
     /**********************************************************
