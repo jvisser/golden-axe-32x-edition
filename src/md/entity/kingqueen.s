@@ -17,6 +17,23 @@
 
 
     /**********************************************************
+     * Z order
+     */
+    patch_start 0x00b210    // Chain
+        move.w  #200, entity_base_y(%a0)
+    patch_end
+
+    patch_start 0x00b25c    // King
+        move.w  #200, entity_base_y(%a0)
+    patch_end
+
+    patch_start 0x00b308    // Princess
+        //move.w  #184, entity_base_y(%a0)
+        move.w  #200, entity_base_y(%a0)        // Give princess + king the same z value to prevent death adder's corpse to end up in between
+    patch_end
+
+
+    /**********************************************************
      * Load the king and queen graphics at safe tile address so we can keep death adder's corpse on screen.
      * Basically after death adder's tile data as defined in eagles head map def
      * Also change to use palette 2 which is free at this point

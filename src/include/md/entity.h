@@ -53,6 +53,9 @@
 #define entity_x                                        0x1c
 #define entity_base_y                                   0x20
 #define entity_height                                   0x24
+#define entity_x_increment                              0x2c
+#define entity_base_y_increment                         0x30
+#define entity_height_increment                         0x34
 #define entity_interacting_entity                       0x38
 #define entity_mount                                    0x3c
 #define entity_state                                    0x42    // TODO: 0x4c seems be be main state and 0x42 sub state (in most cases)
@@ -123,7 +126,7 @@
 #define ENTITY_TYPE_AMAZON_2                            0x43
 #define ENTITY_TYPE_AMAZON_3                            0x44
 #define ENTITY_TYPE_AMAZON_4                            0x45
-#define ENTITY_TYPE_AMAZON_5                            0x46
+#define ENTITY_TYPE_AMAZON_5                            0x46    // Auto mounts
 #define ENTITY_TYPE_BITTER_SILVER                       0x47
 #define ENTITY_TYPE_BITTER_RED                          0x48
 #define ENTITY_TYPE_BITTER_GOLD                         0x49
@@ -196,6 +199,9 @@
 
 #define nem_pat_thief                                   0x000733ea
 #define THIEF_TILE_COUNT                                49
+
+#define nem_pat_villager                                0x00060096
+#define VILLAGER_TILE_COUNT                             55
 
 
 // Tile counts for new nemesis data included via resources.s

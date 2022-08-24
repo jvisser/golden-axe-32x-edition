@@ -34,6 +34,11 @@
         nop
     patch_end
 
+    patch_start 0x0136A8    // Remap tile id
+        move.w  #DEATH_ADDER_SPECIAL_TILE_ID, entity_tile_id(%a5)
+    patch_end
+
+
 
     /**********************************************************
      * Remove open door animation sequence

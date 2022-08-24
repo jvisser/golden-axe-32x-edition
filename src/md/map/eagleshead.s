@@ -121,7 +121,7 @@
     eagles_head_event_list:
         .dc.w   0
         .dc.b   MAP_EVENT_VERTICAL_SCROLL_LIMITS
-        .dc.b   eagles_head_village_scroll_limits_0 - eagles_head_extended_event_data_table
+        .dc.b   eagles_head_scroll_limits_0 - eagles_head_extended_event_data_table
 
         .dc.w   253 // EAGLE_EYE_X(573) - 320
         .dc.b   MAP_EVENT_SPAWN_ENTITY
@@ -157,7 +157,11 @@
 
         .dc.w   976
         .dc.b   MAP_EVENT_VERTICAL_SCROLL_LIMITS
-        .dc.b   eagles_head_village_scroll_limits_2 - eagles_head_extended_event_data_table
+        .dc.b   eagles_head_scroll_limits_2 - eagles_head_extended_event_data_table
+
+        .dc.w   1104
+        .dc.b   MAP_EVENT_CAMERA_TRANSITION
+        .dc.b   eagles_head_camera_transition_3 - eagles_head_extended_event_data_table
 
         .dc.w   1216
         .dc.b   MAP_EVENT_NEXT_LEVEL_ON_ENEMY_DEFEAT
@@ -168,9 +172,10 @@
         .dc.b   0x00
 
     eagles_head_extended_event_data_table:
-        eagles_head_village_scroll_limits_0:    .dc.l   eagles_head_scroll_limits_0_param
-        eagles_head_camera_transition_1:        .dc.l   eagles_head_camera_transition_1_param
-        eagles_head_village_scroll_limits_2:    .dc.l   eagles_head_scroll_limits_2_param
+        eagles_head_scroll_limits_0:        .dc.l   eagles_head_scroll_limits_0_param
+        eagles_head_camera_transition_1:    .dc.l   eagles_head_camera_transition_1_param
+        eagles_head_scroll_limits_2:        .dc.l   eagles_head_scroll_limits_2_param
+        eagles_head_camera_transition_3:    .dc.l   eagles_head_camera_transition_3_param
 
     eagles_head_scroll_limits_0_param:
         .dc.w   40                  // Min y scroll
@@ -185,6 +190,12 @@
     eagles_head_scroll_limits_2_param:
         .dc.w   96                  // Min y scroll
         .dc.w   392 - 224           // Max y scroll
+
+    eagles_head_camera_transition_3_param:
+        .dc.w   96                  // Min y scroll
+        .dc.w   392 - 224           // Max y scroll
+        .dc.l   0x00000000          // Camera y decrement (16.16)
+        .dc.l   0x00010000          // Camera x increment (16.16)
 
 
     /**********************************************************
@@ -306,8 +317,8 @@
             .dc.l   0
 
             .dc.w   2  // number of entities
-                map_entity_definition 0, ENTITY_TYPE_BITTER_RED, 240, 332, GAME_PLAY_VRAM_RESERVED_TILE_MAX
-                map_entity_definition 1, ENTITY_TYPE_BITTER_RED, 224, 340, GAME_PLAY_VRAM_RESERVED_TILE_MAX
+                map_entity_definition 0, ENTITY_TYPE_BITTER_RED, 232, 332, GAME_PLAY_VRAM_RESERVED_TILE_MAX
+                map_entity_definition 1, ENTITY_TYPE_BITTER_RED, 264, 340, GAME_PLAY_VRAM_RESERVED_TILE_MAX
 
             eagles_head_map_entity_load_group_descriptor_4_1_pal0:
                     entity_palette PALETTE_OFFSET(1, 12), 4, red3_4
@@ -320,6 +331,8 @@
             .dc.w   0   // load allowed when there are active enemies?
             .dc.l   0
 
+            .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX))
+            .dc.l   nem_pat_bad_brother // Pre-load
             .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT))
             .dc.l   nem_pat_thief
             .dc.l   0
@@ -328,7 +341,6 @@
                 map_entity_definition 3, ENTITY_TYPE_THIEF, 192, 360, GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(3)
                 map_entity_definition 4, ENTITY_TYPE_THIEF, 224, 334, GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(3)
                 map_entity_definition 5, ENTITY_TYPE_THIEF, 260, 320, GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(2)
-
 
     eagles_head_map_entity_load_slot_descriptor_6:
         .dc.w   1
@@ -340,9 +352,6 @@
 
             .dc.l   eagles_head_map_entity_load_group_descriptor_6_0_pal0
             .dc.l   0
-
-            .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX))
-            .dc.l   nem_pat_bad_brother
             .dc.l   0
 
             .dc.w   3  // number of entities
