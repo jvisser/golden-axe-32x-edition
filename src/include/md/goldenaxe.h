@@ -127,6 +127,11 @@
 #define vdp_disable_display                     0x00002dca
 #define vdp_enable_display                      0x00002dc2
 #define vdp_clear_palette                       0x00002eec
+
+#define vdp_clear_name_table                    0x00002c98  // Address set command in d7
+#define vdp_clear_name_table_a                  0x00002c88
+#define vdp_clear_name_table_b                  0x00002c92
+
 #define vdp_set_mode_h40                        0x00002dda
 #define vdp_set_mode_h32                        0x00002de8
 
