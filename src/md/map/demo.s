@@ -109,7 +109,7 @@
                 map_entity_definition 0, ENTITY_TYPE_LONGMOAN_SILVER,   180, 216
                 map_entity_definition 1, ENTITY_TYPE_AMAZON_1,          210, 270
                 map_entity_definition 2, ENTITY_TYPE_HENINGER_SILVER,   210, 186
-                map_entity_definition 5, ENTITY_TYPE_BAD_BROTHER_GREEN, 160, 190, GAME_PLAY_VRAM_RESERVED_TILE_MAX
+                map_entity_definition 5, ENTITY_TYPE_BAD_BROTHER_RED,   160, 190, GAME_PLAY_VRAM_RESERVED_TILE_MAX
 
             demo_map_entity_load_group_descriptor_0_0_pal0:
                 entity_palette PALETTE_OFFSET(1, 1), 15, red1_4, yellow_3, skin_4, green_4
