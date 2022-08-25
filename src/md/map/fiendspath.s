@@ -23,6 +23,7 @@
     fiends_path_map_definition:
         // Palette list
         .dc.l   hud_player_palette
+        .dc.l   fiends_path_map_palette_0
         .dc.l   0
 
         // Nemesis tile data list
@@ -30,6 +31,8 @@
         .dc.l   nem_pat_empty
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(HOLE_TILE_ID))
         .dc.l   nem_pat_hole
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX))
+        .dc.l   nem_pat_feather
         .dc.l   0
 
         // Tile map data
@@ -63,6 +66,9 @@
 
         // Music id
         .dc.w   SONG_FIENDS_PATH
+
+    fiends_path_map_palette_0:
+        entity_palette PALETTE_OFFSET(3, 11), 5, feather_5
 
 
     /**********************************************************
@@ -117,6 +123,10 @@
         .dc.w   656
         .dc.b   MAP_EVENT_VERTICAL_SCROLL_LIMITS
         .dc.b   fiends_path_village_scroll_limits_1 - fiends_path_extended_event_data_table
+
+        .dc.w   768
+        .dc.b   MAP_EVENT_START_FEATHER_ANIMATION
+        .dc.b   0
 
         .dc.w   944
         .dc.b   MAP_EVENT_PALETTE_TRANSITION
