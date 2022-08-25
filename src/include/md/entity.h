@@ -203,6 +203,9 @@
 #define nem_pat_villager                                0x00060096
 #define VILLAGER_TILE_COUNT                             55
 
+#define nem_pat_feather                                0x00027870
+#define FEATHER_TILE_COUNT                             8
+
 
 // Tile counts for new nemesis data included via resources.s
 #define TOWNDOOR_TILE_ID                                1
@@ -416,6 +419,13 @@
 // Palette 2:8
 .macro entity_palette_explosion_8
     .irp color, 0x008e, 0x00ee, 0x0eee, 0x0068, 0x008a, 0x00ac, 0x00ee, 0x0eee
+        .dc.w \color
+    .endr
+.endm
+
+// Palette 3:11
+.macro entity_palette_feather_5
+    .irp color, 0x0468, 0x0246, 0x0024, 0x0002, 0x0000
         .dc.w \color
     .endr
 .endm

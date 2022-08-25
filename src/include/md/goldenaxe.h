@@ -63,7 +63,7 @@
  * VRAM allocation
  */
 
-// Reserved for magic effects and continue signs etc
+// Reserved for game over and continue signs etc
 #define GAME_PLAY_VRAM_RESERVED_MIN             0x27c0
 #define GAME_PLAY_VRAM_RESERVED_MAX             0x3200
 #define GAME_PLAY_VRAM_RESERVED_TILE_MIN        (GAME_PLAY_VRAM_RESERVED_MIN/32)
