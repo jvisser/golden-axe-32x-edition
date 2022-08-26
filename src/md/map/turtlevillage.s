@@ -227,5 +227,5 @@
         .dc.l   0   // Palette list
         .dc.l   0   // Nemesis tile data list
         .dc.w   2   // Number of entities
-            map_entity_definition 0, ENTITY_TYPE_THIEF, 176, 96, 0x3A3, ENTITY_TYPE_THIEF_BLUE(3) | 0x8000
-            map_entity_definition 1, ENTITY_TYPE_THIEF, 192, 64, 0x3A3, ENTITY_TYPE_THIEF_GREEN(1)
+            map_entity_definition 0, ENTITY_TYPE_THIEF, 176, 96, 0x3A3, ENTITY_TYPE_THIEF_BLUE_PARAM(3) | 0x8000
+            map_entity_definition 1, ENTITY_TYPE_THIEF, 192, 64, 0x3A3, ENTITY_TYPE_THIEF_GREEN_PARAM(1)

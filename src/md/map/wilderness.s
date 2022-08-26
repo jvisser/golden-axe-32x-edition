@@ -206,7 +206,7 @@
                 map_entity_definition 0, ENTITY_TYPE_LONGMOAN_SILVER, 152, 330
 
             wilderness_map_entity_load_group_descriptor_0_0_pal0:
-                entity_palette PALETTE_OFFSET(1, 8), 8, skin_4, silver_4
+                entity_palette PALETTE_OFFSET(1, 0), 16, black_8, skin_4, silver_4
 
     wilderness_map_entity_load_slot_descriptor_1:
         .dc.w   0
@@ -248,7 +248,7 @@
             .dc.l   0
 
             .dc.w   1  // number of entities
-                map_entity_definition 0, ENTITY_TYPE_THIEF, 148, 330, 1 + CHICKEN_LEG_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(2)
+                map_entity_definition 0, ENTITY_TYPE_THIEF, 148, 330, 1 + CHICKEN_LEG_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(2)
 
     wilderness_map_entity_load_slot_descriptor_4:
         .dc.w   0
@@ -269,7 +269,7 @@
                 map_entity_definition 6, ENTITY_TYPE_CHICKEN_LEG, 136, 372, 1
 
             wilderness_map_entity_load_group_descriptor_4_0_pal0:
-                entity_palette PALETTE_OFFSET(1, 1), 15, green_4, yellow_3, skin_4, silver_4
+                entity_palette PALETTE_OFFSET(1, 1), 15, green2_4, yellow_3, skin_4, silver_4
 
             wilderness_map_entity_load_group_descriptor_4_0_pal1:
                 entity_palette PALETTE_OFFSET(2, 5), 6, yellow_3, purple_3
@@ -284,8 +284,8 @@
             .dc.l   0
 
             .dc.w   2  // number of entities
-                map_entity_definition 0, ENTITY_TYPE_THIEF, 128, 340, 1 + CHICKEN_LEG_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(1)
-                map_entity_definition 1, ENTITY_TYPE_THIEF, 168, 330, 1 + CHICKEN_LEG_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(2)
+                map_entity_definition 0, ENTITY_TYPE_THIEF, 128, 340, 1 + CHICKEN_LEG_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(1)
+                map_entity_definition 1, ENTITY_TYPE_THIEF, 168, 330, 1 + CHICKEN_LEG_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(2)
 
     wilderness_map_entity_load_slot_descriptor_6:
         .dc.w   0
@@ -302,7 +302,7 @@
                 map_entity_definition 1, ENTITY_TYPE_LONGMOAN_SILVER, 152, 330
 
             wilderness_map_entity_load_group_descriptor_6_0_pal0:
-                entity_palette PALETTE_OFFSET(1, 8), 8, skin_4, silver_4
+                entity_palette PALETTE_OFFSET(1, 1), 15, black_4, yellow_3, skin_4, silver_4
 
     wilderness_map_entity_load_slot_descriptor_7:
         .dc.w   0
@@ -358,4 +358,4 @@
         .dc.l   0   // Palette list
         .dc.l   0   // Nemesis tile data list
         .dc.w   1   // Number of entities
-            map_entity_definition 0, ENTITY_TYPE_THIEF, 176, 96, 0x3A3, ENTITY_TYPE_THIEF_BLUE(2) | 0x8000
+            map_entity_definition 0, ENTITY_TYPE_THIEF, 176, 96, 0x3A3, ENTITY_TYPE_THIEF_BLUE_PARAM(2) | 0x8000

@@ -317,7 +317,7 @@
             .dc.w   3  // number of entities
                 map_entity_definition 0, ENTITY_TYPE_AMAZON_2, 216, 332,, 300
                 map_entity_definition 1, ENTITY_TYPE_AMAZON_2, 240, 348,, 240
-                map_entity_definition 2, ENTITY_TYPE_THIEF, 228, 308, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(3)
+                map_entity_definition 2, ENTITY_TYPE_THIEF, 228, 308, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(3)
 
     town_map_entity_load_slot_descriptor_4:
         .dc.w   0
@@ -369,8 +369,8 @@
             .dc.l   0
 
             .dc.w   2  // number of entities
-                map_entity_definition 3, ENTITY_TYPE_THIEF, 228, 330, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(2)
-                map_entity_definition 4, ENTITY_TYPE_THIEF, 180, 320, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(3)
+                map_entity_definition 3, ENTITY_TYPE_THIEF, 228, 330, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(2)
+                map_entity_definition 4, ENTITY_TYPE_THIEF, 180, 320, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(3)
 
     town_map_entity_load_slot_descriptor_7:
         .dc.w   0
@@ -512,7 +512,7 @@
             .dc.w   3  // number of entities
                 map_entity_definition 0, ENTITY_TYPE_AMAZON_2, 216, 332,, 300
                 map_entity_definition 1, ENTITY_TYPE_AMAZON_2, 240, 348,, 240
-                map_entity_definition 2, ENTITY_TYPE_THIEF, 228, 308, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(3)
+                map_entity_definition 2, ENTITY_TYPE_THIEF, 228, 308, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(3)
 
     town_map_beginner_entity_load_slot_descriptor_4:
         .dc.w   0
@@ -562,8 +562,8 @@
             .dc.l   0
 
             .dc.w   2  // number of entities
-                map_entity_definition 3, ENTITY_TYPE_THIEF, 228, 330, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(2)
-                map_entity_definition 4, ENTITY_TYPE_THIEF, 180, 320, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(3)
+                map_entity_definition 3, ENTITY_TYPE_THIEF, 228, 330, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(2)
+                map_entity_definition 4, ENTITY_TYPE_THIEF, 180, 320, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(3)
 
     town_map_beginner_entity_load_slot_descriptor_7:
         .dc.w   0
@@ -622,7 +622,7 @@
         .dc.l   0   // Palette list
         .dc.l   0   // Nemesis tile data list
         .dc.w   4   // Number of entities
-            map_entity_definition 0, ENTITY_TYPE_THIEF, 176, 96, 0x3A3, ENTITY_TYPE_THIEF_BLUE(1) | 0x8000
-            map_entity_definition 1, ENTITY_TYPE_THIEF, 184, 96, 0x3A3, ENTITY_TYPE_THIEF_GREEN(1)
-            map_entity_definition 2, ENTITY_TYPE_THIEF, 192, 32, 0x3A3, ENTITY_TYPE_THIEF_BLUE(1)
-            map_entity_definition 3, ENTITY_TYPE_THIEF, 176, 32, 0x3A3, ENTITY_TYPE_THIEF_GREEN(1)
+            map_entity_definition 0, ENTITY_TYPE_THIEF, 176, 96, 0x3A3, ENTITY_TYPE_THIEF_BLUE_PARAM(1) | 0x8000
+            map_entity_definition 1, ENTITY_TYPE_THIEF, 184, 96, 0x3A3, ENTITY_TYPE_THIEF_GREEN_PARAM(1)
+            map_entity_definition 2, ENTITY_TYPE_THIEF, 192, 32, 0x3A3, ENTITY_TYPE_THIEF_BLUE_PARAM(1)
+            map_entity_definition 3, ENTITY_TYPE_THIEF, 176, 32, 0x3A3, ENTITY_TYPE_THIEF_GREEN_PARAM(1)
