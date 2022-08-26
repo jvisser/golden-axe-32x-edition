@@ -55,12 +55,12 @@
 
     .macro load_credits_table credits_type
             move.w  (current_credit_index), %d0
-            cmpi.w  #0x0015, %d0
-            blt     .load_base_table\@
-            lea     (extended_credits_\credits_type\()_table - (0x0015 * 4)), %a1
+            cmpi.w  #extended_credits_count, %d0
+            blt     .load_extended_table\@
+            lea     (credits_\credits_type\()_table - (extended_credits_count * 4)), %a1
             rts
-        .load_base_table\@:
-            lea     (credits_\credits_type\()_table), %a1
+        .load_extended_table\@:
+            lea     (extended_credits_\credits_type\()_table), %a1
             rts
     .endm
 
