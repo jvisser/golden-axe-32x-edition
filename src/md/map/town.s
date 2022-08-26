@@ -122,10 +122,6 @@
      * Event list
      */
     town_event_list:
-        .dc.w   0
-        .dc.b   MAP_EVENT_VERTICAL_SCROLL_LIMITS
-        .dc.b   town_scroll_limits_0 - town_extended_event_data_table
-
         .dc.w   8
         .dc.b   MAP_EVENT_WAIT_FOR_ENEMY_DEFEAT
         .dc.b   0
@@ -137,6 +133,10 @@
         .dc.w   88
         .dc.b   MAP_EVENT_WAIT_FOR_ENEMY_DEFEAT
         .dc.b   0
+
+        .dc.w   280
+        .dc.b   MAP_EVENT_VERTICAL_SCROLL_LIMITS
+        .dc.b   town_scroll_limits_0 - town_extended_event_data_table
 
         .dc.w   320
         .dc.b   MAP_EVENT_PALETTE_TRANSITION
@@ -193,7 +193,7 @@
         town_camera_transition_3:   .dc.l   town_camera_transition_3_param
 
     town_scroll_limits_0_param:
-        .dc.w   104                 // Min y scroll
+        .dc.w   103                 // Min y scroll
         .dc.w   512 - 224           // Max y scroll
 
     town_camera_transition_1_param:
