@@ -267,7 +267,7 @@
                 map_entity_definition 6, ENTITY_TYPE_BLUE_DRAGON, 248, 320, 1
 
             eagles_head_map_entity_load_group_descriptor_2_0_pal0:
-                entity_palette PALETTE_OFFSET(1, 1), 15, red1_4, yellow_3, skin_4
+                entity_palette PALETTE_OFFSET(1, 1), 11, red1_4, yellow_3, skin_4
             eagles_head_map_entity_load_group_descriptor_2_0_pal1:
                 entity_palette PALETTE_OFFSET(3, 1), 7, blue1_4, yellow_3
 
@@ -307,7 +307,7 @@
                 map_entity_definition 3, ENTITY_TYPE_HENINGER_RED, 200, 356
 
             eagles_head_map_entity_load_group_descriptor_4_0_pal0:
-                    entity_palette PALETTE_OFFSET(1, 8), 8, skin_4, red2_4
+                    entity_palette PALETTE_OFFSET(1, 1), 15, black_4, yellow_3, skin_4, red2_4
 
         eagles_head_map_entity_load_group_descriptor_4_1:
             .dc.w   0   // load allowed when there are active enemies?
@@ -338,9 +338,9 @@
             .dc.l   0
 
             .dc.w   3  // number of entities
-                map_entity_definition 3, ENTITY_TYPE_THIEF, 192, 360, GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(3)
-                map_entity_definition 4, ENTITY_TYPE_THIEF, 224, 334, GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(3)
-                map_entity_definition 5, ENTITY_TYPE_THIEF, 260, 320, GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE(2)
+                map_entity_definition 3, ENTITY_TYPE_THIEF, 192, 360, GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(3)
+                map_entity_definition 4, ENTITY_TYPE_THIEF, 224, 334, GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(3)
+                map_entity_definition 5, ENTITY_TYPE_THIEF, 260, 320, GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(2)
 
     eagles_head_map_entity_load_slot_descriptor_6:
         .dc.w   1

@@ -31,6 +31,8 @@
         .dc.l   nem_pat_empty
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(HOLE_TILE_ID))
         .dc.l   nem_pat_hole
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(HOLE_TILE_ID + HOLE_TILE_COUNT))
+        .dc.l   nem_pat_thief
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX))
         .dc.l   nem_pat_feather
         .dc.l   0
@@ -116,16 +118,28 @@
         .dc.b   MAP_EVENT_VERTICAL_SCROLL_LIMITS
         .dc.b   fiends_path_village_scroll_limits_0 - fiends_path_extended_event_data_table
 
+        .dc.w   256
+        .dc.b   MAP_EVENT_WAIT_FOR_ENEMY_DEFEAT
+        .dc.b   0
+
         .dc.w   384
         .dc.b   MAP_EVENT_PALETTE_TRANSITION
         .dc.b   0x01
+
+        .dc.w   576
+        .dc.b   MAP_EVENT_WAIT_FOR_ENEMY_DEFEAT
+        .dc.b   0
 
         .dc.w   656
         .dc.b   MAP_EVENT_VERTICAL_SCROLL_LIMITS
         .dc.b   fiends_path_village_scroll_limits_1 - fiends_path_extended_event_data_table
 
-        .dc.w   768
+        .dc.w   767
         .dc.b   MAP_EVENT_START_FEATHER_ANIMATION
+        .dc.b   0
+
+        .dc.w   768
+        .dc.b   MAP_EVENT_WAIT_FOR_ENEMY_DEFEAT
         .dc.b   0
 
         .dc.w   944
@@ -135,6 +149,10 @@
         .dc.w   1008
         .dc.b   MAP_EVENT_CHANGE_MUSIC
         .dc.b   SONG_BOSS
+
+        .dc.w   1104
+        .dc.b   MAP_EVENT_WAIT_FOR_ENEMY_DEFEAT
+        .dc.b   0
 
         .dc.w   1216
         .dc.b   MAP_EVENT_CAMPSITE_ON_ENEMY_DEFEAT
@@ -160,8 +178,32 @@
      * Entity load list
      */
     fiends_path_entity_load_list:
-        .dc.w   640
+        .dc.w   0
         .dc.l   fiends_path_map_entity_load_slot_descriptor_0
+
+        .dc.w   192
+        .dc.l   fiends_path_map_entity_load_slot_descriptor_1
+
+        .dc.w   576
+        .dc.l   fiends_path_map_entity_load_slot_descriptor_2
+
+        .dc.w   660
+        .dc.l   fiends_path_map_entity_load_slot_descriptor_3
+
+        .dc.w   768
+        .dc.l   fiends_path_map_entity_load_slot_descriptor_4
+
+        .dc.w   824
+        .dc.l   fiends_path_map_entity_load_slot_descriptor_5
+
+        .dc.w   996
+        .dc.l   fiends_path_map_entity_load_slot_descriptor_6
+
+        .dc.w   1104
+        .dc.l   fiends_path_map_entity_load_slot_descriptor_7
+
+        .dc.w   1216
+        .dc.l   fiends_path_map_entity_load_slot_descriptor_8
 
         .dc.w   -1  // Terminate
 
@@ -177,10 +219,125 @@
             .dc.l   0
 
             .dc.w   1  // number of entities
-                map_entity_definition 0, ENTITY_TYPE_SKELETON_2_FROM_HOLE, 408, 56
+                map_entity_definition 0, ENTITY_TYPE_HENINGER_RED, 376, 330
 
             fiends_path_map_entity_load_group_descriptor_0_0_pal0:
+                entity_palette PALETTE_OFFSET(1, 0), 16, black_8, skin_4, red2_4
+
+    fiends_path_map_entity_load_slot_descriptor_1:
+        .dc.w   0
+        .dc.l   fiends_path_map_entity_load_group_descriptor_1_0
+
+        fiends_path_map_entity_load_group_descriptor_1_0:
+            .dc.w   1   // load allowed when there are active enemies?
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   2  // number of entities
+                map_entity_definition 1, ENTITY_TYPE_LONGMOAN_RED, 392, -30
+                map_entity_definition 2, ENTITY_TYPE_HENINGER_RED, 416, -50
+
+    fiends_path_map_entity_load_slot_descriptor_2:
+        .dc.w   0
+        .dc.l   fiends_path_map_entity_load_group_descriptor_2_0
+
+        fiends_path_map_entity_load_group_descriptor_2_0:
+            .dc.w   0   // load allowed when there are active enemies?
+
+            .dc.l   fiends_path_map_entity_load_group_descriptor_2_0_pal0
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   1  // number of entities
+                map_entity_definition 0, ENTITY_TYPE_SKELETON_2_FROM_HOLE, 424, 112
+
+            fiends_path_map_entity_load_group_descriptor_2_0_pal0:
                 entity_palette PALETTE_OFFSET(2, 1), 4, hole_4
+
+    fiends_path_map_entity_load_slot_descriptor_3:
+        .dc.w   0
+        .dc.l   fiends_path_map_entity_load_group_descriptor_3_0
+
+        fiends_path_map_entity_load_group_descriptor_3_0:
+            .dc.w   0   // load allowed when there are active enemies?
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   1  // number of entities
+                map_entity_definition 0, ENTITY_TYPE_SKELETON_2_FROM_HOLE, 400, 132
+
+    fiends_path_map_entity_load_slot_descriptor_4:
+        .dc.w   0
+        .dc.l   fiends_path_map_entity_load_group_descriptor_4_0
+
+        fiends_path_map_entity_load_group_descriptor_4_0:
+            .dc.w   1   // load allowed when there are active enemies?
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   1  // number of entities
+                map_entity_definition 1, ENTITY_TYPE_SKELETON_2_FROM_HOLE, 432, 200
+
+    fiends_path_map_entity_load_slot_descriptor_5:
+        .dc.w   0
+        .dc.l   fiends_path_map_entity_load_group_descriptor_5_0
+
+        fiends_path_map_entity_load_group_descriptor_5_0:
+            .dc.w   0   // load allowed when there are active enemies?
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   1  // number of entities
+                map_entity_definition 5, ENTITY_TYPE_THIEF, 384, 330, HOLE_TILE_ID + HOLE_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(2)
+
+    fiends_path_map_entity_load_slot_descriptor_6:
+        .dc.w   0
+        .dc.l   fiends_path_map_entity_load_group_descriptor_6_0
+
+        fiends_path_map_entity_load_group_descriptor_6_0:
+            .dc.w   1   // load allowed when there are active enemies?
+            .dc.l   0
+            .dc.l   0
+            .dc.w   1  // number of entities
+                map_entity_definition 0, ENTITY_TYPE_LONGMOAN_DARK, 400, 220
+
+    fiends_path_map_entity_load_slot_descriptor_7:
+        .dc.w   0
+        .dc.l   fiends_path_map_entity_load_group_descriptor_7_0
+
+        fiends_path_map_entity_load_group_descriptor_7_0:
+            .dc.w   1   // load allowed when there are active enemies?
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   2  // number of entities
+                map_entity_definition 1, ENTITY_TYPE_HENINGER_DARK, 392, 244
+                map_entity_definition 2, ENTITY_TYPE_HENINGER_DARK, 416, 228
+
+    fiends_path_map_entity_load_slot_descriptor_8:
+        .dc.w   1
+        .dc.l   fiends_path_map_entity_load_group_descriptor_8_0
+        .dc.l   fiends_path_map_entity_load_group_descriptor_8_1
+
+        fiends_path_map_entity_load_group_descriptor_8_0:
+            .dc.w   0   // load allowed when there are active enemies?
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   3  // number of entities
+                map_entity_definition 0, ENTITY_TYPE_LONGMOAN_DARK, 392, 244
+                map_entity_definition 1, ENTITY_TYPE_SKELETON_2_FROM_HOLE, 364, 182
+                map_entity_definition 2, ENTITY_TYPE_SKELETON_2_FROM_HOLE, 424, 56
+
+        fiends_path_map_entity_load_group_descriptor_8_1:
+            .dc.w   0   // load allowed when there are active enemies?
+            .dc.l   0
+            .dc.l   0
+
+            .dc.w   3  // number of entities
+                map_entity_definition 0, ENTITY_TYPE_LONGMOAN_DARK, 364, 86
+                map_entity_definition 1, ENTITY_TYPE_HENINGER_DARK, 392, 176
+                map_entity_definition 2, ENTITY_TYPE_SKELETON_2_FROM_HOLE, 432, 264
 
 
     /**********************************************************
@@ -199,8 +356,13 @@
 
     fiends_path_camp_map_entity_load_group_descriptor:
         .dc.w   0   // Load allowed when there are active enemies?
+
+        .dc.l   fiends_path_map_camp_pal
         .dc.l   0   // Palette list
         .dc.l   0   // Nemesis tile data list
         .dc.w   2   // Number of entities
-            map_entity_definition 0, ENTITY_TYPE_THIEF, 352, 32, 0x3A3, ENTITY_TYPE_THIEF_GREEN(1)
-            map_entity_definition 1, ENTITY_TYPE_THIEF, 352, 96, 0x3A3, ENTITY_TYPE_THIEF_BLUE(3) | 0x8000
+            map_entity_definition 0, ENTITY_TYPE_THIEF, 352, 32, 0x3A3, ENTITY_TYPE_THIEF_GREEN_PARAM(1)
+            map_entity_definition 1, ENTITY_TYPE_THIEF, 352, 96, 0x3A3, ENTITY_TYPE_THIEF_BLUE_PARAM(3) | 0x8000
+
+        fiends_path_map_camp_pal:
+            entity_palette PALETTE_OFFSET(2, 1), 4, hole_4

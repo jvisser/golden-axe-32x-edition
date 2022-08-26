@@ -142,8 +142,8 @@
 #define ENTITY_TYPE_VILLAGER_2                          0x57
 #define ENTITY_TYPE_SKELETON_4                          0x60
 
-#define ENTITY_TYPE_THIEF_BLUE(item_count)              (item_count)
-#define ENTITY_TYPE_THIEF_GREEN(item_count)             (0x0080 | item_count)
+#define ENTITY_TYPE_THIEF_BLUE_PARAM(item_count)        (item_count)
+#define ENTITY_TYPE_THIEF_GREEN_PARAM(item_count)       (0x0080 | item_count)
 
 
 /**********************************************************
@@ -257,6 +257,37 @@
  * Partial palette macros
  */
 
+.macro entity_palette_black_3
+    .rept 3
+        .dc.w 0
+    .endr
+.endm
+
+.macro entity_palette_black_4
+    .rept 4
+        .dc.w 0
+    .endr
+.endm
+
+.macro entity_palette_black_8
+    .rept 8
+        .dc.w 0
+    .endr
+.endm
+
+.macro entity_palette_black_16
+    .rept 16
+        .dc.w 0
+    .endr
+.endm
+
+.macro entity_palette_black_32
+    .rept 32
+        .dc.w 0
+    .endr
+.endm
+
+
 // Palette 1:5: Amazon
 // Palette 2:5: Chicken leg
 .macro entity_palette_yellow_3
@@ -304,6 +335,13 @@
 // Palette 1:12: Heninger, Longmoan, Bad brother, Death adder
 .macro entity_palette_green_4
     .irp color, 0x08c4, 0x0682, 0x0460, 0x0240
+        .dc.w \color
+    .endr
+.endm
+
+// Palette 1:1: Amazon
+.macro entity_palette_green2_4
+    .irp color, 0x04a0, 0x0260, 0x0040, 0x0002
         .dc.w \color
     .endr
 .endm
@@ -383,7 +421,7 @@
 
 // Palette 2:1: Skeleton hole
 .macro entity_palette_hole_4
-    .irp color, 0x0466 0x0244, 0x0022, 0x0000
+    .irp color,  0x0000, 0x0022, 0x0244, 0x0466
         .dc.w \color
     .endr
 .endm
