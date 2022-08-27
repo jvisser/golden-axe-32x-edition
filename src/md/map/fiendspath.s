@@ -296,10 +296,15 @@
 
         fiends_path_map_entity_load_group_descriptor_6_0:
             .dc.w   1   // load allowed when there are active enemies?
+
+            .dc.l   fiends_path_map_entity_load_group_descriptor_6_0_pal0
             .dc.l   0
             .dc.l   0
             .dc.w   1  // number of entities
                 map_entity_definition 0, ENTITY_TYPE_LONGMOAN_DARK, 400, 220
+
+            fiends_path_map_entity_load_group_descriptor_6_0_pal0:
+                entity_palette PALETTE_OFFSET(1, 8), 8, dark_4, dark_4
 
     fiends_path_map_entity_load_slot_descriptor_7:
         .dc.w   0
