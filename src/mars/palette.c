@@ -8,8 +8,8 @@
 #include "palette.h"
 
 
-static u16 current_palette[256];
-static u16 target_palette[256];
+static u16 current_palette[256] ATTR_UNCACHED;
+static u16 target_palette[256]  ATTR_UNCACHED;
 
 
 static u16* palettes[] =

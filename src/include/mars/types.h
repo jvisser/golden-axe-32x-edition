@@ -17,7 +17,8 @@ typedef signed int          s32;
 typedef signed long long    s64;
 
 
-#define ALIGNED(a)          __attribute__((aligned(a)))
+#define ATTR_ALIGNED(a)     __attribute__((aligned(a)))
+#define ATTR_UNCACHED       __attribute__ ((section ("uncached")))
 #define HINT_ALIGN(d, a)    __builtin_assume_aligned(d, a)
 
 
