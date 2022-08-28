@@ -3,6 +3,7 @@
  */
 
 #include "mars.h"
+#include "sh2.h"
 #include "command.h"
 #include "noop.h"
 #include "vdp.h"
@@ -43,21 +44,21 @@ typedef struct
 {
     u32                             width;
     u32                             height;
-    u16         const ALIGNED(4)*   tile_map;
-    block       const ALIGNED(4)*   blocks;
-    map_palette const ALIGNED(4)*   palettes[4];
+    u16         const ATTR_ALIGNED(4)*   tile_map;
+    block       const ATTR_ALIGNED(4)*   blocks;
 } map_data;
 
 
-static map_def const ALIGNED(4)* const * const md_map_table = (map_def const**) 0x22080000;
-static map_def const ALIGNED(4)* map_definition = 0;
+static map_def const ATTR_ALIGNED(4)* const * const md_map_table = (map_def const**) 0x22080000;
+static map_def const ATTR_ALIGNED(4)* map_definition ATTR_UNCACHED = 0;
+static map_palette const ATTR_ALIGNED(4)* palettes[4] ATTR_UNCACHED;
 static map_data map;
 
 static u32 vertical_scroll;
 static u32 horizontal_scroll;
 
-static u16 ALIGNED(4)* line_table_buffer;
-static u16 ALIGNED(4)* render_buffer;
+static u16 ATTR_ALIGNED(4)* line_table_buffer;
+static u16 ATTR_ALIGNED(4)* render_buffer;
 static u32 render_buffer_slope;
 static u32 h_diff_accumulated;
 
@@ -304,6 +305,8 @@ static void load_map(map_load_parameters* load_parameters)
 
     if (map_definition)
     {
+        //SH2_CACHE_PURGE;
+
         u32* map_base = (u32*) UNCACHED(&_free_ram_start);
 
         u32* target = map_base;
@@ -313,8 +316,8 @@ static void load_map(map_load_parameters* load_parameters)
             *target++ = *source++;
         }
 
-        line_table_buffer = (u16*) target;
-        render_buffer = (u16*) (target + 128);
+        line_table_buffer = (u16*) CACHED(target);
+        render_buffer = (u16*) CACHED(target + 128);
 
         map.width    = map_definition->width;
         map.height   = map_definition->height;
@@ -322,7 +325,7 @@ static void load_map(map_load_parameters* load_parameters)
         map.blocks   = (block*) (map_base + map_definition->blocks_offset);
         for (u32 i = 0; i < 4; i++)
         {
-            map.palettes[i] = (map_palette*) (map_base + map_definition->palette_offsets[i]);
+            palettes[i] = (map_palette*) (map_base + map_definition->palette_offsets[i]);
         }
 
         vertical_scroll = load_parameters->vertical_scroll << 4;
@@ -332,7 +335,7 @@ static void load_map(map_load_parameters* load_parameters)
         h_diff_accumulated = 0;
 
         // Set initial palette
-        pal_replace(PAL_CURRENT, 0, map.palettes[0]->color_count, map.palettes[0]->colors);
+        pal_replace(PAL_CURRENT, 0, palettes[0]->color_count, palettes[0]->colors);
         pal_commit();
 
         // Render initial frame
@@ -387,7 +390,7 @@ static void post_process(u32 command_id, u16* param_base)
         case CMD_MAP_PALETTE:
             {
                 map_palette_parameters* palette_parameters = (map_palette_parameters*) param_base;
-                map_palette const* palette = map.palettes[palette_parameters->palette_index];
+                map_palette const* palette = palettes[palette_parameters->palette_index];
 
                 if (palette_parameters->transition)
                 {

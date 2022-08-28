@@ -17,7 +17,8 @@
 
 MEMORY
 {
-    RAM (wx) : ORIGIN = 0x06000000, LENGTH = 0x00040000
+    RAM (wx)                : ORIGIN = 0x06000000, LENGTH = 0x00040000
+    RAM_CACHE_THROUGH (wx)  : ORIGIN = 0x26000000, LENGTH = 0x00040000
 }
 
 
@@ -39,20 +40,28 @@ PROVIDE (_slave_int_vblank = 0x06000008);
 
 SECTIONS
 {
-    .text : SUBALIGN(4)
+    __section_offset = 0;
+
+    .text : AT(__section_offset) SUBALIGN(4)
     {
         KEEP(*(boot))
         *(.text .text.*)
     } > RAM
+    __section_offset += SIZEOF(.text);
 
-    .data : SUBALIGN(4)
+    .data : AT(__section_offset) SUBALIGN(4)
     {
         *(.rodata .rodata.*)
         *(.data .data.*)
         *(.bss .bss.*)
-
-        . = ALIGN(4);
-
-        __free_ram_start = .;
     } > RAM
+    __section_offset += SIZEOF(.data);
+
+    uncached ORIGIN(RAM_CACHE_THROUGH) + __section_offset : AT(__section_offset) SUBALIGN(4)
+    {
+        *(uncached uncached.*)
+    } > RAM_CACHE_THROUGH
+    __section_offset += SIZEOF(uncached);
+
+    __free_ram_start = ((ORIGIN(RAM) + __section_offset) + 3) & ~3;
 }
