@@ -64,8 +64,10 @@
  */
 
 // Reserved for game over and continue signs etc
+#define GAME_PLAY_VRAM_SAFE_MIN                 0x1900  // Used by level 6 tyris magic, tiles between SAFE_MIN and RESERVED_MIN must be restored using the map's tile restore list
 #define GAME_PLAY_VRAM_RESERVED_MIN             0x27c0
 #define GAME_PLAY_VRAM_RESERVED_MAX             0x3200
+#define GAME_PLAY_VRAM_SAFE_TILE_MIN            (GAME_PLAY_VRAM_SAFE_MIN/32)
 #define GAME_PLAY_VRAM_RESERVED_TILE_MIN        (GAME_PLAY_VRAM_RESERVED_MIN/32)
 #define GAME_PLAY_VRAM_RESERVED_TILE_MAX        (GAME_PLAY_VRAM_RESERVED_MAX/32)
 
