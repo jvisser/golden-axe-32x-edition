@@ -118,6 +118,9 @@
 
 #define last_song_id                            0xffffc12c  // .b
 
+#define background_name_table_cache             0xffff0000
+
+
 /**********************************************************
  * Original golden axe sub routines
  */
@@ -139,6 +142,17 @@
 
 #define screen_transition_from_dark             0x00003690
 #define screen_transition_to_dark               0x000036d8
+
+
+/*
+ * Animation sequencer (one of many implementations though)
+ *
+ * Parameters:
+ * - a6: source address
+ * - d4: dma length in words
+ * - d7: vram address set command
+ */
+#define vdp_do_dma                              0xfffff410  // Source: 0x002c00
 
 
 /*
