@@ -211,6 +211,7 @@
 #define TOWNDOOR_TILE_ID                                1
 #define TOWNDOOR1_TILE_COUNT                            98
 #define TOWNDOOR2_TILE_COUNT                            83
+#define TOWNDOOR_TILE_COUNT                             (TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT)
 
 #define TURTLE_EYE_TILE_COUNT                           12
 #define TURTLE_EYE_TILE_ID                              (GAME_PLAY_VRAM_DYNAMIC_TOP_TILE - TURTLE_EYE_TILE_COUNT)

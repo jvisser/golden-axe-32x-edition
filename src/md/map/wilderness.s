@@ -20,7 +20,10 @@
         .dc.l   wilderness_map_definition   // Patch map table entry
     patch_end
 
-    #define BAD_BROTHER_TILE_ID 0x0200      // After intro text
+    #define CHICKEN_LEG_TILE_ID     1
+    #define BAD_BROTHER_TILE_ID     0x0200      // After intro text
+    #define THIEF_TILE_ID           BAD_BROTHER_TILE_ID + BAD_BROTHER_TILE_COUNT
+    #define VILLAGER_TILE_ID        THIEF_TILE_ID + THIEF_TILE_COUNT
 
     wilderness_map_definition:
         // Palette list
@@ -30,14 +33,14 @@
         // Nemesis tile data list
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(0))
         .dc.l   nem_pat_empty
-        .dc.l   VRAM_ADDR_SET(TILE_ADDR(1))
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(CHICKEN_LEG_TILE_ID))
         .dc.l   nem_pat_chicken_leg
-        .dc.l   VRAM_ADDR_SET(TILE_ADDR(1 + CHICKEN_LEG_TILE_COUNT))
-        .dc.l   nem_pat_thief
-        .dc.l   VRAM_ADDR_SET(TILE_ADDR(1 + CHICKEN_LEG_TILE_COUNT + THIEF_TILE_COUNT))
-        .dc.l   nem_pat_villager
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(BAD_BROTHER_TILE_ID))
         .dc.l   nem_pat_bad_brother
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(THIEF_TILE_ID))
+        .dc.l   nem_pat_thief
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(VILLAGER_TILE_ID))
+        .dc.l   nem_pat_villager
         .dc.l   0
 
         // Tile map data
@@ -248,7 +251,7 @@
             .dc.l   0
 
             .dc.w   1  // number of entities
-                map_entity_definition 0, ENTITY_TYPE_THIEF, 148, 330, 1 + CHICKEN_LEG_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(2)
+                map_entity_definition 0, ENTITY_TYPE_THIEF, 148, 330, THIEF_TILE_ID, ENTITY_TYPE_THIEF_BLUE_PARAM(2)
 
     wilderness_map_entity_load_slot_descriptor_4:
         .dc.w   0
@@ -265,8 +268,8 @@
             .dc.w   4  // number of entities
                 map_entity_definition 0, ENTITY_TYPE_LONGMOAN_SILVER, 184, 330
                 map_entity_definition 1, ENTITY_TYPE_AMAZON_5, 136, 372
-                map_entity_definition 5, ENTITY_TYPE_VILLAGER_2, 184, 330, 1 + CHICKEN_LEG_TILE_COUNT + THIEF_TILE_COUNT, 0xd000
-                map_entity_definition 6, ENTITY_TYPE_CHICKEN_LEG, 136, 372, 1
+                map_entity_definition 5, ENTITY_TYPE_VILLAGER_2, 184, 330, VILLAGER_TILE_ID, 0xd000
+                map_entity_definition 6, ENTITY_TYPE_CHICKEN_LEG, 136, 372, CHICKEN_LEG_TILE_ID
 
             wilderness_map_entity_load_group_descriptor_4_0_pal0:
                 entity_palette PALETTE_OFFSET(1, 1), 15, green2_4, yellow_3, skin_4, silver_4
@@ -284,8 +287,8 @@
             .dc.l   0
 
             .dc.w   2  // number of entities
-                map_entity_definition 0, ENTITY_TYPE_THIEF, 128, 340, 1 + CHICKEN_LEG_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(1)
-                map_entity_definition 1, ENTITY_TYPE_THIEF, 168, 330, 1 + CHICKEN_LEG_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(2)
+                map_entity_definition 0, ENTITY_TYPE_THIEF, 128, 340, THIEF_TILE_ID, ENTITY_TYPE_THIEF_BLUE_PARAM(1)
+                map_entity_definition 1, ENTITY_TYPE_THIEF, 168, 330, THIEF_TILE_ID, ENTITY_TYPE_THIEF_BLUE_PARAM(2)
 
     wilderness_map_entity_load_slot_descriptor_6:
         .dc.w   0
@@ -316,8 +319,8 @@
             .dc.l   0
 
             .dc.w   2  // number of entities
-                map_entity_definition 0, ENTITY_TYPE_VILLAGER_1, 184, 330, 1 + CHICKEN_LEG_TILE_COUNT + THIEF_TILE_COUNT, 0xd000
-                map_entity_definition 1, ENTITY_TYPE_VILLAGER_2, 208, 330, 1 + CHICKEN_LEG_TILE_COUNT + THIEF_TILE_COUNT, 0xc300
+                map_entity_definition 0, ENTITY_TYPE_VILLAGER_1, 184, 330, VILLAGER_TILE_ID, 0xd000
+                map_entity_definition 1, ENTITY_TYPE_VILLAGER_2, 208, 330, VILLAGER_TILE_ID, 0xc300
 
             wilderness_map_entity_load_group_descriptor_7_0_pal0:
                 entity_palette PALETTE_OFFSET(1, 8), 8, skin_4, green_4
@@ -336,7 +339,7 @@
                 map_entity_definition 3, ENTITY_TYPE_LONGMOAN_GREEN, 208, 330
                 map_entity_definition 4, ENTITY_TYPE_BAD_BROTHER_GREEN, 136, 350, BAD_BROTHER_TILE_ID
                 map_entity_definition 5, ENTITY_TYPE_BAD_BROTHER_GREEN, 168, 370, BAD_BROTHER_TILE_ID
-                map_entity_definition 7, ENTITY_TYPE_CHICKEN_LEG, 208, 372, 1
+                map_entity_definition 7, ENTITY_TYPE_CHICKEN_LEG, 208, 372, CHICKEN_LEG_TILE_ID
 
 
     /**********************************************************

@@ -20,6 +20,13 @@
         .dc.l   town_map_definition   // Patch map table entry
     patch_end
 
+    #define THIEF_TILE_ID           TOWNDOOR_TILE_ID + TOWNDOOR_TILE_COUNT
+    #define VILLAGER_TILE_ID        THIEF_TILE_ID + THIEF_TILE_COUNT
+    #define BAD_BROTHER_TILE_ID     GAME_PLAY_VRAM_RESERVED_TILE_MAX
+    #define DRAGON_TILE_ID          BAD_BROTHER_TILE_ID + BAD_BROTHER_TILE_COUNT
+    #define BITTER_TILE_ID          BAD_BROTHER_TILE_ID     // Replaces bad brother
+    #define DEATH_ADDER_JR_TILE_ID  BAD_BROTHER_TILE_ID     // Extends bad brother
+
     town_map_definition:
         // Palette list
         .dc.l   hud_player_palette
@@ -33,15 +40,15 @@
         .dc.l   nem_pat_towndoor_1
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT))
         .dc.l   nem_pat_towndoor_2
-        .dc.l   VRAM_ADDR_SET(TILE_ADDR(TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT))
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(THIEF_TILE_ID))
         .dc.l   nem_pat_thief
-        .dc.l   VRAM_ADDR_SET(TILE_ADDR(TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT + THIEF_TILE_COUNT))
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(VILLAGER_TILE_ID))
         .dc.l   nem_pat_villager
-        .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX))
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(BAD_BROTHER_TILE_ID))
         .dc.l   nem_pat_bad_brother
-        .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT))
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(DRAGON_TILE_ID))
         .dc.l   nem_pat_dragon
-        .dc.l   VRAM_ADDR_SET(TILE_ADDR(TURTLE_EYE_TILE_ID))
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(TURTLE_EYE_TILE_ID))    // This overlaps entity slot 3 DMA target: mitigate by not using that slot where the eye is active
         .dc.l   nem_pat_turtle_eye
         .dc.l   0
 
@@ -92,6 +99,10 @@
     town_tile_restore_list:
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(0))
         .dc.l   nem_pat_empty
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(THIEF_TILE_ID))
+        .dc.l   nem_pat_thief
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(VILLAGER_TILE_ID))
+        .dc.l   nem_pat_villager
         .dc.l   0
 
 
@@ -260,7 +271,7 @@
             .dc.w   3  // number of entities
                 map_entity_definition 0, ENTITY_TYPE_LONGMOAN_SILVER, 296, 330
                 map_entity_definition 1, ENTITY_TYPE_LONGMOAN_SILVER, 240, 350
-                map_entity_definition 6, ENTITY_TYPE_RED_DRAGON, 240, 350, GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT
+                map_entity_definition 6, ENTITY_TYPE_RED_DRAGON, 240, 350, DRAGON_TILE_ID
 
         town_map_entity_load_group_descriptor_0_0_pal0:
             entity_palette PALETTE_OFFSET(1, 1), 15, red1_4, yellow_3, skin_4, silver_4
@@ -281,7 +292,7 @@
             .dc.w   3  // number of entities
                 map_entity_definition 0, ENTITY_TYPE_HENINGER_RED, 192, 350
                 map_entity_definition 1, ENTITY_TYPE_LONGMOAN_SILVER, 256, -30
-                map_entity_definition 7, ENTITY_TYPE_BLUE_DRAGON, 192, 350, GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT
+                map_entity_definition 7, ENTITY_TYPE_BLUE_DRAGON, 192, 350, DRAGON_TILE_ID
 
         town_map_entity_load_group_descriptor_1_0_pal0:
             entity_palette PALETTE_OFFSET(1, 8), 8, skin_4, silver_4
@@ -317,7 +328,7 @@
             .dc.w   3  // number of entities
                 map_entity_definition 0, ENTITY_TYPE_AMAZON_2, 216, 332,, 300
                 map_entity_definition 1, ENTITY_TYPE_AMAZON_2, 240, 348,, 240
-                map_entity_definition 2, ENTITY_TYPE_THIEF, 228, 308, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(3)
+                map_entity_definition 2, ENTITY_TYPE_THIEF, 228, 308, THIEF_TILE_ID, ENTITY_TYPE_THIEF_BLUE_PARAM(3)
 
     town_map_entity_load_slot_descriptor_4:
         .dc.w   0
@@ -332,8 +343,8 @@
             .dc.l   0
 
             .dc.w   2  // number of entities
-                map_entity_definition 0, ENTITY_TYPE_BAD_BROTHER_BLUE, 208, 240, GAME_PLAY_VRAM_RESERVED_TILE_MAX
-                map_entity_definition 1, ENTITY_TYPE_BAD_BROTHER_BLUE, 208, 240, GAME_PLAY_VRAM_RESERVED_TILE_MAX, 300
+                map_entity_definition 0, ENTITY_TYPE_BAD_BROTHER_BLUE, 208, 240, BAD_BROTHER_TILE_ID, 60
+                map_entity_definition 1, ENTITY_TYPE_BAD_BROTHER_BLUE, 208, 240, BAD_BROTHER_TILE_ID, 300
 
             town_map_entity_load_group_descriptor_4_0_pal0:
                 entity_palette PALETTE_OFFSET(1, 8), 8, skin_4, blue2_4
@@ -347,17 +358,17 @@
         town_map_entity_load_group_descriptor_5_0:
             .dc.w   0   // load allowed when there are active enemies?
             .dc.l   0
-            .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX))
+            .dc.l   VRAM_ADDR_SET(TILE_ADDR(BITTER_TILE_ID))
             .dc.l   nem_pat_bitter  // Pre-load
             .dc.l   0
 
             .dc.w   6  // number of entities
-                map_entity_definition 0, ENTITY_TYPE_VILLAGER_1, 212, 350, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT + THIEF_TILE_COUNT, 0xd3ff
-                map_entity_definition 1, ENTITY_TYPE_VILLAGER_2, 220, 334, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT + THIEF_TILE_COUNT, 0xda00
-                map_entity_definition 2, ENTITY_TYPE_VILLAGER_1, 228, 348, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT + THIEF_TILE_COUNT, 0xdb00
-                map_entity_definition 3, ENTITY_TYPE_VILLAGER_2, 236, 330, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT + THIEF_TILE_COUNT, 0xd900
-                map_entity_definition 4, ENTITY_TYPE_VILLAGER_1, 244, 324, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT + THIEF_TILE_COUNT, 0xd6f0
-                map_entity_definition 5, ENTITY_TYPE_VILLAGER_2, 252, 330, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT + THIEF_TILE_COUNT, 0xdd00
+                map_entity_definition 0, ENTITY_TYPE_VILLAGER_1, 212, 350, VILLAGER_TILE_ID, 0xd3ff
+                map_entity_definition 1, ENTITY_TYPE_VILLAGER_2, 220, 334, VILLAGER_TILE_ID, 0xda00
+                map_entity_definition 2, ENTITY_TYPE_VILLAGER_1, 228, 348, VILLAGER_TILE_ID, 0xdb00
+                map_entity_definition 3, ENTITY_TYPE_VILLAGER_2, 236, 330, VILLAGER_TILE_ID, 0xd900
+                map_entity_definition 4, ENTITY_TYPE_VILLAGER_1, 244, 324, VILLAGER_TILE_ID, 0xd6f0
+                map_entity_definition 5, ENTITY_TYPE_VILLAGER_2, 252, 330, VILLAGER_TILE_ID, 0xdd00
 
     town_map_entity_load_slot_descriptor_6:
         .dc.w   0
@@ -369,8 +380,8 @@
             .dc.l   0
 
             .dc.w   2  // number of entities
-                map_entity_definition 3, ENTITY_TYPE_THIEF, 228, 330, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(2)
-                map_entity_definition 4, ENTITY_TYPE_THIEF, 180, 320, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(3)
+                map_entity_definition 3, ENTITY_TYPE_THIEF, 228, 330, THIEF_TILE_ID, ENTITY_TYPE_THIEF_BLUE_PARAM(2)
+                map_entity_definition 4, ENTITY_TYPE_THIEF, 180, 320, THIEF_TILE_ID, ENTITY_TYPE_THIEF_BLUE_PARAM(3)
 
     town_map_entity_load_slot_descriptor_7:
         .dc.w   0
@@ -401,7 +412,7 @@
             .dc.l   0
 
             .dc.w   1  // number of entities
-                map_entity_definition 5, ENTITY_TYPE_BITTER_SILVER, 112, 160, GAME_PLAY_VRAM_RESERVED_TILE_MAX  // Only silver opens the door
+                map_entity_definition 5, ENTITY_TYPE_BITTER_SILVER, 112, 160, BITTER_TILE_ID  // Only silver opens the door
 
 
     /**********************************************************
@@ -512,7 +523,7 @@
             .dc.w   3  // number of entities
                 map_entity_definition 0, ENTITY_TYPE_AMAZON_2, 216, 332,, 300
                 map_entity_definition 1, ENTITY_TYPE_AMAZON_2, 240, 348,, 240
-                map_entity_definition 2, ENTITY_TYPE_THIEF, 228, 308, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(3)
+                map_entity_definition 2, ENTITY_TYPE_THIEF, 228, 308, THIEF_TILE_ID, ENTITY_TYPE_THIEF_BLUE_PARAM(3)
 
     town_map_beginner_entity_load_slot_descriptor_4:
         .dc.w   0
@@ -527,8 +538,8 @@
             .dc.l   0
 
             .dc.w   2  // number of entities
-                map_entity_definition 0, ENTITY_TYPE_BAD_BROTHER_BLUE, 208, 240, GAME_PLAY_VRAM_RESERVED_TILE_MAX
-                map_entity_definition 1, ENTITY_TYPE_BAD_BROTHER_BLUE, 208, 240, GAME_PLAY_VRAM_RESERVED_TILE_MAX, 300
+                map_entity_definition 0, ENTITY_TYPE_BAD_BROTHER_BLUE, 208, 240, BAD_BROTHER_TILE_ID, 60
+                map_entity_definition 1, ENTITY_TYPE_BAD_BROTHER_BLUE, 208, 240, BAD_BROTHER_TILE_ID, 300
 
             town_map_beginner_entity_load_group_descriptor_4_0_pal0:
                 entity_palette PALETTE_OFFSET(1, 8), 8, skin_4, blue2_4
@@ -545,12 +556,12 @@
             .dc.l   0
 
             .dc.w   6  // number of entities
-                map_entity_definition 0, ENTITY_TYPE_VILLAGER_1, 212, 350, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT + THIEF_TILE_COUNT, 0xd3ff
-                map_entity_definition 1, ENTITY_TYPE_VILLAGER_2, 220, 334, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT + THIEF_TILE_COUNT, 0xda00
-                map_entity_definition 2, ENTITY_TYPE_VILLAGER_1, 228, 348, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT + THIEF_TILE_COUNT, 0xdb00
-                map_entity_definition 3, ENTITY_TYPE_VILLAGER_2, 236, 330, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT + THIEF_TILE_COUNT, 0xd900
-                map_entity_definition 4, ENTITY_TYPE_VILLAGER_1, 244, 324, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT + THIEF_TILE_COUNT, 0xd6f0
-                map_entity_definition 5, ENTITY_TYPE_VILLAGER_2, 252, 330, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT + THIEF_TILE_COUNT, 0xdd00
+                map_entity_definition 0, ENTITY_TYPE_VILLAGER_1, 212, 350, VILLAGER_TILE_ID, 0xd3ff
+                map_entity_definition 1, ENTITY_TYPE_VILLAGER_2, 220, 334, VILLAGER_TILE_ID, 0xda00
+                map_entity_definition 2, ENTITY_TYPE_VILLAGER_1, 228, 348, VILLAGER_TILE_ID, 0xdb00
+                map_entity_definition 3, ENTITY_TYPE_VILLAGER_2, 236, 330, VILLAGER_TILE_ID, 0xd900
+                map_entity_definition 4, ENTITY_TYPE_VILLAGER_1, 244, 324, VILLAGER_TILE_ID, 0xd6f0
+                map_entity_definition 5, ENTITY_TYPE_VILLAGER_2, 252, 330, VILLAGER_TILE_ID, 0xdd00
 
     town_map_beginner_entity_load_slot_descriptor_6:
         .dc.w   0
@@ -562,8 +573,8 @@
             .dc.l   0
 
             .dc.w   2  // number of entities
-                map_entity_definition 3, ENTITY_TYPE_THIEF, 228, 330, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(2)
-                map_entity_definition 4, ENTITY_TYPE_THIEF, 180, 320, TOWNDOOR_TILE_ID + TOWNDOOR1_TILE_COUNT + TOWNDOOR2_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(3)
+                map_entity_definition 3, ENTITY_TYPE_THIEF, 228, 330, THIEF_TILE_ID, ENTITY_TYPE_THIEF_BLUE_PARAM(2)
+                map_entity_definition 4, ENTITY_TYPE_THIEF, 180, 320, THIEF_TILE_ID, ENTITY_TYPE_THIEF_BLUE_PARAM(3)
 
     town_map_beginner_entity_load_slot_descriptor_7:
         .dc.w   0
@@ -574,7 +585,7 @@
 
             .dc.l   town_map_beginner_entity_load_group_descriptor_7_0_pal0
             .dc.l   0
-            .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX + BAD_BROTHER_TILE_COUNT))
+            .dc.l   VRAM_ADDR_SET(TILE_ADDR(BAD_BROTHER_TILE_ID + BAD_BROTHER_TILE_COUNT))
             .dc.l   nem_pat_death_adder
             .dc.l   VRAM_ADDR_SET(TILE_ADDR(DEATH_ADDER_SPECIAL_TILE_ID))
             .dc.l   nem_pat_death_adder_special
@@ -600,7 +611,7 @@
             .dc.l   0
 
             .dc.w   1  // number of entities
-                map_entity_definition 5, ENTITY_TYPE_DEATH_ADDER_JR, 112, 160, GAME_PLAY_VRAM_RESERVED_TILE_MAX
+                map_entity_definition 5, ENTITY_TYPE_DEATH_ADDER_JR, 112, 160, DEATH_ADDER_JR_TILE_ID
 
 
     /**********************************************************

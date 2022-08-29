@@ -20,6 +20,11 @@
         .dc.l   turtle_village_map_definition   // Patch map table entry
     patch_end
 
+    #define WATER_TILE_ID       GAME_PLAY_VRAM_RESERVED_TILE_MAX
+    #define DRAGON_TILE_ID      WATER_TILE_ID + WATER_TILE_COUNT
+    #define VILLAGER_TILE_ID    DRAGON_TILE_ID + DRAGON_TILE_COUNT
+    #define THIEF_TILE_ID       VILLAGER_TILE_ID + VILLAGER_TILE_COUNT
+
     turtle_village_map_definition:
         // Palette list
         .dc.l   hud_player_palette
@@ -29,13 +34,13 @@
         // Nemesis tile data list
         .dc.l   VRAM_ADDR_SET(TILE_ADDR(0))
         .dc.l   nem_pat_empty
-        .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX))
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(WATER_TILE_ID))
         .dc.l   nem_pat_water_transparent
-        .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX + WATER_TILE_COUNT))
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(DRAGON_TILE_ID))
         .dc.l   nem_pat_dragon
-        .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX + WATER_TILE_COUNT + DRAGON_TILE_COUNT))
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(VILLAGER_TILE_ID))
         .dc.l   nem_pat_villager
-        .dc.l   VRAM_ADDR_SET(TILE_ADDR(GAME_PLAY_VRAM_RESERVED_TILE_MAX + WATER_TILE_COUNT + DRAGON_TILE_COUNT + VILLAGER_TILE_COUNT))
+        .dc.l   VRAM_ADDR_SET(TILE_ADDR(THIEF_TILE_ID))
         .dc.l   nem_pat_thief
         .dc.l   0
 
@@ -277,12 +282,12 @@
             .dc.l   0
 
             .dc.w   6  // number of entities
-                map_entity_definition 0, ENTITY_TYPE_VILLAGER_1, 100, 360, GAME_PLAY_VRAM_RESERVED_TILE_MAX + WATER_TILE_COUNT + DRAGON_TILE_COUNT, 0xdc00
-                map_entity_definition 1, ENTITY_TYPE_VILLAGER_2, 108, 334, GAME_PLAY_VRAM_RESERVED_TILE_MAX + WATER_TILE_COUNT + DRAGON_TILE_COUNT, 0xd800
-                map_entity_definition 2, ENTITY_TYPE_VILLAGER_1, 120, 348, GAME_PLAY_VRAM_RESERVED_TILE_MAX + WATER_TILE_COUNT + DRAGON_TILE_COUNT, 0xd400
-                map_entity_definition 3, ENTITY_TYPE_VILLAGER_2, 124, 330, GAME_PLAY_VRAM_RESERVED_TILE_MAX + WATER_TILE_COUNT + DRAGON_TILE_COUNT, 0xcc00
-                map_entity_definition 4, ENTITY_TYPE_VILLAGER_1, 144, 324, GAME_PLAY_VRAM_RESERVED_TILE_MAX + WATER_TILE_COUNT + DRAGON_TILE_COUNT, 0xc800
-                map_entity_definition 5, ENTITY_TYPE_VILLAGER_2, 150, 330, GAME_PLAY_VRAM_RESERVED_TILE_MAX + WATER_TILE_COUNT + DRAGON_TILE_COUNT, 0xc400
+                map_entity_definition 0, ENTITY_TYPE_VILLAGER_1, 100, 360, VILLAGER_TILE_ID, 0xdc00
+                map_entity_definition 1, ENTITY_TYPE_VILLAGER_2, 108, 334, VILLAGER_TILE_ID, 0xd800
+                map_entity_definition 2, ENTITY_TYPE_VILLAGER_1, 120, 348, VILLAGER_TILE_ID, 0xd400
+                map_entity_definition 3, ENTITY_TYPE_VILLAGER_2, 124, 330, VILLAGER_TILE_ID, 0xcc00
+                map_entity_definition 4, ENTITY_TYPE_VILLAGER_1, 144, 324, VILLAGER_TILE_ID, 0xc800
+                map_entity_definition 5, ENTITY_TYPE_VILLAGER_2, 150, 330, VILLAGER_TILE_ID, 0xc400
 
     turtle_village_map_entity_load_slot_descriptor_1:
         .dc.w   0
@@ -346,8 +351,8 @@
             .dc.l   0
 
             .dc.w   2  // number of entities
-                map_entity_definition 4, ENTITY_TYPE_VILLAGER_1, 256, 324, GAME_PLAY_VRAM_RESERVED_TILE_MAX + WATER_TILE_COUNT + DRAGON_TILE_COUNT, 0xc800
-                map_entity_definition 5, ENTITY_TYPE_VILLAGER_2, 272, 330, GAME_PLAY_VRAM_RESERVED_TILE_MAX + WATER_TILE_COUNT + DRAGON_TILE_COUNT, 0xc400
+                map_entity_definition 4, ENTITY_TYPE_VILLAGER_1, 256, 324, VILLAGER_TILE_ID, 0xc800
+                map_entity_definition 5, ENTITY_TYPE_VILLAGER_2, 272, 330, VILLAGER_TILE_ID, 0xc400
 
     turtle_village_map_entity_load_slot_descriptor_5:
         .dc.w   0
@@ -363,9 +368,9 @@
             .dc.w   5  // number of entities
                 map_entity_definition 0, ENTITY_TYPE_LONGMOAN_SILVER, 232, 350
                 map_entity_definition 1, ENTITY_TYPE_AMAZON_2, 208, 376,, 360
-                map_entity_definition 2, ENTITY_TYPE_AMAZON_2, 272, -20,, 600
+                map_entity_definition 2, ENTITY_TYPE_AMAZON_2, 272, -20,, 480
                 map_entity_definition 3, ENTITY_TYPE_AMAZON_5, 256, 360
-                map_entity_definition 6, ENTITY_TYPE_BLUE_DRAGON, 256, 360, GAME_PLAY_VRAM_RESERVED_TILE_MAX + WATER_TILE_COUNT
+                map_entity_definition 6, ENTITY_TYPE_BLUE_DRAGON, 256, 360, DRAGON_TILE_ID
 
             turtle_village_map_entity_load_group_descriptor_5_0_pal0:
                 entity_palette PALETTE_OFFSET(1, 1), 15, green2_4, yellow_3, skin_4, silver_4
@@ -380,7 +385,7 @@
             .dc.l   0
 
             .dc.w   1  // number of entities
-                map_entity_definition 5, ENTITY_TYPE_THIEF, 216, 330, GAME_PLAY_VRAM_RESERVED_TILE_MAX + WATER_TILE_COUNT + DRAGON_TILE_COUNT + VILLAGER_TILE_COUNT, ENTITY_TYPE_THIEF_BLUE_PARAM(3)
+                map_entity_definition 5, ENTITY_TYPE_THIEF, 216, 330, THIEF_TILE_ID, ENTITY_TYPE_THIEF_BLUE_PARAM(3)
 
     turtle_village_map_entity_load_slot_descriptor_7:
         .dc.w   0
@@ -392,8 +397,8 @@
             .dc.l   0
 
             .dc.w   2  // number of entities
-                map_entity_definition 3, ENTITY_TYPE_VILLAGER_1, 216, 324, GAME_PLAY_VRAM_RESERVED_TILE_MAX + WATER_TILE_COUNT + DRAGON_TILE_COUNT, 0xd000
-                map_entity_definition 4, ENTITY_TYPE_VILLAGER_2, 232, 360, GAME_PLAY_VRAM_RESERVED_TILE_MAX + WATER_TILE_COUNT + DRAGON_TILE_COUNT, 0xc400
+                map_entity_definition 3, ENTITY_TYPE_VILLAGER_1, 216, 324, VILLAGER_TILE_ID, 0xd000
+                map_entity_definition 4, ENTITY_TYPE_VILLAGER_2, 232, 360, VILLAGER_TILE_ID, 0xc400
 
     turtle_village_map_entity_load_slot_descriptor_8:
         .dc.w   1
@@ -427,7 +432,7 @@
                 map_entity_definition 0, ENTITY_TYPE_SKELETON_3, 216, -32
                 map_entity_definition 1, ENTITY_TYPE_AMAZON_2, 168, -20,,120
                 map_entity_definition 2, ENTITY_TYPE_AMAZON_5, 232, -32
-                map_entity_definition 7, ENTITY_TYPE_RED_DRAGON, 232, -32, GAME_PLAY_VRAM_RESERVED_TILE_MAX + WATER_TILE_COUNT
+                map_entity_definition 7, ENTITY_TYPE_RED_DRAGON, 232, -32, DRAGON_TILE_ID
 
         turtle_village_map_load_group_descriptor_8_1_pal0:
             entity_palette PALETTE_OFFSET(1, 1), 15, red1_4, yellow_3, skin_4, silver_4
