@@ -44,8 +44,8 @@ typedef struct
 {
     u32                             width;
     u32                             height;
-    u16         const ATTR_ALIGNED(4)*   tile_map;
-    block       const ATTR_ALIGNED(4)*   blocks;
+    u16     const ATTR_ALIGNED(4)*  tile_map;
+    block   const ATTR_ALIGNED(4)*  blocks;
 } map_data;
 
 
@@ -286,7 +286,7 @@ static void scroll(s32 new_horizontal_scroll, s32 new_vertical_scroll)
     // Render new column
     if (h_diff_words)
     {
-        volatile u16* frame_buffer_base = MARS_FRAMEBUFFER + 160;
+        u16* frame_buffer_base = MARS_FRAMEBUFFER + 160;
         u16* line_offset = line_table_buffer;
         for (u32 y = 0; y < 224; y++)
         {
@@ -370,11 +370,6 @@ static void process(u32 command_id, u16* param_base)
 
 static void post_process(u32 command_id, u16* param_base)
 {
-    if (!map_definition)
-    {
-        return;
-    }
-
     u32 action_id = command_id & 0xff;
 
     switch (action_id)
