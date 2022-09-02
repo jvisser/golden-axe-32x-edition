@@ -5,10 +5,24 @@
 #include "patch.h"
 
 
+//#define CHEAT_ENABLE_LEVEL_SELECT
 //#define CHEAT_ENEMY_HP                  1
 //#define CHEAT_NO_MAGIC_CONSUMPTION
 //#define CHEAT_MAGIC_START_COUNT         9
 //#define CHEAT_GOD_MODE
+
+
+#ifdef CHEAT_ENABLE_LEVEL_SELECT
+
+    /**********************************************************
+     * Always enable level select
+     */
+    patch_start 0x004444
+        nop
+        nop
+    patch_end
+
+#endif
 
 
 #ifdef CHEAT_ENEMY_HP
