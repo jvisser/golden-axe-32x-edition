@@ -29,7 +29,7 @@
 
     patch_start 0x00b308    // Princess
         //move.w  #184, entity_base_y(%a0)
-        move.w  #200, entity_base_y(%a0)        // Give princess + king the same z value to prevent death adder's corpse to end up in between
+        move.w  #199, entity_base_y(%a0)        // Give princess + king close z value to mitigate death adder's corpse ending up in between them
     patch_end
 
 
