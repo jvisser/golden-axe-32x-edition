@@ -7,7 +7,7 @@
 #include "marscomm.h"
 
 
-    .equ    __Z80_SAFE, 0           // Set to 1 to halt the Z80 while RV=1
+    .equ    __Z80_SAFE, 1           // Set to 1 to halt the Z80 while RV=1
 
 
     .global __mars_comm_init
