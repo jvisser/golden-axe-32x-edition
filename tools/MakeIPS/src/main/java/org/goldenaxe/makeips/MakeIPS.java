@@ -12,7 +12,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
 import picocli.CommandLine;
 
 
@@ -22,21 +21,28 @@ public class MakeIPS implements Callable<Integer>
     private static final String EOF = "EOF";
 
     @CommandLine.Option (names = {
-            "-p", "--patch-content-file"
+            "-c", "--content-file"
     }, required = true, description = "The patch content file")
-    Path patchContextPath;
+    Path patchContentPath;
 
     @CommandLine.Option (names = {
             "-i", "--index-file"
     }, required = true, description = "The patch index file")
     Path indexPath;
 
+    @CommandLine.Option (names = {
+            "-p", "--pad-to"
+    }, description = "Boundary to pad the result file to", defaultValue = "0x20000")
+    Integer padTo;
+
     @CommandLine.Parameters (index = "0", paramLabel = "OUTPUT", description = "The output .ips file")
     File outputFile;
 
     public static void main(String[] args)
     {
-        new CommandLine(new MakeIPS()).execute(args);
+        new CommandLine(new MakeIPS())
+                .registerConverter(Integer.class, Integer::decode)
+                .execute(args);
     }
 
     @Override
@@ -57,10 +63,36 @@ public class MakeIPS implements Callable<Integer>
 
                 dataOutputStream.write(ipsRecord.getData());
             }
+
+            pad(dataOutputStream, ipsRecords);
+
             dataOutputStream.writeBytes(EOF);
         }
 
         return 0;
+    }
+
+    private void pad(DataOutputStream dataOutputStream, List<IPSRecord> ipsRecords) throws IOException
+    {
+        int offset = ipsRecords.get(ipsRecords.size() - 1).getEndOffset(); // List is sorted
+        int padSize = ((offset + this.padTo - 1) & -this.padTo) - offset;
+        while (padSize > 0)
+        {
+            int recordSize = Math.min(padSize, 0xffff);
+
+            writeRLERecord(dataOutputStream, offset, recordSize);
+
+            offset += recordSize;
+            padSize -= recordSize;
+        }
+    }
+
+    private void writeRLERecord(DataOutputStream dataOutputStream, int offset, int size) throws IOException
+    {
+        write24Bit(dataOutputStream, offset);
+        write16Bit(dataOutputStream, 0);
+        write16Bit(dataOutputStream, size);
+        dataOutputStream.write(0xff);
     }
 
     private void write24Bit(DataOutputStream dataOutputStream, int value) throws IOException
@@ -98,12 +130,12 @@ public class MakeIPS implements Callable<Integer>
                 }, (r1, r2) -> r1)
                 .stream()
                 .flatMap((IPSRecord ipsRecord) -> ipsRecord.split().stream())
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private List<IPSRecord> readPatchRecords() throws IOException
     {
-        ByteBuffer patchContent = ByteBuffer.wrap(Files.readAllBytes(patchContextPath));
+        ByteBuffer patchContent = ByteBuffer.wrap(Files.readAllBytes(patchContentPath));
         patchContent.order(ByteOrder.BIG_ENDIAN);
 
         IntBuffer patchIndex = ByteBuffer.wrap(Files.readAllBytes(indexPath))

@@ -179,7 +179,7 @@ $(BUILD)/patch.ips: $(MDBUILD)/patch.elf
 	@echo "MAKEIPS $@: $<"
 	@$(MDOBJC) -O binary $< $(MDBUILD)/patch.bin
 	@$(MDOBJC) --dump-section patch_index=$(MDBUILD)/patch.index $<
-	@java -jar $(JAVATOOLS)/MakeIPS/target/MakeIPS.jar -i $(MDBUILD)/patch.index -p $(MDBUILD)/patch.bin $@
+	@java -jar $(JAVATOOLS)/MakeIPS/target/MakeIPS.jar -p 0x100000 -i $(MDBUILD)/patch.index -c $(MDBUILD)/patch.bin $@
 
 # Apply patch and create patched ROM image file for testing
 $(BUILD)/rom.32x: $(BUILD)/patch.ips

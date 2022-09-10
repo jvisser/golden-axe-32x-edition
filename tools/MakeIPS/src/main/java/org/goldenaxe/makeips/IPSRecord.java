@@ -95,6 +95,11 @@ class IPSRecord implements Comparable<IPSRecord>
         return offset;
     }
 
+    public int getEndOffset()
+    {
+        return getOffset() + getSize();
+    }
+
     public int getSize()
     {
         return data.length;
