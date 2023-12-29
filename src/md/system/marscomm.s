@@ -196,6 +196,7 @@
 
         // RV = 0
         bclr    #0, MARS_DMAC + 1(%a6)
+        pea     .rv_restore
     .no_rom_access_requested:
 
         // Clear response register
@@ -210,11 +211,12 @@
 
         // Send ACK
         clr.w   (%a6, %d6.w)
-
-        // Give MD access to ROM (RV = 1)
-        bset    #0, MARS_DMAC + 1(%a6)
     .exit:
         rts
-    .z80_resume:
-        move.w  #0, (Z80_BUS_REQUEST)
+    .rv_restore:
+        // RV = 1
+        bset    #0, MARS_DMAC + 1(%a6)
         rts
+    .z80_resume:
+         move.w  #0, (Z80_BUS_REQUEST)
+         rts
