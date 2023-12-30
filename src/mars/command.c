@@ -36,7 +36,7 @@ void command_main(volatile u16* comm_base)
 
         // Wait for command from the MD
         u16 command_id;
-        while (!(command_id = *comm0));
+        while (!((command_id = *comm0) & 0xff00));
 
         // Copy parameters
         command_param = *param;
