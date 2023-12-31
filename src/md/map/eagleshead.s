@@ -179,7 +179,7 @@
 
     eagles_head_scroll_limits_0_param:
         .dc.w   40                  // Min y scroll
-        .dc.w   424 - 224           // Max y scroll
+        .dc.w   472 - 224           // Max y scroll
 
     eagles_head_camera_transition_1_param:
         .dc.w   392 - 224           // Min y scroll
