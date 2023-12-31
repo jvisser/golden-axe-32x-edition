@@ -172,7 +172,7 @@
 
     fiends_path_scroll_limits_1_param:
         .dc.w   0                   // Min y scroll
-        .dc.w   512 - 224           // Max y scroll
+        .dc.w   432 - 224           // Max y scroll
 
     /**********************************************************
      * Entity load list
